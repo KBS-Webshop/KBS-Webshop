@@ -30,12 +30,6 @@ if (isset($_GET['page_number'])) {
     $PageNumber = 0;
 }
 
-<a class="ListItem" href='view.php?id=<?php print $row['StockItemID']; ?>'>
-
-
-</a>
-
-
 $Offset = $PageNumber * $ProductsOnPage;
 
 if ($CategoryID != "") { 
@@ -113,11 +107,7 @@ if (isset($amount)) {
     if (isset($ReturnableResult) && count($ReturnableResult) > 0) {
         foreach ($ReturnableResult as $row) {
             ?>
-            <!--  coderegel 1 van User story: bekijken producten  -->
-
-
-
-            <!-- einde coderegel 1 van User story: bekijken producten   -->
+            <a class="ListItem" href='view.php?id=<?php print $row['StockItemID']; ?>'>
                 <div id="ProductFrame">
                     <?php
                     if (isset($row['ImagePath'])) { ?>
@@ -140,11 +130,7 @@ if (isset($amount)) {
                     <p class="StockItemComments"><?php print $row["MarketingComments"]; ?></p>
                     <h4 class="ItemQuantity"><?php print getVoorraadTekst($row["QuantityOnHand"]); ?></h4>
                 </div>
-            <!--  coderegel 2 van User story: bekijken producten  -->
-
-
-
-            <!--  einde coderegel 2 van User story: bekijken producten  -->
+            </a>
         <?php } ?>
 
         <form id="PageSelector">

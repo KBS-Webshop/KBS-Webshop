@@ -128,6 +128,7 @@ $StockItemImage = getStockItemImage($_GET['id'], $databaseConnection);
                 <?php
             }
             ?>
+            
         </div>
         <?php
     } else {

@@ -30,9 +30,7 @@ if (isset($_GET['page_number'])) {
     $PageNumber = 0;
 }
 
-// code deel 1 van User story: Zoeken producten
-// <voeg hier de code in waarin de zoekcriteria worden opgebouwd>
-
+<a class="ListItem" href='view.php?id=<?php print $row['StockItemID']; ?>'>
 
 
 // <einde van de code voor zoekcriteria>

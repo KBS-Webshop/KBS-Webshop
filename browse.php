@@ -33,8 +33,7 @@ if (isset($_GET['page_number'])) {
 <a class="ListItem" href='view.php?id=<?php print $row['StockItemID']; ?>'>
 
 
-// <einde van de code voor zoekcriteria>
-// einde code deel 1 van User story: Zoeken producten
+</a>
 
 
 $Offset = $PageNumber * $ProductsOnPage;

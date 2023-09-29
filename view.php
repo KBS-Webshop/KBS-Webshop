@@ -122,8 +122,9 @@ $StockItemImage = getStockItemImage($_GET['id'], $databaseConnection);
                 <?php } ?>
                 </table><?php
             } else { ?>
-
-                <p><?php print $StockItem['CustomFields']; ?>.</p>
+                <p>
+                    <?php print $StockItem['CustomFields']; ?>.
+                </p>
                 <?php
             }
             ?>

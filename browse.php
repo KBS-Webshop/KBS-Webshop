@@ -30,6 +30,13 @@ if (isset($_GET['page_number'])) {
     $PageNumber = 0;
 }
 
+// code deel 1 van User story: Zoeken producten
+// <voeg hier de code in waarin de zoekcriteria worden opgebouwd>
+
+// <einde van de code voor zoekcriteria>
+// einde code deel 1 van User story: Zoeken producten
+
+
 $Offset = $PageNumber * $ProductsOnPage;
 
 if ($CategoryID != "") { 
@@ -96,18 +103,50 @@ if (isset($amount)) {
     }
 ?>
 
-<!-- code deel 3 van User story: Zoeken producten : de html -->
+<!-- code deel 3 van User story: Zoeken producten: de html -->
 <!-- de zoekbalk links op de pagina  -->
+
 
 
 <!-- einde zoekresultaten die links van de zoekbalk staan -->
 <!-- einde code deel 3 van User story: Zoeken producten  -->
+
 <div id="ResultsArea" class="Browse">
+
+    <p>Amount of products per page:</p>
+    <form method="get" style="display:flex;flex-direction: row;justify-items: left;width:10%;">
+        <input type="hidden" name="category_id" value="<?php print($_GET['category_id']) ?>">
+        <style>
+            .itemNumberButton {
+                background-color: rgb(35, 35, 47);
+                color:#676EFF;
+                border-color:#676EFF;
+                border-radius: 20%;
+                margin-right: 4px;
+                margin-top: -12px;
+                border-width: 4px;
+            }
+            .itemNumberButtonDisabled {
+                border-color: rgb(153, 187, 255) !important;
+            }
+        </style>
+
+        <input type="submit" name="products_on_page" value="25" class="itemNumberButton <?php if ($_GET['products_on_page'] == 25) print('itemNumberButtonDisabled')?>">
+        <input type="submit" name="products_on_page" value="50" class="itemNumberButton <?php if ($_GET['products_on_page'] == 50) print('itemNumberButtonDisabled')?>">
+        <input type="submit" name="products_on_page" value="75" class="itemNumberButton <?php if ($_GET['products_on_page'] == 75) print('itemNumberButtonDisabled')?>">
+
+    </form>
+
+
     <?php
     if (isset($ReturnableResult) && count($ReturnableResult) > 0) {
         foreach ($ReturnableResult as $row) {
             ?>
+            <!--  coderegel 1 van User story: bekijken producten  -->
+
             <a class="ListItem" href='view.php?id=<?php print $row['StockItemID']; ?>'>
+
+            <!-- einde coderegel 1 van User story: bekijken producten   -->
                 <div id="ProductFrame">
                     <?php
                     if (isset($row['ImagePath'])) { ?>
@@ -130,7 +169,11 @@ if (isset($amount)) {
                     <p class="StockItemComments"><?php print $row["MarketingComments"]; ?></p>
                     <h4 class="ItemQuantity"><?php print getVoorraadTekst($row["QuantityOnHand"]); ?></h4>
                 </div>
+            <!--  coderegel 2 van User story: bekijken producten  -->
+
             </a>
+
+            <!--  einde coderegel 2 van User story: bekijken producten  -->
         <?php } ?>
 
         <form id="PageSelector">

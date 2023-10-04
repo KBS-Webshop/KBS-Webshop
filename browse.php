@@ -103,10 +103,17 @@ if (isset($amount)) {
 <!-- einde zoekresultaten die links van de zoekbalk staan -->
 <!-- einde code deel 3 van User story: Zoeken producten  -->
 <div id="ResultsArea" class="Browse">
+    <p>Amount of products per page:</p>
+    <form method="get" style="display:flex;flex-direction: row;justify-items: left;width:10%;">
+        <input type="hidden" name="category_id" value="<?php print($_GET['category_id']) ?>">
+        <input type="submit" name="products_on_page" value="25" style="margin-top:-12px;" class="<?php print($_SESSION['products_on_page'] == 25 ? 'ButtonSecondary' : 'Button')?>">
+        <input type="submit" name="products_on_page" value="50" style="margin-top:-12px;" class="<?php print($_SESSION['products_on_page'] == 50 ? 'ButtonSecondary' : 'Button')?>">
+        <input type="submit" name="products_on_page" value="100" style="margin-top:-12px;" class="<?php print($_SESSION['products_on_page'] == 100 ? 'ButtonSecondary' : 'Button')?>">
+    </form>
+
     <?php
     if (isset($ReturnableResult) && count($ReturnableResult) > 0) {
         foreach ($ReturnableResult as $row) {
-            if ($row["QuantityOnHand"] > 0) {
             ?>
             <a class="ListItem" href='view.php?id=<?php print $row['StockItemID']; ?>'>
                 <div id="ProductFrame">
@@ -132,7 +139,7 @@ if (isset($amount)) {
                     <h4 class="ItemQuantity"><?php print getVoorraadTekst($row["QuantityOnHand"]); ?></h4>
                 </div>
             </a>
-        <?php }} ?>
+        <?php } ?>
 
         <form id="PageSelector">
 		

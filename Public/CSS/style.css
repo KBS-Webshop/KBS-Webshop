@@ -480,3 +480,32 @@ ul#ul-class-price li {
     border: 1px rgb(98, 158, 255) solid;
     color: #fff;
 }
+
+.Button {
+    background-color: rgb(35, 35, 47);
+    color:#676EFF;
+    border-color:#676EFF;
+    border-radius: 20%;
+    margin-right: 4px;
+    border-width: 4px;
+}
+
+.ButtonSecondary {
+    border-color: rgb(153, 187, 255) !important;
+    background-color: rgb(35, 35, 47);
+    color:#676EFF;
+    border-radius: 20%;
+    margin-right: 4px;
+    border-width: 4px;
+}
+
+.P-BottomMargin4px {
+    margin-bottom: 4px;
+}
+
+.ProductAmountForm {
+    display:flex;
+    flex-direction: row;
+    justify-items: left;
+    width:10%;
+}

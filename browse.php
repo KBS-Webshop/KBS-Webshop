@@ -106,9 +106,9 @@ if (isset($amount)) {
     <p class="P-BottomMargin4px">Amount of products per page:</p>
     <form method="get" class="ProductAmountForm">
         <input type="hidden" name="category_id" value="<?php print($_GET['category_id']) ?>">
-        <input type="submit" name="products_on_page" value="25" class="<?php print($_SESSION['products_on_page'] == 25 ? 'ButtonSecondary' : 'Button')?>">
-        <input type="submit" name="products_on_page" value="50" class="<?php print($_SESSION['products_on_page'] == 50 ? 'ButtonSecondary' : 'Button')?>">
-        <input type="submit" name="products_on_page" value="100" class="<?php print($_SESSION['products_on_page'] == 100 ? 'ButtonSecondary' : 'Button')?>">
+        <input type="submit" name="products_on_page" value="25" class="<?php print($ProductsOnPage == 25 ? 'ButtonSecondary' : 'Button')?>">
+        <input type="submit" name="products_on_page" value="50" class="<?php print($ProductsOnPage == 50 ? 'ButtonSecondary' : 'Button')?>">
+        <input type="submit" name="products_on_page" value="100" class="<?php print($ProductsOnPage == 100 ? 'ButtonSecondary' : 'Button')?>">
     </form>
 
     <?php

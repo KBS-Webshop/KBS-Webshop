@@ -103,12 +103,12 @@ if (isset($amount)) {
 <!-- einde zoekresultaten die links van de zoekbalk staan -->
 <!-- einde code deel 3 van User story: Zoeken producten  -->
 <div id="ResultsArea" class="Browse">
-    <p>Amount of products per page:</p>
-    <form method="get" style="display:flex;flex-direction: row;justify-items: left;width:10%;">
+    <p class="P-BottomMargin4px">Amount of products per page:</p>
+    <form method="get" class="ProductAmountForm">
         <input type="hidden" name="category_id" value="<?php print($_GET['category_id']) ?>">
-        <input type="submit" name="products_on_page" value="25" style="margin-top:-12px;" class="<?php print($_SESSION['products_on_page'] == 25 ? 'ButtonSecondary' : 'Button')?>">
-        <input type="submit" name="products_on_page" value="50" style="margin-top:-12px;" class="<?php print($_SESSION['products_on_page'] == 50 ? 'ButtonSecondary' : 'Button')?>">
-        <input type="submit" name="products_on_page" value="100" style="margin-top:-12px;" class="<?php print($_SESSION['products_on_page'] == 100 ? 'ButtonSecondary' : 'Button')?>">
+        <input type="submit" name="products_on_page" value="25" class="<?php print($ProductsOnPage == 25 ? 'ButtonSecondary' : 'Button')?>">
+        <input type="submit" name="products_on_page" value="50" class="<?php print($ProductsOnPage == 50 ? 'ButtonSecondary' : 'Button')?>">
+        <input type="submit" name="products_on_page" value="100" class="<?php print($ProductsOnPage == 100 ? 'ButtonSecondary' : 'Button')?>">
     </form>
 
     <?php

@@ -5,8 +5,6 @@ function addRowToCookie($id, $name) {
         print("Cookie Basket is set to: " . $_COOKIE["basket"]);
     } else {
         $basket_row = array(array("amount" => 1, "product" => array("StockItemID" => $id, "StockItemName" => $name)));
-        print(json_encode($basket_row));
-        $_COOKIE["basket"] = json_encode($basket_row);
         setcookie("basket", json_encode($basket_row), 2147483647);
     }
 }

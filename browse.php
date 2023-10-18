@@ -1,6 +1,7 @@
 <!-- dit bestand bevat alle code voor het productoverzicht -->
 <?php
 include __DIR__ . "/header.php";
+require __DIR__ . "/helpers/cookie.php";
 
 $ReturnableResult = null;
 $Sort = "SellPrice";
@@ -179,6 +180,8 @@ if (isset($amount)) {
     function berekenVerkoopPrijs($adviesPrijs, $btw) {
 		return $btw * $adviesPrijs / 100 + $adviesPrijs;
     }
+
+    addRowToCookie(227, "Dummy product");
 ?>
 
 <div id="FilterFrame"><h2 class="FilterText"><i class="fas fa-filter"></i> Filteren </h2>

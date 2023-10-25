@@ -181,7 +181,9 @@ if (isset($amount)) {
 		return $btw * $adviesPrijs / 100 + $adviesPrijs;
     }
 
-    addRowToCookie(227, "Dummy product");
+    if (isset($_POST["addToCart"])) {
+        addRowToCookie($_POST["addToCartID"], $_POST["addToCartName"]);
+    }
 ?>
 
 <div id="FilterFrame"><h2 class="FilterText"><i class="fas fa-filter"></i> Filteren </h2>
@@ -237,6 +239,14 @@ if (isset($amount)) {
     if (isset($ReturnableResult) && count($ReturnableResult) > 0) {
         foreach ($ReturnableResult as $row) {
             ?>
+            <form method="post">
+                <input type="hidden" name="addToCartID" value="<?php echo $row["StockItemID"]; ?>"
+                <input type="hidden" name="addToCartName" value="<?php echo $row["StockItemName"]; ?>"
+                <button type="submit">Verstuur</button>
+
+
+
+            </form>
             <a class="ListItem" href='view.php?id=<?php print $row['StockItemID']; ?>'>
                 <div id="ProductFrame">
                     <?php
@@ -253,9 +263,7 @@ if (isset($amount)) {
                         <div class="CenterPriceLeftChild">
                             <h1 class="StockItemPriceText"><?php print sprintf(" %0.2f", berekenVerkoopPrijs($row["RecommendedRetailPrice"], $row["TaxRate"])); ?></h1>
                             <h6>Inclusief BTW </h6>
-                            <a class="shopping-cart-button">
-                                <i class="fa fa-cart-plus"></i>
-                            </a>
+
                         </div>
                     </div>
                     <h1 class="StockItemID">Artikelnummer: <?php print $row["StockItemID"]; ?></h1>

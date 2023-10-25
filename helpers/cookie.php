@@ -2,6 +2,7 @@
 function addRowToCookie($id, $name) {
     if(isset($_COOKIE["basket"])) {
 //        Hier de code om er nog een toe te voegen
+        $basket_rows=json_decode($_COOKIE["basket"]);
         print("Cookie Basket is set to: " . $_COOKIE["basket"]);
     } else {
         $basket_row = array(array("amount" => 1, "product" => array("StockItemID" => $id, "StockItemName" => $name)));

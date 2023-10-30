@@ -1,11 +1,16 @@
 <?php
 function addRowToCookie($id, $name) {
     if(isset($_COOKIE["basket"])) {
-//        Hier de code om er nog een toe te voegen
-        $basket_rows=json_decode($_COOKIE["basket"]);
-        print("Cookie Basket is set to: " . $_COOKIE["basket"]);
+        $basket_rows=json_decode($_COOKIE["basket"], true);
+        if (isset($basket_rows[$id])) {
+            $basket_rows[$id]["amount"] = $basket_rows[$id]["amount"] + 1;
+        } else {
+            $basket_rows[$id] = array("amount" => 1, "product" => array("StockItemID" => $id, "StockItemName" => $name));
+        }
+        setcookie("basket", json_encode($basket_rows), 2147483647);
     } else {
-        $basket_row = array(array("amount" => 1, "product" => array("StockItemID" => $id, "StockItemName" => $name)));
+        $basket_row = array($id => array("amount" => 1, "product" => array("StockItemID" => $id, "StockItemName" => $name)));
         setcookie("basket", json_encode($basket_row), 2147483647);
+
     }
 }

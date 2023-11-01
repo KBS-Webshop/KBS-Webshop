@@ -92,7 +92,7 @@ if (isset($_POST["addToCart"])) {
                             <input type="hidden" name="addToCartID" value="<?php echo $StockItem["StockItemID"]; ?>">
                             <input type="hidden" name="addToCartName" value="<?php echo $StockItem["StockItemName"]; ?>">
                             <button type="submit" name="addToCart" value="addItemToCart">
-                                <i class="fa fa-cart-plus"></i>
+                                <i class="fa fa-cart-plus fa-lg"></i>
                             </button>
 
                         </form>

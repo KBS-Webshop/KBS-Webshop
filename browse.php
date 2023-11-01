@@ -181,9 +181,6 @@ if (isset($amount)) {
 		return $btw * $adviesPrijs / 100 + $adviesPrijs;
     }
 
-    if (isset($_POST["addToCart"])) {
-        addRowToCookie($_POST["addToCartID"], $_POST["addToCartName"]);
-    }
 ?>
 
 <div id="FilterFrame"><h2 class="FilterText"><i class="fas fa-filter"></i> Filteren </h2>
@@ -257,8 +254,9 @@ if (isset($amount)) {
                             <h1 class="StockItemPriceText"><?php print sprintf(" %0.2f", berekenVerkoopPrijs($row["RecommendedRetailPrice"], $row["TaxRate"])); ?></h1>
                             <h6>Inclusief BTW </h6>
                             <form method="post">
-                                <input type="hidden" name="addToCartID" value="<?php echo $row["StockItemID"]; ?>">
-                                <input type="hidden" name="addToCartName" value="<?php echo $row["StockItemName"]; ?>">
+                                <input type="hidden" name="action" value="add">
+                                <input type="hidden" name="StockItemID" value="<?php echo $row["StockItemID"]; ?>">
+                                <input type="hidden" name="StockItemName" value="<?php echo $row["StockItemName"]; ?>">
                                 <button type="submit" name="addToCart" value="addItemToCart">
                                 <i class="fa fa-cart-plus"></i>
                                 </button>

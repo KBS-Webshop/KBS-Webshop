@@ -1,6 +1,8 @@
 html {
 }
-
+button{
+    border: transparent;
+}
 body {
     overflow-x:hidden;
     background-color: #FFFFFF;
@@ -274,7 +276,7 @@ ul#ul-class-price li {
 
 .HrefDecoration:hover, .HrefDecoration:active {
     text-decoration: none;
-    color: #ccc;
+    color: black;
 }
 .TextMain {
     color: #0000a4;
@@ -509,4 +511,13 @@ font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue"
     flex-direction: row;
     justify-items: left;
     width:10%;
+}
+
+.fa-cart-plus:hover{
+    font-size: 200%;
+    color: black;
+}
+.fa-cart-plus{
+    font-size: 200%;
+    color: #0000a4;
 }

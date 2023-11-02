@@ -29,10 +29,13 @@ function addRowToCookie($id, $name) {
             $basket_rows[$id] = array("amount" => 1, "product" => array("StockItemID" => $id, "StockItemName" => $name));
         }
         setcookie("basket", json_encode($basket_rows), 2147483647);
+        header("location: winkelmand.php");
+        exit();
     } else {
         $basket_row = array($id => array("amount" => 1, "product" => array("StockItemID" => $id, "StockItemName" => $name)));
         setcookie("basket", json_encode($basket_row), 2147483647);
-
+        header("location: winkelmand.php");
+        exit();
     }
 }
 

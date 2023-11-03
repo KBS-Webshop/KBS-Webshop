@@ -3,7 +3,6 @@
 if (isset($_POST['action'])) {
     switch ($_POST['action']) {
         case 'add':
-            print_r($_POST);
             addRowToCookie($_POST['StockItemID'], $_POST['StockItemName'], $_POST['StockItemImage'], $_POST['StockItemPrice']);
             break;
         case 'remove':

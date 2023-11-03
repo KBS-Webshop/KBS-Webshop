@@ -3,7 +3,7 @@
 if (isset($_POST['action'])) {
     switch ($_POST['action']) {
         case 'add':
-            addRowToCookie($_POST['StockItemID'], $_POST['StockItemName']);
+            addRowToCookie($_POST['StockItemID'], $_POST['StockItemName'], $_POST['StockItemImage'], $_POST['StockItemPrice']);
             break;
         case 'remove':
             removeRowFromCookie($_POST['StockItemID']);
@@ -20,19 +20,19 @@ if (isset($_POST['action'])) {
     }
 }
 
-function addRowToCookie($id, $name) {
+function addRowToCookie($id, $name, $image, $price) {
     if(isset($_COOKIE["basket"])) {
         $basket_rows=json_decode($_COOKIE["basket"], true);
         if (isset($basket_rows[$id])) {
             $basket_rows[$id]["amount"] = $basket_rows[$id]["amount"] + 1;
         } else {
-            $basket_rows[$id] = array("amount" => 1, "product" => array("StockItemID" => $id, "StockItemName" => $name));
+            $basket_rows[$id] = array("amount" => 1, "product" => array("StockItemID" => $id, "StockItemName" => $name, "StockItemImage" => $image, "StockItemPrice" => $price));
         }
         setcookie("basket", json_encode($basket_rows), 2147483647);
         header("location: winkelmand.php");
         exit();
     } else {
-        $basket_row = array($id => array("amount" => 1, "product" => array("StockItemID" => $id, "StockItemName" => $name)));
+        $basket_row = array($id => array("amount" => 1, "product" => array("StockItemID" => $id, "StockItemName" => $name, "StockItemImage" => $image, "StockItemPrice" => $price)));
         setcookie("basket", json_encode($basket_row), 2147483647);
         header("location: winkelmand.php");
         exit();

@@ -18,9 +18,11 @@ include __DIR__ . "/header.php";
                 $basket_contents = json_decode($_COOKIE["basket"], true);
 
                 foreach ($basket_contents as $item) {
+                    ?>
+                    <img src="<?php print("Public/StockItemIMG/".$item["product"]["StockItemImage"]) ?>" alt="Product" width="120" height="120"><br>
+                    <?php
                     print "ID " . $item["product"]["StockItemID"] . "<br>";
                     print "Name " . $item["product"]["StockItemName"] . "<br>";
-                    print "Image " . $item["product"]["StockItemImage"] . "<br>";
                     print "Price " . $item["product"]["StockItemPrice"] . "<br>";
                     print "Amount " . $item["amount"]."<br>" ;
 

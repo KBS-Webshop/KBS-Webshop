@@ -59,6 +59,13 @@ $databaseConnection = connectToDatabase();
             </ul>
 
             <!-- einde code voor US3 zoeken -->
+            <ul id="shoppingcart">
+                <a>
+                    <a href="winkelmand.php" class="HrefDecoration"><i class="fa fa-shopping-cart" aria-hidden="true"></i> winkelwagen</a>
+                </a>
+            </ul>
+
+        </div>
         </div>
         <div class="row" id="Content">
             <div class="col-12">

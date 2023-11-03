@@ -82,6 +82,18 @@ $StockItemImage = getStockItemImage($_GET['id'], $databaseConnection);
                     <div class="CenterPriceLeftChild">
                         <p class="StockItemPriceText"><b><?php print sprintf("€ %.2f", $StockItem['SellPrice']); ?></b></p>
                         <h6> Inclusief BTW </h6>
+                        <form method="post">
+                            <input type="hidden" name="action" value="add">
+                            <input type="hidden" name="StockItemID" value="<?php echo $StockItem["StockItemID"]; ?>">
+                            <input type="hidden" name="StockItemName" value="<?php echo $StockItem["StockItemName"]; ?>">
+                            <input type="hidden" name="StockItemImage" value="<?php echo $StockItemImage[0]['ImagePath']; ?>">
+                            <input type="hidden" name="StockItemPrice" value="<?php echo $StockItem["SellPrice"]; ?>">
+                            <input type="hidden" name="BTW" value="<?php echo $StockItem["SellPrice"]; ?>">
+                            <button type="submit" name="addToCart" value="addItemToCart">
+                                <i class="fa fa-cart-plus fa-lg"></i>
+                            </button>
+
+                        </form>
                     </div>
                 </div>
             </div>

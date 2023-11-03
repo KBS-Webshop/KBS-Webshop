@@ -16,7 +16,7 @@ include __DIR__ . "/header.php";
             <?php
             if (isset($_COOKIE["basket"])) {
                 $basket_contents = json_decode($_COOKIE["basket"], true);
-                print_r($basket_contents);
+                
                 foreach ($basket_contents as $item) {
                     print "ID " . $item["product"]["StockItemID"] . "<br>";
                     print "Name " . $item["product"]["StockItemName"] . "<br>";

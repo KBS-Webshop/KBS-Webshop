@@ -1,7 +1,8 @@
 <!-- dit bestand bevat alle code die verbinding maakt met de database -->
 <?php
 
-function connectToDatabase() {
+function connectToDatabase()
+{
     $Connection = null;
 
     mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); // Set MySQLi to throw exceptions
@@ -13,14 +14,17 @@ function connectToDatabase() {
         $DatabaseAvailable = false;
     }
     if (!$DatabaseAvailable) {
-        ?><h2>Website wordt op dit moment onderhouden.</h2><?php
+        ?>
+        <h2>Website wordt op dit moment onderhouden.</h2>
+        <?php
         die();
     }
 
     return $Connection;
 }
 
-function getHeaderStockGroups($databaseConnection) {
+function getHeaderStockGroups($databaseConnection)
+{
     $Query = "
                 SELECT StockGroupID, StockGroupName, ImagePath
                 FROM stockgroups 
@@ -35,7 +39,8 @@ function getHeaderStockGroups($databaseConnection) {
     return $HeaderStockGroups;
 }
 
-function getStockGroups($databaseConnection) {
+function getStockGroups($databaseConnection)
+{
     $Query = "
             SELECT StockGroupID, StockGroupName, ImagePath
             FROM stockgroups 
@@ -51,7 +56,8 @@ function getStockGroups($databaseConnection) {
     return $StockGroups;
 }
 
-function getStockItem($id, $databaseConnection) {
+function getStockItem($id, $databaseConnection)
+{
     $Result = null;
 
     $Query = " 
@@ -80,7 +86,8 @@ function getStockItem($id, $databaseConnection) {
     return $Result;
 }
 
-function getStockItemImage($id, $databaseConnection) {
+function getStockItemImage($id, $databaseConnection)
+{
 
     $Query = "
                 SELECT ImagePath

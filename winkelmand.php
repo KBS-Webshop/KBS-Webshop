@@ -1,6 +1,6 @@
 <?php
-include __DIR__ . "/header.php";
+include __DIR__ . "/components/header.php"
 ?>
 <?php
-include __DIR__ . "/footer.php";
+include __DIR__ . "/components/footer.php"
 ?>

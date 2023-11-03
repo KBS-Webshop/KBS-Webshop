@@ -236,7 +236,6 @@ if (isset($amount)) {
     if (isset($ReturnableResult) && count($ReturnableResult) > 0) {
         foreach ($ReturnableResult as $row) {
             ?>
-
             <a class="ListItem" href='view.php?id=<?php print $row['StockItemID']; ?>'>
                 <div id="ProductFrame">
                     <?php

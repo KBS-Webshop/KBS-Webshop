@@ -258,6 +258,7 @@ if (isset($amount)) {
                                 <input type="hidden" name="StockItemName" value="<?php echo $row["StockItemName"]; ?>">
                                 <input type="hidden" name="StockItemImage" value="<?php echo $row["ImagePath"]; ?>">
                                 <input type="hidden" name="StockItemPrice" value="<?php echo $row["RecommendedRetailPrice"]; ?>">
+                                <input type="hidden" name="BTW" value="<?php echo $row["TaxRate"]; ?>">
                                 <button type="submit" name="addToCart" value="addItemToCart">
                                 <i class="fa fa-cart-plus fa-lg"></i>
                                 </button>

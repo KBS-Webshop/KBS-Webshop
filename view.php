@@ -6,10 +6,6 @@ require __DIR__ . "/helpers/cookie.php";
 
 $StockItem = getStockItem($_GET['id'], $databaseConnection);
 $StockItemImage = getStockItemImage($_GET['id'], $databaseConnection);
-
-if (isset($_POST["addToCart"])) {
-    addRowToCookie($_POST["addToCartID"], $_POST["addToCartName"]);
-}
 ?>
 <div id="CenteredContent">
     <?php
@@ -89,8 +85,9 @@ if (isset($_POST["addToCart"])) {
                         <p class="StockItemPriceText"><b><?php print sprintf("€ %.2f", $StockItem['SellPrice']); ?></b></p>
                         <h6> Inclusief BTW </h6>
                         <form method="post">
-                            <input type="hidden" name="addToCartID" value="<?php echo $StockItem["StockItemID"]; ?>">
-                            <input type="hidden" name="addToCartName" value="<?php echo $StockItem["StockItemName"]; ?>">
+                            <input type="hidden" name="action" value="add">
+                            <input type="hidden" name="StockItemID" value="<?php echo $StockItem["StockItemID"]; ?>">
+                            <input type="hidden" name="StockItemName" value="<?php echo $StockItem["StockItemName"]; ?>">
                             <button type="submit" name="addToCart" value="addItemToCart">
                                 <i class="fa fa-cart-plus fa-lg"></i>
                             </button>

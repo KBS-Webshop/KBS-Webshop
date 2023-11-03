@@ -2,6 +2,7 @@
 <?php
 include __DIR__ . "/components/header.php";
 require __DIR__ . "/helpers/utils.php";
+require __DIR__ . "/helpers/cookie.php";
 
 $ReturnableResult = null;
 $Sort = "SellPrice";
@@ -238,7 +239,7 @@ if (isset($amount)) {
 
                     <div id="StockItemFrameRight">
                         <div class="CenterPriceLeftChild">
-                            <h1 class="StockItemPriceText"><?php print sprintf(" %0.2f", berekenVerkoopPrijs($row["RecommendedRetailPrice"], $row["TaxRate"])); ?></h1>
+                            <h1 class="StockItemPriceText"><?php print sprintf(" %0.2f", $row["RecommendedRetailPrice"]= berekenVerkoopPrijs($row["RecommendedRetailPrice"], $row["TaxRate"])); ?></h1>
                             <h6>Inclusief BTW </h6>
                             <form method="post">
                                 <input type="hidden" name="action" value="add">

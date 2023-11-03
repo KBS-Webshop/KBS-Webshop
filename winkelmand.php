@@ -1,13 +1,10 @@
 <?php
-include __DIR__ . "/header.php";
 include __DIR__ . "/helpers/cookie.php";
+include __DIR__ . "/components/header.php";
+include __DIR__ . "/helpers/utils.php"
 
 
-function berekenVerkoopPrijs($adviesPrijs, $btw) {
-    return $btw * $adviesPrijs / 100 + $adviesPrijs;
-}
 
-include __DIR__ . "/components/header.php"
 ?>
     <!DOCTYPE html>
     <html>
@@ -29,9 +26,7 @@ include __DIR__ . "/components/header.php"
                     $id = $item["product"]["StockItemID"];
                     $name = $item["product"]["StockItemName"];
                     $price1 = $item["product"]["StockItemPrice"];
-
-                    $price2 = (berekenVerkoopPrijs($price1,$item["product"]["BTW"]));
-                    $price = round($price2, 2);
+                    $price = round($price1, 2);
                     $imagePath = $item["product"]["StockItemImage"];
                     $amount =  $item["amount"]; ?>
 
@@ -45,16 +40,17 @@ include __DIR__ . "/components/header.php"
                             ?>
                             <div id="StockItemFrameRight">
                                 <div class="CenterPriceLeftChild">
-                                    <h1 class="StockItemPriceText"> <?php print $price*$amount ?></h1>
+                                    <h1 class="StockItemPriceText"> <?php print ("€ ".$price*$amount) ?></h1>
+                                    <h6> Inclusief BTW </h6>
                                 </div>
                             </div>
                             <h1 class="StockItemID"> <?php print ("artikelnummer: ".$id."<br>")?></h1>
-                            <h1 class="StockItemID1"> <?php print($name."<br><br>aantal: ".$amount) ?>
-                            </h1>
+                            <h1 class="StockItemID1"> <?php print($name."<br><br>aantal: ".$amount) ?></h1>
                         </div>
                     </a>
 
                     <?php
+
                 }
             } else {
                 echo "Winkelmandje is leeg.";
@@ -66,6 +62,5 @@ include __DIR__ . "/components/header.php"
     </html>
 
 <?php
-include __DIR__ . "/footer.php";
 include __DIR__ . "/components/footer.php"
 ?>

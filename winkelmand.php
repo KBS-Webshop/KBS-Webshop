@@ -22,12 +22,12 @@ include __DIR__ . "/header.php";
                     print "Name " . $item["product"]["StockItemName"] . "<br>";
                     print "Image " . $item["product"]["StockItemImage"] . "<br>";
                     print "Price " . $item["product"]["StockItemPrice"] . "<br>";
-                    print "Amount " . $item["amount"] . "<br>";
+                    print "Amount " . $item["amount"]."<br>" ;
 
                     ?>
                     <a class="ListItem" href='view.php?id=<?php print $item['product']['StockItemID']; ?>'>
                         <?php
-                        print($item["product"]["StockItemName"])
+                        print($item["product"]["StockItemName"]."<br><br>")
                         ?>
                     </a>
                     <?php

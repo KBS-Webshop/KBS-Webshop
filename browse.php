@@ -179,6 +179,16 @@ if (isset($amount)) {
     function berekenVerkoopPrijs($adviesPrijs, $btw) {
 		return $btw * $adviesPrijs / 100 + $adviesPrijs;
     }
+<<<<<<< Updated upstream
+=======
+
+    if (isset($_POST["addToCart"])) {
+        addRowToCookie($_POST["addToCartID"], $_POST["addToCartName"]);
+    }
+
+    addRowToCookie("1121", "Sok", 12, "dfa");
+    addRowToCookie("69420", "Anus", 12, "dfa");
+>>>>>>> Stashed changes
 ?>
 
 <div id="FilterFrame"><h2 class="FilterText"><i class="fas fa-filter"></i> Filteren </h2>
@@ -250,6 +260,18 @@ if (isset($amount)) {
                         <div class="CenterPriceLeftChild">
                             <h1 class="StockItemPriceText"><?php print sprintf(" %0.2f", berekenVerkoopPrijs($row["RecommendedRetailPrice"], $row["TaxRate"])); ?></h1>
                             <h6>Inclusief BTW </h6>
+<<<<<<< Updated upstream
+=======
+                            <form method="post">
+                                <input type="hidden" name="addToCartID" value="<?php echo $row["StockItemID"]; ?>">
+                                <input type="hidden" name="addToCartName" value="<?php echo $row["StockItemName"]; ?>">
+                                <input type="hidden" name="addToCartImage" value="<?php echo $row["StockItemImage"]; ?>">
+                                <button type="submit" name="addToCart" value="addItemToCart">
+                                <i class="fa fa-cart-plus"></i>
+                                </button>
+
+                            </form>
+>>>>>>> Stashed changes
                         </div>
                     </div>
                     <h1 class="StockItemID">Artikelnummer: <?php print $row["StockItemID"]; ?></h1>

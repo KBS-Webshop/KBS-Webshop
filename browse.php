@@ -256,8 +256,6 @@ if (isset($amount)) {
                                 <input type="hidden" name="action" value="add">
                                 <input type="hidden" name="StockItemID" value="<?php echo $row["StockItemID"]; ?>">
                                 <input type="hidden" name="StockItemName" value="<?php echo $row["StockItemName"]; ?>">
-                                <input type="hidden" name="StockItemPrice" value="<?php echo $row["StockItemPrice"]; ?>">
-                                <input type="hidden" name="StockItemImage" value="<?php echo $row["StockItemImage"]; ?>">
                                 <button type="submit" name="addToCart" value="addItemToCart">
                                 <i class="fa fa-cart-plus fa-lg"></i>
                                 </button>

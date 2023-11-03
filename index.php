@@ -1,6 +1,6 @@
 <!-- dit is het bestand dat wordt geladen zodra je naar de website gaat -->
 <?php
-include __DIR__ . "/header.php";
+include __DIR__ . "/components/header.php"
 ?>
 <div class="IndexStyle">
     <div class="col-11">
@@ -18,6 +18,6 @@ include __DIR__ . "/header.php";
     </div>
 </div>
 <?php
-include __DIR__ . "/footer.php";
+include __DIR__ . "/components/footer.php"
 ?>
 

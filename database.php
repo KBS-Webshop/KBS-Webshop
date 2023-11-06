@@ -1,12 +1,17 @@
 <!-- dit bestand bevat alle code die verbinding maakt met de database -->
 <?php
 
+require 'vendor/autoload.php'; // Zorg ervoor dat je de Composer autoloader hebt ingesloten
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
 function connectToDatabase() {
     $Connection = null;
 
     mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); // Set MySQLi to throw exceptions
     try {
-        $Connection = mysqli_connect("localhost", "root", "", "nerdygadgets");
+        $Connection = mysqli_connect($_ENV["MYSQL_HOST"], $_ENV["MYSQL_USER"], $_ENV["MYSQL_PASSWORD"], $_ENV["MYSQL_DATABASE"]);
         mysqli_set_charset($Connection, 'latin1');
         $DatabaseAvailable = true;
     } catch (mysqli_sql_exception $e) {
@@ -89,6 +94,35 @@ function getStockItemImage($id, $databaseConnection) {
 
     $Statement = mysqli_prepare($databaseConnection, $Query);
     mysqli_stmt_bind_param($Statement, "i", $id);
+    mysqli_stmt_execute($Statement);
+    $R = mysqli_stmt_get_result($Statement);
+    $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
+
+    return $R;
+}
+
+function getAlsoBought($id, $databaseConnection) {
+
+    $Query = "
+        SELECT o.StockItemID, s.StockItemName, si.ImagePath StockItemImage, (RecommendedRetailPrice*(1+(s.TaxRate/100))) AS SellPrice, COUNT(*) kerenSamengekocht
+        FROM orderlines o
+        JOIN stockitems s ON o.StockItemID = s.StockItemID
+        JOIN stockitemimages si ON si.StockItemID = o.StockItemID
+        JOIN stockitemholdings sh ON o.StockItemID = sh.StockItemID
+        WHERE OrderID IN (
+            SELECT OrderID
+            FROM orderlines
+            WHERE StockItemID = ?
+        ) AND o.StockItemID != ?
+        GROUP BY o.StockItemID, s.StockItemName, si.ImagePath, SellPrice
+        ORDER BY kerenSamengekocht DESC
+        LIMIT 6;
+    ";
+
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+
+    mysqli_stmt_bind_param($Statement, "ii", $id, $id);
+
     mysqli_stmt_execute($Statement);
     $R = mysqli_stmt_get_result($Statement);
     $R = mysqli_fetch_all($R, MYSQLI_ASSOC);

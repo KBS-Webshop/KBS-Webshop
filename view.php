@@ -4,6 +4,8 @@ include __DIR__ . "/header.php";
 
 $StockItem = getStockItem($_GET['id'], $databaseConnection);
 $StockItemImage = getStockItemImage($_GET['id'], $databaseConnection);
+$AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
+
 ?>
 <div id="CenteredContent">
     <?php
@@ -87,48 +89,73 @@ $StockItemImage = getStockItemImage($_GET['id'], $databaseConnection);
             </div>
         </div>
 
-        <div id="StockItemDescription">
-            <h3>Artikel beschrijving</h3>
-            <p><?php print $StockItem['SearchDetails']; ?></p>
-        </div>
-        <div id="StockItemSpecifications">
-            <h3>Artikel specificaties</h3>
-            <?php
-            $CustomFields = json_decode($StockItem['CustomFields'], true);
-            if (is_array($CustomFields)) { ?>
-                <table>
-                <thead>
-                <th>Naam</th>
-                <th>Data</th>
-                </thead>
-                <?php
-                foreach ($CustomFields as $SpecName => $SpecText) { ?>
-                    <tr>
-                        <td>
-                            <?php print $SpecName; ?>
-                        </td>
-                        <td>
-                            <?php
-                            if (is_array($SpecText)) {
-                                foreach ($SpecText as $SubText) {
-                                    print $SubText . " ";
-                                }
-                            } else {
-                                print $SpecText;
-                            }
+        <div class="ProductInformationWrapper">
+            <div class="ProductInformation">
+                <div id="StockItemDescription">
+                    <h3>Artikel beschrijving</h3>
+                    <p><?php print $StockItem['SearchDetails']; ?></p>
+                </div>
+                <div id="StockItemSpecifications">
+                    <h3>Artikel specificaties</h3>
+                    <?php
+                    $CustomFields = json_decode($StockItem['CustomFields'], true);
+                    if (is_array($CustomFields)) { ?>
+                        <table>
+                        <thead>
+                        <th>Naam</th>
+                        <th>Data</th>
+                        </thead>
+                        <?php
+                        foreach ($CustomFields as $SpecName => $SpecText) { ?>
+                            <tr>
+                                <td>
+                                    <?php print $SpecName; ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    if (is_array($SpecText)) {
+                                        foreach ($SpecText as $SubText) {
+                                            print $SubText . " ";
+                                        }
+                                    } else {
+                                        print $SpecText;
+                                    }
+                                    ?>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                        </table><?php
+                    } else { ?>
+                        <p>
+                            <?php print $StockItem['CustomFields']; ?>.
+                        </p>
+                        <?php
+                    }
+                    ?>
+                    
+                </div>
+            </div>
+
+            <div class="ProductAlsoBoughtWrapper">
+                <h3>Andere kochten ook</h3>
+                <div class="ProductsAlsoBoughtGrid">
+                    <?php
+                        foreach ($AlsoBought as $product) {
                             ?>
-                        </td>
-                    </tr>
-                <?php } ?>
-                </table><?php
-            } else { ?>
-                <p>
-                    <?php print $StockItem['CustomFields']; ?>.
-                </p>
-                <?php
-            }
-            ?>
-            
+                            <a class="ListItem" href='view.php?id=<?php print $Item['StockItemID']; ?>'>
+                                <?php
+                                    if (isset($product["StockItemImage"])) { ?>
+                                        <div class="ImgFrame"
+                                            style="background-image: url('<?php print "Public/StockItemIMG/" . $product["StockItemImage"]; ?>'); background-size: contain; background-repeat: no-repeat; background-position: center;"></div>
+                                <?php } ?>
+                                <h5><?php print($product["StockItemName"]) ?></h5>
+                                <p><?php print(sprintf("€ %.2f", $StockItem['SellPrice'])) ?></p>
+                            </a>
+                            <?php
+                        }
+                    ?>
+                </div>
+            </div>
         </div>
         <?php
     } else {

@@ -6,7 +6,7 @@ services:
     ports:
       - "3100:80"
     volumes:
-      - .:/
+      - .:/var/www/html
     depends_on:
       - composer
     command: ["apache2-foreground"]

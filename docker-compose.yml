@@ -7,8 +7,6 @@ services:
       - "3100:80"
     volumes:
       - .:/var/www/html
-    depends_on:
-      - composer
     command: ["apache2-foreground"]
     env_file: .env
 
@@ -24,12 +22,6 @@ services:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
-
-  composer:
-    image: composer:latest
-    volumes:
-      - .:/var/www/html
-    command: ["install"]
 
 volumes:
   db_data:

@@ -28,7 +28,7 @@ services:
   composer:
     image: php:7.4-cli
     volumes:
-      - .:/app
+      - .:/var/www/html
     command: ["composer", "install"]
 
 volumes:

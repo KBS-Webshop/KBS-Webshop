@@ -26,10 +26,10 @@ services:
       - db_data:/var/lib/mysql
 
   composer:
-    image: php:7.4-cli
+    image: composer:latest
     volumes:
       - .:/var/www/html
-    command: ["composer", "install"]
+    command: ["install"]
 
 volumes:
   db_data:

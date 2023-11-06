@@ -10,6 +10,7 @@ services:
     depends_on:
       - composer
     command: ["apache2-foreground"]
+    env_file: .env
 
   db:
     image: mariadb:latest

@@ -16,11 +16,14 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd ~/env/${{github.event.repository.name}}
+            ls -la
 
             sudo git pull
 
             sudo touch .env
             sudo chmod 666 .env
+            ls -la
+
 
             sudo echo '${{ secrets.APP_ENV }}' > .env
             sudo docker-compose down

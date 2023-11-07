@@ -8,7 +8,7 @@ services:
     volumes:
       - .:/var/www/html
     command: ["apache2-foreground"]
-    entrypoint: /var/www/html/entrypoint.sh
+    entrypoint: ./entrypoint.sh
     env_file: .env
 
   db:

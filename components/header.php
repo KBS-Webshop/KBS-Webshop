@@ -19,6 +19,8 @@ $databaseConnection = connectToDatabase();
 
     <!-- Style sheets-->
     <link rel="stylesheet" href="Public/CSS/style.css" type="text/css">
+    <link rel="stylesheet" href="Public/CSS/header.css" type="text/css">
+    <link rel="stylesheet" href="Public/CSS/winkelmand.css" type="text/css">
     <link rel="stylesheet" href="Public/CSS/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="Public/CSS/typekit.css">
 </head>
@@ -61,12 +63,13 @@ $databaseConnection = connectToDatabase();
             <!-- einde code voor US3 zoeken -->
             <ul id="shoppingcart">
                 <a>
-                    <a href="winkelmand.php" class="HrefDecoration"><i class="fa fa-shopping-cart" aria-hidden="true"></i> winkelwagen</a>
+                    <a href="winkelmand.php" class="HrefDecoration"><i class="fa fa-shopping-cart"
+                            aria-hidden="true"></i> winkelwagen</a>
                 </a>
             </ul>
 
         </div>
-        </div>
-        <div class="row" id="Content">
-            <div class="col-12">
-                <div id="SubContent">
+    </div>
+    <div class="row" id="Content">
+        <div class="col-12">
+            <div id="SubContent">

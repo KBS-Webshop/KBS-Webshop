@@ -1,6 +1,7 @@
 <!-- dit bestand bevat alle code voor het productoverzicht -->
 <?php
-include __DIR__ . "/header.php";
+include __DIR__ . "/components/header.php";
+require __DIR__ . "/helpers/utils.php";
 
 $ReturnableResult = null;
 $Sort = "SellPrice";
@@ -168,17 +169,6 @@ if (isset($amount)) {
     $AmountOfPages = ceil($amount["count(*)"] / $ProductsOnPage);
 }
 
-
-    function getVoorraadTekst($actueleVoorraad) {
-        if ($actueleVoorraad > 1000) {
-            return "Ruime voorraad beschikbaar.";
-        } else {
-            return "Voorraad: $actueleVoorraad";
-        }
-    }
-    function berekenVerkoopPrijs($adviesPrijs, $btw) {
-		return $btw * $adviesPrijs / 100 + $adviesPrijs;
-    }
 ?>
 
 <div id="FilterFrame"><h2 class="FilterText"><i class="fas fa-filter"></i> Filteren </h2>
@@ -305,5 +295,5 @@ if (isset($amount)) {
 </div>
 
 <?php
-include __DIR__ . "/footer.php";
+include __DIR__ . "/components/footer.php"
 ?>

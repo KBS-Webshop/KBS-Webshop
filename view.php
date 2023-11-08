@@ -135,27 +135,6 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                     
                 </div>
             </div>
-
-            <div class="ProductAlsoBoughtWrapper">
-                <h3>Andere kochten ook</h3>
-                <div class="ProductsAlsoBoughtGrid">
-                    <?php
-                        foreach ($AlsoBought as $product) {
-                            ?>
-                            <a class="ListItem" href='view.php?id=<?php print $Item['StockItemID']; ?>'>
-                                <?php
-                                    if (isset($product["StockItemImage"])) { ?>
-                                        <div class="ImgFrame"
-                                            style="background-image: url('<?php print "Public/StockItemIMG/" . $product["StockItemImage"]; ?>'); background-size: contain; background-repeat: no-repeat; background-position: center;"></div>
-                                <?php } ?>
-                                <h5><?php print($product["StockItemName"]) ?></h5>
-                                <p><?php print(sprintf("€ %.2f", $StockItem['SellPrice'])) ?></p>
-                            </a>
-                            <?php
-                        }
-                    ?>
-                </div>
-            </div>
         </div>
         <?php
     } else {

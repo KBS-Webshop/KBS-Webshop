@@ -60,32 +60,7 @@ table tr th,
 table tr td {
     padding: 10px;
 }
-ul#ul-class-navigation {
-    right: 140px;
-    line-height: 200px;
-    position: absolute;
-}
-ul#shoppingcart{
-    right: 10px;
-    line-height: 200px;
-    position: absolute;
-}
-ul#ul-class-navigation li {
-    display: inline;
-font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-    font-size: 20px;
-    text-decoration: none;
-    text-decoration-color: currentcolor;
-}
-#Header {
-    background-color: #FFFFFF;
-    position: fixed;
-    top:0;
-    width: 100%;
-    height: 200px;
-    z-index: 1;
-    border-bottom: 1px solid #5a6268;
-}
+
 #Content {
     margin-top: 200px;
 }

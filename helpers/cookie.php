@@ -3,8 +3,7 @@
 if (isset($_POST['action'])) {
     switch ($_POST['action']) {
         case 'add':
-            print_r($_POST);
-            addRowToCookie($_POST['StockItemID'], $_POST['StockItemName'], $_POST['StockItemImage'], $_POST['StockItemPrice'], $_POST["BTW"]);
+            addRowToCookie($_POST['StockItemID']);
             break;
         case 'remove':
             removeRowFromCookie($_POST['StockItemID']);
@@ -21,27 +20,29 @@ if (isset($_POST['action'])) {
     }
 }
 
-function addRowToCookie($id, $name, $image, $price, $BTW) {
-    if(isset($_COOKIE["basket"])) {
-        $basket_rows=json_decode($_COOKIE["basket"], true);
+function addRowToCookie($id)
+{
+    if (isset($_COOKIE["basket"])) {
+        $basket_rows = json_decode($_COOKIE["basket"], true);
         if (isset($basket_rows[$id])) {
             $basket_rows[$id]["amount"] = $basket_rows[$id]["amount"] + 1;
         } else {
-            $basket_rows[$id] = array("amount" => 1, "product" => array("StockItemID" => $id, "StockItemName" => $name, "StockItemImage" => $image, "StockItemPrice" => $price, "BTW" => $BTW));
+            $basket_rows[$id] = array("amount" => 1, "id" => $id);
         }
         setcookie("basket", json_encode($basket_rows), 2147483647);
         header("location: winkelmand.php");
         exit();
     } else {
-        $basket_row = array($id => array("amount" => 1, "product" => array("StockItemID" => $id, "StockItemName" => $name, "StockItemImage" => $image, "StockItemPrice" => $price, "BTW" => $BTW)));
+        $basket_row = array($id => array("amount" => 1, "id" => $id));
         setcookie("basket", json_encode($basket_row), 2147483647);
         header("location: winkelmand.php");
         exit();
     }
 }
 
-function removeRowFromCookie($id) {
-    if(isset($_COOKIE["basket"])) {
+function removeRowFromCookie($id)
+{
+    if (isset($_COOKIE["basket"])) {
         $basket = json_decode($_COOKIE["basket"], true);
 
         # voor elk product, als het id in de cookie overeenkomt met de gegeven id, verwijder het
@@ -55,8 +56,9 @@ function removeRowFromCookie($id) {
     }
 }
 
-function changeAmount($id, $amount) {
-    if(isset($_COOKIE["basket"])) {
+function changeAmount($id, $amount)
+{
+    if (isset($_COOKIE["basket"])) {
         $basket = json_decode($_COOKIE["basket"], true);
 
         # voor elk product, als het id in de cookie overeenkomt met de gegeven id, verander het aantal naar $amount
@@ -73,8 +75,9 @@ function changeAmount($id, $amount) {
 # voor het geval dat naast een input box voor het aanpassen van het aantal
 # ook knoppen voor het verhogen en verlagen van het aantal worden gebruikt,
 # bestaan incrementAmount() en decrementAmount() voor gebruik in de knoppen
-function incrementAmount($id) {
-    if(isset($_COOKIE["basket"])) {
+function incrementAmount($id)
+{
+    if (isset($_COOKIE["basket"])) {
         $basket = json_decode($_COOKIE["basket"], true);
 
         # voor elk product, als het id in de cookie overeenkomt met de gegeven id, verhoog het aantal met 1
@@ -88,8 +91,9 @@ function incrementAmount($id) {
     }
 }
 
-function decrementAmount($id) {
-    if(isset($_COOKIE["basket"])) {
+function decrementAmount($id)
+{
+    if (isset($_COOKIE["basket"])) {
         $basket = json_decode($_COOKIE["basket"], true);
 
         # voor elk product, als het id in de cookie overeenkomt met de gegeven id, verlaag het aantal met 1
@@ -132,10 +136,13 @@ function decrementAmount($id) {
 <!--    </form>-->
 <!--</div>-->
 <!---->
-<!--<p>--><?php //print("Cookie Basket is set to: " . $_COOKIE["basket"]); ?><!--</p>-->
+<!--<p>-->
+<?php //print("Cookie Basket is set to: " . $_COOKIE["basket"]); ?>
+<!--</p>-->
 <!---->
 <!--<div>-->
-<!--    --><?php
+<!--    -->
+<?php
 //
 //    $basket = json_decode($_COOKIE["basket"], true);
 //

@@ -33,16 +33,16 @@ include __DIR__ . "/helpers/utils.php";
                                 <h1 class="StockItemID1"> <?php print($StockItem["StockItemName"]."<br><br>aantal in winkelwagen: " . $item["amount"]) ?></h1>
 
                                 <style>
-                                    .knoppen {
+                                    .buttonAlignmentWinkelmand {
                                         display: flex;
                                         flex-direction: row;
                                     }
-                                    .knop {
+                                    .buttonWinkelmand {
                                         margin-top: %2;
                                         margin-left: %5;
                                         margin-right: %5;
                                     }
-                                    input[type="number"] {
+                                    .winkelmandInputNumber {
                                         background-color: #ffffff; /* Changed background color for number input */
                                         border: %0.1 solid #00000; /* Added border for number input */
                                         color: #0000a4; /* Changed text color for number input */
@@ -50,7 +50,7 @@ include __DIR__ . "/helpers/utils.php";
                                         text-align: center;
                                         font-size: 16px;
                                     }
-                                    input[type="submit"] {
+                                    .winkelmandInputSubmit {
                                         background-color: #0000a4;
                                         border: %0.1 solid #00000;
                                         color: #ffffff;
@@ -59,33 +59,29 @@ include __DIR__ . "/helpers/utils.php";
                                         font-size: 16px;
                                         cursor: pointer; /* Add cursor pointer for better usability */
                                     }
-                                    .text {
-                                        font-weight: bold; /* Added font weight for the 'aantal in winkelmand' text */
-                                    }
                                 </style>
 
-                                <div class="knoppen">
-                                    <form method="post" class="knop">
+                                <div class="buttonAlignmentWinkelmand">
+                                    <form method="post" class="buttonWinkelmand">
                                         <input type="hidden" name="action" value="decrement">
                                         <input type="hidden" name="StockItemID" value="<?php echo $item["id"] ?>">
-                                        <input type="submit" value="-">
+                                        <input class="winkelmandInputSubmit" type="submit" value="-">
                                     </form>
-                                    <form method="post" class="knop">
-                                        <input type="number" name="knop+" value="1" min="1" max="999">
+                                    <form method="post" class="buttonWinkelmand">
+                                        <input class="winkelmandInputNumber" type="number" name="knop+" value="<?php $item["amount"] ?>" min="1" max="999">
                                         <input type="hidden" name="action" value="change_amt">
                                         <input type="hidden" name="StockItemID" value="<?php echo $item["id"] ?>">
-
                                     </form>
-                                    <form method="post" class="knop">
+                                    <form method="post" class="buttonWinkelmand">
                                         <input type="hidden" name="action" value="increment">
                                         <input type="hidden" name="StockItemID" value="<?php echo $item["id"] ?>">
-                                        <input type="submit" value="+">
+                                        <input class="winkelmandInputSubmit" type="submit" value="+">
                                     </form>
-                                    <form method="post" class="knop">
-                                        <input type="hidden" name="action" value="remove">
+                                    <form method="post" class="buttonWinkelmand">
+                                        <input type="image" name="action" value="remove" src="images/trashbin.png" alt="Trashbin">
                                         <input type="hidden" name="StockItemID" value="<?php echo $item["id"] ?>">
-                                        <input type="submit" value="Remove from basket">
                                     </form>
+
                                 </div>
                             </div>
                         </a>

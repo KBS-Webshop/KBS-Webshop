@@ -31,7 +31,17 @@ include __DIR__ . "/helpers/utils.php";
                                 padding: %2 %3;
                                 text-align: center;
                                 font-size: 16px;
+                                -moz-appearance: textfield;
+                                width: 50px;
+                                /* Chrome, Safari, Edge, Opera */
                             }
+
+                            .winkelmandInputNumber::-webkit-outer-spin-button,
+                            .winkelmandInputNumber::-webkit-inner-spin-button {
+                                -webkit-appearance: none;
+                                margin: 0;
+                            }
+
                             .winkelmandInputSubmit {
                                 background-color: #0000a4;
                                 border: %0.1 solid #00000;

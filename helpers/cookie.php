@@ -18,6 +18,10 @@ if (isset($_POST['action'])) {
             changeAmount($_POST['StockItemID'], $_POST['amount']);
             break;
     }
+
+    $requestPath = $_SERVER['REQUEST_URI'];
+    header("location: $requestPath");
+    exit();
 }
 
 function addRowToCookie($id)
@@ -43,13 +47,9 @@ function removeRowFromCookie($id)
     if (isset($_COOKIE["basket"])) {
         $basket = json_decode($_COOKIE["basket"], true);
 
-        # voor elk product, als het id in de cookie overeenkomt met de gegeven id, verwijder het
-        foreach ($basket as $key => $value) {
-            if ($value['product']['StockItemID'] == $id) {
-                unset($basket[$key]);
-                setcookie("basket", json_encode($basket), 2147483647);
-                return;
-            }
+        if (isset($basket[$id])) {
+            unset($basket[$id]);
+            setcookie("basket", json_encode($basket), 2147483647);
         }
     }
 }
@@ -59,20 +59,13 @@ function changeAmount($id, $amount)
     if (isset($_COOKIE["basket"])) {
         $basket = json_decode($_COOKIE["basket"], true);
 
-        # voor elk product, als het id in de cookie overeenkomt met de gegeven id, verander het aantal naar $amount
-        foreach ($basket as $key => $value) {
-            if ($value['product']['StockItemID'] == $id) {
-                $basket[$key]['amount'] = $amount;
-                setcookie("basket", json_encode($basket), 2147483647);
-                return;
-            }
+        if (isset($basket[$id])) {
+            $basket[$id]['amount'] = $amount;
+            setcookie("basket", json_encode($basket), 2147483647);
         }
     }
 }
 
-# voor het geval dat naast een input box voor het aanpassen van het aantal
-# ook knoppen voor het verhogen en verlagen van het aantal worden gebruikt,
-# bestaan incrementAmount() en decrementAmount() voor gebruik in de knoppen
 function incrementAmount($id)
 {
     if (isset($_COOKIE["basket"])) {
@@ -83,6 +76,7 @@ function incrementAmount($id)
             $basket[$id]['amount'] += 1;
             setcookie("basket", json_encode($basket), 2147483647);
         }
+
     }
 }
 

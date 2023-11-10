@@ -7,7 +7,6 @@ include __DIR__ . "/helpers/utils.php";
         <h2>Winkelmandje</h2>
         <ul>
             <div id="ResultsArea" class="Winkelmand">
-
                 <?php
                 if (isset($_COOKIE["basket"])) {
                     $basket_contents = json_decode($_COOKIE["basket"], true);
@@ -15,22 +14,21 @@ include __DIR__ . "/helpers/utils.php";
                         $StockItem = getStockItem($item["id"], $databaseConnection);
                         $StockItemImage = getStockItemImage($item['id'], $databaseConnection); ?>
 
-                        <a class="ListItem" href='view.php?id=<?php print $item["id"]; ?>'>
-                            <div id="ProductFrame">
-                                <?php
-                                if (isset($StockItemImage[0]["ImagePath"])) { ?>
-                                    <div class="ImgFrame"
-                                        style="background-image: url('<?php print "Public/StockItemIMG/" . $StockItemImage[0]["ImagePath"]; ?>'); background-size: contain; background-repeat: no-repeat; background-position: center;"></div>
-                                <?php }
-                                ?>
-                                <div id="StockItemFrameRight">
-                                    <div class="CenterPriceLeftChild">
-                                        <h1 class="StockItemPriceText"> <?php print sprintf("€ %.2f", $StockItem['SellPrice'] * $item["amount"]); ?></h1>
-                                        <h6> Inclusief BTW </h6>
-                                    </div>
+                        <div id="ProductFrame">
+                            <?php
+                            if (isset($StockItemImage[0]["ImagePath"])) { ?>
+                            <a class="ListItem" href='view.php?id=<?php print $item["id"]; ?>'>
+                                <div class="ImgFrame"
+                                     style="background-image: url('<?php print "Public/StockItemIMG/" . $StockItemImage[0]["ImagePath"]; ?>'); background-size: contain; background-repeat: no-repeat; background-position: center;">
                                 </div>
-                                <h1 class="StockItemID"> <?php print ("artikelnummer: ".$item["id"]."<br>")?></h1>
-                                <h1 class="StockItemID1"> <?php print($StockItem["StockItemName"]."<br><br>aantal in winkelwagen: " . $item["amount"]) ?></h1>
+                            </a>
+                            <?php }
+                            ?>
+                            <div id="StockItemFrameRight">
+                                <div class="CenterPriceLeftChild">
+                                    <h1 class="StockItemPriceText"> <?php print sprintf("€ %.2f", $StockItem['SellPrice'] * $item["amount"]); ?></h1>
+                                    <h6> Inclusief BTW </h6>
+                                </div>
 
                                 <style>
                                     .buttonAlignmentWinkelmand {
@@ -68,7 +66,7 @@ include __DIR__ . "/helpers/utils.php";
                                         <input class="winkelmandInputSubmit" type="submit" value="-">
                                     </form>
                                     <form method="post" class="buttonWinkelmand">
-                                        <input class="winkelmandInputNumber" type="number" name="knop+" value="<?php $item["amount"] ?>" min="1" max="999">
+                                        <input class="winkelmandInputNumber" type="number" name="amount" value="<?php echo $item["amount"] ?>" min="1" max="999">
                                         <input type="hidden" name="action" value="change_amt">
                                         <input type="hidden" name="StockItemID" value="<?php echo $item["id"] ?>">
                                     </form>
@@ -78,13 +76,16 @@ include __DIR__ . "/helpers/utils.php";
                                         <input class="winkelmandInputSubmit" type="submit" value="+">
                                     </form>
                                     <form method="post" class="buttonWinkelmand">
-                                        <input type="image" name="action" value="remove" src="images/trashbin.png" alt="Trashbin">
+                                        <input type="image" src="images/trashbin.png" alt="Remove product">
+                                        <input type="hidden" name="action" value="remove">
                                         <input type="hidden" name="StockItemID" value="<?php echo $item["id"] ?>">
                                     </form>
 
                                 </div>
                             </div>
-                        </a>
+                            <h1 class="StockItemID"> <?php print ("artikelnummer: ".$item["id"]."<br>")?></h1>
+                            <h1 class="StockItemID1"> <?php print($StockItem["StockItemName"]."<br><br>aantal: " . $item["amount"]) ?></h1>
+                        </div>
 
                         <?php
 

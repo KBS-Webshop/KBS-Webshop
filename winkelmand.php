@@ -14,6 +14,35 @@ include __DIR__ . "/helpers/utils.php";
                         $StockItem = getStockItem($item["id"], $databaseConnection);
                         $StockItemImage = getStockItemImage($item['id'], $databaseConnection); ?>
 
+                        <style>
+                            .buttonAlignmentWinkelmand {
+                                display: flex;
+                                flex-direction: row;
+                            }
+                            .buttonWinkelmand {
+                                margin-top: %2;
+                                margin-left: %5;
+                                margin-right: %5;
+                            }
+                            .winkelmandInputNumber {
+                                background-color: #ffffff; /* Changed background color for number input */
+                                border: %0.1 solid #00000; /* Added border for number input */
+                                color: #0000a4; /* Changed text color for number input */
+                                padding: %2 %3;
+                                text-align: center;
+                                font-size: 16px;
+                            }
+                            .winkelmandInputSubmit {
+                                background-color: #0000a4;
+                                border: %0.1 solid #00000;
+                                color: #ffffff;
+                                padding: %2 %4;
+                                text-align: center;
+                                font-size: 16px;
+                                cursor: pointer; /* Add cursor pointer for better usability */
+                            }
+                        </style>
+
                         <div id="ProductFrame">
                             <?php
                             if (isset($StockItemImage[0]["ImagePath"])) { ?>
@@ -24,41 +53,15 @@ include __DIR__ . "/helpers/utils.php";
                             </a>
                             <?php }
                             ?>
-                            <div id="StockItemFrameRight">
-                                <div class="CenterPriceLeftChild">
+                            <div id="StockItemFrameRight" style="display: flex;flex-direction: column">
+                                <div class="CenterPriceLeft">
                                     <h1 class="StockItemPriceText"> <?php print sprintf("€ %.2f", $StockItem['SellPrice'] * $item["amount"]); ?></h1>
                                     <h6> Inclusief BTW </h6>
                                 </div>
+                            </div>
 
-                                <style>
-                                    .buttonAlignmentWinkelmand {
-                                        display: flex;
-                                        flex-direction: row;
-                                    }
-                                    .buttonWinkelmand {
-                                        margin-top: %2;
-                                        margin-left: %5;
-                                        margin-right: %5;
-                                    }
-                                    .winkelmandInputNumber {
-                                        background-color: #ffffff; /* Changed background color for number input */
-                                        border: %0.1 solid #00000; /* Added border for number input */
-                                        color: #0000a4; /* Changed text color for number input */
-                                        padding: %2 %3;
-                                        text-align: center;
-                                        font-size: 16px;
-                                    }
-                                    .winkelmandInputSubmit {
-                                        background-color: #0000a4;
-                                        border: %0.1 solid #00000;
-                                        color: #ffffff;
-                                        padding: %2 %4;
-                                        text-align: center;
-                                        font-size: 16px;
-                                        cursor: pointer; /* Add cursor pointer for better usability */
-                                    }
-                                </style>
-
+                            <h1 class="StockItemID"> <?php print ("artikelnummer: ".$item["id"]."<br>")?></h1>
+                            <h1 class="StockItemID1"> <?php print($StockItem["StockItemName"]."<br><br>aantal ") ?>
                                 <div class="buttonAlignmentWinkelmand">
                                     <form method="post" class="buttonWinkelmand">
                                         <input type="hidden" name="action" value="decrement">
@@ -80,11 +83,9 @@ include __DIR__ . "/helpers/utils.php";
                                         <input type="hidden" name="action" value="remove">
                                         <input type="hidden" name="StockItemID" value="<?php echo $item["id"] ?>">
                                     </form>
-
                                 </div>
-                            </div>
-                            <h1 class="StockItemID"> <?php print ("artikelnummer: ".$item["id"]."<br>")?></h1>
-                            <h1 class="StockItemID1"> <?php print($StockItem["StockItemName"]."<br><br>aantal: " . $item["amount"]) ?></h1>
+                            </h1>
+
                         </div>
 
                         <?php

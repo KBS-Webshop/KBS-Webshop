@@ -89,7 +89,7 @@ include __DIR__ . "/helpers/utils.php";
                                         <input class="winkelmandInputSubmit" type="submit" value="+">
                                     </form>
                                     <form method="post" class="buttonWinkelmand">
-                                        <input type="image" src="images/trashbin.png" alt="Remove product">
+                                        <input type="image" src="images/trashbin.svg" alt="Remove product">
                                         <input type="hidden" name="action" value="remove">
                                         <input type="hidden" name="StockItemID" value="<?php echo $item["id"] ?>">
                                     </form>

@@ -3,7 +3,7 @@
 
 require 'vendor/autoload.php'; // Zorg ervoor dat je de Composer autoloader hebt ingesloten
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
 function connectToDatabase()

@@ -1,0 +1,17 @@
+ul#shoppingcart{
+    right: 10px;
+    line-height: 200px;
+    position: absolute;
+}
+
+#ResultsArea.Winkelmand  {
+    width: 75%;
+}
+
+.winkelmand-wrapper {
+    padding-left: 2.5rem
+}
+
+.winkelmand-wrapper ul {
+    padding-left: 0;
+}

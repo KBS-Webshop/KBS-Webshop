@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_ALL);
+ob_start();
 session_start();
 include "helpers/cookie.php";
 include "helpers/database.php";

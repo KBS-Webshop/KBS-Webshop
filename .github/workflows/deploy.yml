@@ -18,7 +18,7 @@ jobs:
             cd ~/env/${{github.event.repository.name}}
 
             sudo git pull
-            chmod +x entrypoint.sh
+            sudo chmod +x entrypoint.sh 
 
             sudo echo '${{ secrets.APP_ENV }}' > .env
 

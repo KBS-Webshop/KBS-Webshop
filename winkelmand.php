@@ -1,5 +1,4 @@
 <?php
-include __DIR__ . "/helpers/cookie.php";
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
 ?>

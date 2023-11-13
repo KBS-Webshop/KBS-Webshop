@@ -2,6 +2,7 @@
 <?php
 session_start();
 include "helpers/database.php";
+include "helpers/cookie.php";
 $databaseConnection = connectToDatabase();
 ?>
 <!DOCTYPE html>

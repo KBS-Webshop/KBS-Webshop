@@ -2,7 +2,6 @@
 <?php
 include __DIR__ . "/components/header.php";
 require __DIR__ . "/helpers/utils.php";
-require __DIR__ . "/helpers/cookie.php";
 
 $ReturnableResult = null;
 $Sort = "SellPrice";

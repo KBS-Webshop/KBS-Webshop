@@ -1,5 +1,4 @@
 <?php
-ob_start();
 session_start();
 include "helpers/cookie.php";
 include "helpers/database.php";

@@ -1,3 +1,0 @@
-# apache-config/httpd-custom.conf
-ServerTokens ProductOnly
-ServerSignature Off

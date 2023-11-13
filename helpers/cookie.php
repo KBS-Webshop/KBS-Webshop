@@ -1,5 +1,4 @@
 <?php
-
 if (isset($_POST['action'])) {
     switch ($_POST['action']) {
         case 'add':
@@ -18,10 +17,6 @@ if (isset($_POST['action'])) {
             changeAmount($_POST['StockItemID'], $_POST['amount']);
             break;
     }
-
-    $requestPath = $_SERVER['REQUEST_URI'];
-    header("location: $requestPath");
-    exit();
 }
 
 function addRowToCookie($id)
@@ -38,8 +33,8 @@ function addRowToCookie($id)
         $basket_row = array($id => array("amount" => 1, "id" => $id));
         setcookie("basket", json_encode($basket_row), 2147483647);
     }
-    header("location: winkelmand.php");
-    exit();
+    // header("location: winkelmand.php");
+    // exit();
 }
 
 function removeRowFromCookie($id)

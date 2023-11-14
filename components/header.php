@@ -1,6 +1,6 @@
-<!-- de inhoud van dit bestand wordt bovenaan elke pagina geplaatst -->
 <?php
 session_start();
+include "helpers/cookie.php";
 include "helpers/database.php";
 $databaseConnection = connectToDatabase();
 ?>
@@ -65,7 +65,7 @@ $databaseConnection = connectToDatabase();
             <ul id="shoppingcart">
                 <a>
                     <a href="winkelmand.php" class="HrefDecoration"><i class="fa fa-shopping-cart"
-                            aria-hidden="true"></i> winkelwagen</a>
+                            aria-hidden="true"></i>Winkelwagen</a>
                 </a>
             </ul>
 

@@ -1,5 +1,4 @@
 <?php
-
 if (isset($_POST['action'])) {
     switch ($_POST['action']) {
         case 'add':
@@ -98,51 +97,3 @@ function decrementAmount($id)
 }
 
 ?>
-
-
-<!-- ALLES ONDER DEZE REGEL IS VOOR HET TESTEN VAN DE BOVENSTAANDE FUNCTIES -->
-
-<!--<div>-->
-<!--    <form method="post">-->
-<!--        <p>Dummy 1</p>-->
-<!--        <input type="hidden" name="StockItemID" value="1">-->
-<!--        <input type="hidden" name="StockItemName" value="Dummy 1">-->
-<!--        <input type="hidden" name="action" value="add">-->
-<!--        <label>Amount:-->
-<!--            <input type="number" value="1" name="amount" min="1" max="100">-->
-<!--        </label>-->
-<!--        <input type="submit" value="Add to basket">-->
-<!--    </form>-->
-<!---->
-<!--    <form method="post">-->
-<!--        <p>Dummy 2</p>-->
-<!--        <input type="hidden" name="StockItemID" value="2">-->
-<!--        <input type="hidden" name="StockItemName" value="Dummy 2">-->
-<!--        <input type="hidden" name="action" value="add">-->
-<!--        <label>Amount:-->
-<!--            <input type="number" value="1" name="amount" min="1" max="100">-->
-<!--        </label>-->
-<!--        <input type="submit" value="Add to basket">-->
-<!--    </form>-->
-<!--</div>-->
-<!---->
-<!--<p>-->
-<?php //print("Cookie Basket is set to: " . $_COOKIE["basket"]); ?>
-<!--</p>-->
-<!---->
-<!--<div>-->
-<!--    -->
-<?php
-//
-//    $basket = json_decode($_COOKIE["basket"], true);
-//
-//    foreach ($basket as $key => $value) {
-//        print("<p>" . $value['product']['StockItemName'] . "</p>");
-//        print("<form method='post'>");
-//        print("<input type='hidden' name='StockItemID' value='" . $value['product']['StockItemID'] . "'>");
-//        print("<input type='hidden' name='action' value='remove'>");
-//        print("<input type='submit' value='Remove from basket'>");
-//        print("</form>");
-//    }
-//    ?>
-<!--</div>-->

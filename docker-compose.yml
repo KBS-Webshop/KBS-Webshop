@@ -9,7 +9,7 @@ services:
       - .:/var/www/html
     command: ["apache2-foreground"]
     entrypoint: ./entrypoint.sh
-    env_file: .env
+    env_file: helpers/.env
 
   db:
     image: mariadb:latest

@@ -7,7 +7,7 @@ include __DIR__ . "/helpers/utils.php";
         <ul>
             <div id="ResultsArea" class="Winkelmand">
                 <?php
-                if (isset($_COOKIE["basket"])) {
+                if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
                     $basket_contents = json_decode($_COOKIE["basket"], true);
                     foreach ($basket_contents as $item) {
                         $StockItem = getStockItem($item["id"], $databaseConnection);

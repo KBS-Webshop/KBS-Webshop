@@ -23,6 +23,16 @@ if (isset($_POST['action'])) {
     exit();
 }
 
+function cookieEmpty() {
+    if (isset($_COOKIE["basket"])) {
+        $basket = json_decode($_COOKIE["basket"], true);
+        if (empty($basket)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 function addRowToCookie($id)
 {
     if (isset($_COOKIE["basket"])) {

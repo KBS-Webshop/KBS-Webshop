@@ -223,6 +223,7 @@ if (isset($amount)) {
     <?php
     if (isset($ReturnableResult) && count($ReturnableResult) > 0) {
         foreach ($ReturnableResult as $row) {
+            if($row['QuantityOnHand']>0){
             ?>
             <a class="ListItem" href='view.php?id=<?php print $row['StockItemID']; ?>'>
                 <div id="ProductFrame">
@@ -256,7 +257,7 @@ if (isset($amount)) {
                     <h4 class="ItemQuantity"><?php print getVoorraadTekst($row["QuantityOnHand"]); ?></h4>
                 </div>
             </a>
-        <?php } ?>
+        <?php } }?>
 
         <form id="PageSelector">
 		

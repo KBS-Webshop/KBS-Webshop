@@ -18,12 +18,12 @@ jobs:
             cd ~/env/${{github.event.repository.name}}
 
             sudo git pull
-            sudo chmod +x entrypoint.sh
-
 
             sudo echo '${{ secrets.APP_ENV }}' > .env
 
             composer install
+
+            sudo docker build -t app .
 
             sudo docker-compose down
             sudo docker-compose up -d

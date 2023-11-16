@@ -78,7 +78,7 @@ include __DIR__ . "/helpers/utils.php";
                                         <input class="winkelmandInputSubmit" type="submit" value="-">
                                     </form>
                                     <form method="post" class="buttonWinkelmand">
-                                        <input class="winkelmandInputNumber" type="number" name="amount" value="<?php echo $item["amount"] ?>" min="1" max="<?php echo intval(preg_replace('/[^0-9]+/', '', $StockItem["QuantityOnHand"])); ?>">
+                                        <input class="winkelmandInputNumber" type="number" name="amount" value="<?php echo $item["amount"] ?>" min="1" max="<?php echo intval(preg_replace('/[^0-9]+/', '', $StockItem["QuantityOnHand"])); ?>" required>
                                         <input type="hidden" name="action" value="change_amt">
                                         <input type="hidden" name="StockItemID" value="<?php echo $item["id"] ?>">
                                     </form>

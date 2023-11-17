@@ -34,7 +34,7 @@ include __DIR__ . "/helpers/utils.php";
                                 </div>
                             </div>
 
-                            <h1 class="StockItemID"> <?php print ("artikelnummer: ".$item["id"]."<br>")?></h1>
+                            <h1 class="StockItemID"> <?php print ("artikelnummer: " . $item["id"]."<br>")?></h1>
                             <h1 class="StockItemID1"> <?php print($StockItem["StockItemName"]."<br><br>aantal ") ?>
                                 <div class="buttonAlignmentWinkelmand">
                                     <form method="post" class="buttonWinkelmand">
@@ -62,9 +62,7 @@ include __DIR__ . "/helpers/utils.php";
 
                         </div>
 
-                        <div>
-                            <h1 class="StockItemPriceText">Totaal prijs: <?php echo '€'.str_replace('.', ',', $totalprice); ?> </h1>
-                        </div>
+
 
                         <?php
                     }
@@ -73,6 +71,9 @@ include __DIR__ . "/helpers/utils.php";
                     echo "Winkelmandje is leeg.";
                 }
                 ?>
+                <div>
+                    <h1 class="StockItemPriceText">Totaal prijs: <?php echo '€'.str_replace('.', ',', $totalprice); ?> </h1>
+                </div>
         </ul>
     </div>
     

@@ -7,11 +7,15 @@ include __DIR__ . "/helpers/utils.php";
         <ul>
             <div id="ResultsArea" class="Winkelmand">
                 <?php
+                $totalprice = 0;
                 if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
                     $basket_contents = json_decode($_COOKIE["basket"], true);
                     foreach ($basket_contents as $item) {
                         $StockItem = getStockItem($item["id"], $databaseConnection);
-                        $StockItemImage = getStockItemImage($item['id'], $databaseConnection); ?>
+                        $StockItemImage = getStockItemImage($item['id'], $databaseConnection);
+
+                        $totalprice += round($item['amount'] * $StockItem['SellPrice'], 2);
+                        ?>
 
                         <style>
                             .buttonAlignmentWinkelmand {
@@ -97,14 +101,17 @@ include __DIR__ . "/helpers/utils.php";
 
                         </div>
 
-                        <?php
+                        <div>
+                            <h1 class="StockItemPriceText">Totaal prijs: <?php echo '€'.str_replace('.', ',', $totalprice); ?> </h1>
+                        </div>
 
+                        <?php
                     }
-                } else {
+                }
+                else{
                     echo "Winkelmandje is leeg.";
                 }
                 ?>
-            </div>
         </ul>
     </div>
     

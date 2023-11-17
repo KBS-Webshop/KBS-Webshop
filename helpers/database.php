@@ -107,3 +107,32 @@ function getStockItemImage($id, $databaseConnection)
 
     return $R;
 }
+
+function addCustomer ($Cid, $Cname, $phoneNumber)
+{
+
+    $Query = "
+    INSERT INTO customers (CustomerID, CustomerName, PhoneNumber);
+    VALUES (?, ?, ?)";
+
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+    mysqli_stmt_bind_param($Statement, "iii", $Cid, $Cname, $phoneNumber);
+    mysqli_stmt_execute($Statement);
+    $R = mysqli_stmt_get_result($Statement);
+    $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
+
+    return $R;
+}
+function addOrder () {
+    $Query = "
+    INSERT INTO orders (OrderID, CustomerID);
+    VALUES (?, ?)";
+
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+    mysqli_stmt_bind_param($Statement, "ii", $OrderID, $Cid);
+    mysqli_stmt_execute($Statement);
+    $R = mysqli_stmt_get_result($Statement);
+    $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
+
+    return $R;
+}

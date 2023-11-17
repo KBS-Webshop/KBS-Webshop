@@ -244,7 +244,7 @@ if (isset($amount)) {
                             <form method="post">
                                 <input type="hidden" name="action" value="add">
                                 <input type="hidden" name="StockItemID" value="<?php echo $row["StockItemID"]; ?>">
-                                <button type="submit" name="addToCart" value="addItemToCart">
+                                <button class="add-to-cart-button" type="submit" name="addToCart" value="addItemToCart">
                                     <i class="fa fa-cart-plus fa-lg"></i>
                                 </button>
 

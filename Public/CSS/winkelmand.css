@@ -15,3 +15,7 @@ ul#shoppingcart{
 .winkelmand-wrapper ul {
     padding-left: 0;
 }
+
+button.add-to-cart-button {
+    background-color: transparent;
+}

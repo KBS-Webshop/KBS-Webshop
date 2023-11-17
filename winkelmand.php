@@ -14,7 +14,7 @@ include __DIR__ . "/helpers/utils.php";
                         $StockItem = getStockItem($item["id"], $databaseConnection);
                         $StockItemImage = getStockItemImage($item['id'], $databaseConnection);
 
-                        $totalprice += round($item['amount'] * $StockItem['SellPrice'], 2);
+                        $totalprice += round(($item['amount'] * $StockItem['SellPrice']), 2);
                         ?>
 
                         <div id="ProductFrame">

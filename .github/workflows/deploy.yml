@@ -21,4 +21,4 @@ jobs:
 
             sudo echo '${{ secrets.APP_ENV }}' > .env
 
-            sudo -u www-data composer install
+            composer install

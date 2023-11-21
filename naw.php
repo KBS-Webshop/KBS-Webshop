@@ -3,11 +3,7 @@ include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
 ?>
 
-<div>
-    Verzendadres
-</div>
-
-<form action="POST">
+<form action="POST" class="naw-form">
     <div class="naw-input">
             <label for="name">
               Naam
@@ -66,34 +62,43 @@ include __DIR__ . "/helpers/utils.php";
         </div>
     </div>
 
-    <div>
-            <label for="name">
-                <input type="radio" name="standaardVerzending" id="standaardVerzending">
-                Standaard verzending
-            </label>
-            <label for="name">
-                <input type="radio" name="expressVerzending" id="expressVerzending">
-                Express verzending
-            </label>
+    <div class="radio-container">
+        <div class="radio-label-naw">
+                <label>
+                    <input type="radio" name="Verzending" id="standaardVerzending">
+                    Standaard verzending
+                </label>
+                <label>
+                    <input type="radio" name="Verzending" id="expressVerzending">
+                    Express verzending
+                </label>
+        </div>
+        <div class="radio-label">
+                <label>
+                    <input type="radio" name="betaalmethode" id="iDeal">
+                    iDeal
+                </label>
+                <label>
+                    <input type="radio" name="betaalmethode" id="Nerdygadgets Giftcard">
+                    Nerdygadgets Gifcard
+                </label>
+        </div>
     </div>
 
-    <div>
+    <div class="comments">
         <div>
-            <label for="opmerkingen">Opmerkingen:</label>
+            <label for="opmerkingen">Opmerkingen</label>
         </div>
         <div>
-            <textarea id="opmerkingen" name="opmerkingen" rows="4" cols="50"></textarea>
+            <textarea id="opmerkingen" name="opmerkingen" rows="6" cols="50"></textarea>
         </div>
     </div>
 
-
+    <div class="naw-submit-wrapper">
+        <input type="submit" value="Afrekenen" class="button primary">
+    </div>
 </form>
 
-<div>
-    <button onclick="window.location.href='afrekenen.php';">
-        Afrekenen
-    </button>
-</div>
 
 <?php
 include __DIR__ . "/components/footer.php"

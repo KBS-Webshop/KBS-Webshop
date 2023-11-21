@@ -2,55 +2,21 @@
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
 ?>
+    <h2>Winkelmandje</h2>
+
     <div class="winkelmand-wrapper">
-        <h2>Winkelmandje</h2>
-        <ul>
+        <ul class="winkelmand">
             <div id="ResultsArea" class="Winkelmand">
                 <?php
                 if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
                     $basket_contents = json_decode($_COOKIE["basket"], true);
                     foreach ($basket_contents as $item) {
                         $StockItem = getStockItem($item["id"], $databaseConnection);
-                        $StockItemImage = getStockItemImage($item['id'], $databaseConnection); ?>
+                        $StockItemImage = getStockItemImage($item['id'], $databaseConnection);
 
-                        <style>
-                            .buttonAlignmentWinkelmand {
-                                display: flex;
-                                flex-direction: row;
-                            }
-                            .buttonWinkelmand {
-                                margin-top: %2;
-                                margin-left: %5;
-                                margin-right: %5;
-                            }
-                            .winkelmandInputNumber {
-                                background-color: #ffffff; /* Changed background color for number input */
-                                border: %0.1 solid #00000; /* Added border for number input */
-                                color: #0000a4; /* Changed text color for number input */
-                                padding: %2 %3;
-                                text-align: center;
-                                font-size: 16px;
-                                -moz-appearance: textfield;
-                                width: 50px;
-                                /* Chrome, Safari, Edge, Opera */
-                            }
+                        $totalprice += round(($item['amount'] * $StockItem['SellPrice']), 2);
 
-                            .winkelmandInputNumber::-webkit-outer-spin-button,
-                            .winkelmandInputNumber::-webkit-inner-spin-button {
-                                -webkit-appearance: none;
-                                margin: 0;
-                            }
-
-                            .winkelmandInputSubmit {
-                                background-color: #0000a4;
-                                border: %0.1 solid #00000;
-                                color: #ffffff;
-                                padding: %2 %4;
-                                text-align: center;
-                                font-size: 16px;
-                                cursor: pointer; /* Add cursor pointer for better usability */
-                            }
-                        </style>
+                        ?>
 
                         <div id="ProductFrame">
                             <?php
@@ -94,18 +60,36 @@ include __DIR__ . "/helpers/utils.php";
                                     </form>
                                 </div>
                             </h1>
-
                         </div>
-
                         <?php
-
                     }
                 } else {
                     echo "Winkelmandje is leeg.";
                 }
-                ?>
+                if($totalprice > 0){
+                    ?>
+                <div>
+                    <h1 class="StockItemPriceText">Totaal prijs: <?php echo '€'.str_replace('.', ',', $totalprice); ?> </h1>
+                </div>
+                <?php } ?>
             </div>
         </ul>
+        <div class="bonnetje-wrapper">
+            <br><br>
+            <?php
+            if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
+                $basket_contents = json_decode($_COOKIE["basket"], true);
+                foreach ($basket_contents as $item) {
+                    echo $item['amount'] . ' X ' . $item['id'] .'<br>';
+                }
+            }?>
+            <form action="afrekenen.php">
+                <input type="submit" value="Afrekenen">
+            </form>
+
+            <?php
+            ?>
+        </div>
     </div>
     
 

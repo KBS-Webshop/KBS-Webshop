@@ -4,14 +4,83 @@ ul#shoppingcart{
     position: absolute;
 }
 
-#ResultsArea.Winkelmand  {
-    width: 75%;
+.winkelmand-wrapper {
+    padding-left: 2.5rem;
+    display: flex;
 }
 
-.winkelmand-wrapper {
-    padding-left: 2.5rem
+.winkelmand-wrapper .winkelmand {
+    width: 80%;
+    padding-right: 1rem;
 }
 
 .winkelmand-wrapper ul {
     padding-left: 0;
+}
+
+.winkelmandAantalKnop {
+    width: 50px;
+    font-weight: bold;
+    transition:  0.2s;
+    border: 0;
+}
+
+.winkelmandPlusKnop {
+    border-bottom-right-radius: 16px;
+    border-top-right-radius: 16px;
+}
+
+.winkelmandMinKnop {
+    border-bottom-left-radius: 16px;
+    border-top-left-radius: 16px;
+}
+
+.buttonAlignmentWinkelmand {
+    display: flex;
+    flex-direction: row;
+    margin-top: 2px;
+}
+
+.winkelmandInputNumber {
+    background-color: #ffffff; /* Changed background color for number input */
+    color: #0000a4; /* Changed text color for number input */
+    text-align: center;
+    font-size: 16px;
+    -moz-appearance: textfield;
+    width: 50px;
+    transition: 0.2s;
+    border: 3px solid #0000a4;
+    /* Chrome, Safari, Edge, Opera */
+}
+
+.winkelmandInputNumber::-webkit-outer-spin-button,
+.winkelmandInputNumber::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.winkelmandInputNumber:focus {
+    outline: none;
+    border-color: #000;
+}
+
+.winkelmandInputSubmit {
+    background-color: #0000a4;
+    color: #ffffff;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer; /* Add cursor pointer for better usability */
+}
+
+.winkelmandBinImage {
+    transform: scale(0.9);
+}
+
+.bonnetje-wrapper{
+    background-color: #EDEDED;
+    height: 600px;
+    width: 25%;
+    border-radius: 10px;
+    padding: 10px;
+
+
 }

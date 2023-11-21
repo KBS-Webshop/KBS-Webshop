@@ -15,6 +15,7 @@ include __DIR__ . "/helpers/utils.php";
                         $StockItemImage = getStockItemImage($item['id'], $databaseConnection);
 
                         $totalprice += round(($item['amount'] * $StockItem['SellPrice']), 2);
+
                         ?>
 
                         <div id="ProductFrame">
@@ -29,7 +30,7 @@ include __DIR__ . "/helpers/utils.php";
                             ?>
                             <div id="StockItemFrameRight" style="display: flex;flex-direction: column">
                                 <div class="CenterPriceLeft">
-                                    <h1 class="StockItemPriceText"> <?php print sprintf("€ %.2f", $StockItem['SellPrice'] * $item["amount"]); ?></h1>
+                                    <h1 class="StockItemPriceText"> <?php $price = sprintf("€ %.2f", $StockItem['SellPrice'] * $item["amount"]); $pricecoma= str_replace(".",",",$price);  print $pricecoma;?></h1>
                                     <h6> Inclusief BTW </h6>
                                 </div>
                             </div>
@@ -72,7 +73,7 @@ include __DIR__ . "/helpers/utils.php";
                 }
                 ?>
                 <div>
-                    <h1 class="StockItemPriceText">Totaal prijs: <?php echo '€'.str_replace('.', ',', $totalprice); ?> </h1>
+                    <h1 class="StockItemPriceTextcart">Totaal prijs: <?php echo '€'.str_replace('.', ',', $totalprice); ?> </h1>
                 </div>
         </ul>
     </div>

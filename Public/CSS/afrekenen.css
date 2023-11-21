@@ -1,0 +1,30 @@
+form .naw-input, form .naw-input label {
+    width: 60%;
+}
+
+form .naw-input.form-width-2, form .naw-input.form-width-2 label {
+    display: flex;
+    justify-content: space-between;
+}
+
+form .naw-input.form-width-2 .naw-input-inner, form .naw-input.form-width-2 .naw-input-inner label {
+    width: 60%;
+}
+
+form .naw-input.form-width-2 .naw-input-inner2, form .naw-input.form-width-2 .naw-input-inner2 label {
+    width: 36%;
+}
+
+form .naw-input.form-width-4, form .naw-input.form-width-4 label {
+    display: flex;
+    justify-content: space-between;
+}
+
+form .naw-input.form-width-4 .naw-input-inner, form .naw-input.form-width-4 .naw-input-inner label {
+    width: 22%;
+}
+
+form .naw-input.form-width-5 .naw-input-inner, form .naw-input.form-width-5 .naw-input-inner label {
+    width: 35%;
+}
+

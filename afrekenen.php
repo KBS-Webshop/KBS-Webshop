@@ -67,16 +67,23 @@ include __DIR__ . "/helpers/utils.php";
     </div>
 
     <div>
-        <div>
             <label for="name">
                 <input type="radio" name="standaardVerzending" id="standaardVerzending">
                 Standaard verzending
             </label>
-        </div>
             <label for="name">
                 <input type="radio" name="expressVerzending" id="expressVerzending">
                 Express verzending
             </label>
+    </div>
+
+    <div>
+        <div>
+            <label for="opmerkingen">Opmerkingen:</label>
+        </div>
+        <div>
+            <textarea id="opmerkingen" name="opmerkingen" rows="4" cols="50"></textarea>
+        </div>
     </div>
 
 

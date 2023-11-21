@@ -14,7 +14,7 @@ include __DIR__ . "/helpers/utils.php";
                         $StockItem = getStockItem($item["id"], $databaseConnection);
                         $StockItemImage = getStockItemImage($item['id'], $databaseConnection);
 
-                        $totalprice += round(($item['amount'] * $StockItem['SellPrice']), 2);
+                        $totalprice += $item['amount'] * $StockItem['SellPrice'];
 
                         ?>
 
@@ -69,26 +69,26 @@ include __DIR__ . "/helpers/utils.php";
                 if($totalprice > 0){
                     ?>
                 <div>
-                    <h1 class="StockItemPriceText">Totaal prijs: <?php echo '€'.str_replace('.', ',', $totalprice); ?> </h1>
+                    <h1 class="StockItemPriceText">Totaal prijs: <?php echo str_replace('.', ',', sprintf("€ %.2f", $totalprice)); ?> </h1>
                 </div>
                 <?php } ?>
             </div>
         </ul>
+        <?php
+        if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
+            ?>
         <div class="bonnetje-wrapper">
             <br><br>
             <?php
-            if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
+
                 $basket_contents = json_decode($_COOKIE["basket"], true);
                 foreach ($basket_contents as $item) {
                     echo $item['amount'] . ' X ' . $item['id'] .'<br>';
-                }
-            }?>
-            <form action="naw.php">
-                <input type="submit" value="Afrekenen">
-            </form>
-
-            <?php
-            ?>
+                }?>
+                <form action="naw.php">
+                    <input type="submit" value="Afrekenen">
+                </form>
+            <?php } ?>
         </div>
     </div>
     

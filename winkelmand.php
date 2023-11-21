@@ -83,7 +83,7 @@ include __DIR__ . "/helpers/utils.php";
                     echo $item['amount'] . ' X ' . $item['id'] .'<br>';
                 }
             }?>
-            <form action="afrekenen.php">
+            <form action="naw.php">
                 <input type="submit" value="Afrekenen">
             </form>
 

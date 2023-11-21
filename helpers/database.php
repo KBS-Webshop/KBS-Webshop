@@ -1,5 +1,5 @@
-<!-- dit bestand bevat alle code die verbinding maakt met de database -->
 <?php
+# dit bestand bevat alle code die verbinding maakt met de database
 
 require 'vendor/autoload.php'; // Zorg ervoor dat je de Composer autoloader hebt ingesloten
 

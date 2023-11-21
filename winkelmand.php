@@ -82,9 +82,21 @@ include __DIR__ . "/helpers/utils.php";
             <?php
 
                 $basket_contents = json_decode($_COOKIE["basket"], true);
+                ?>
+            <table>
+                <th>Product</th>
+                <th>Aantal</th>
+                <th>Prijs</th>
+
+                <?php
                 foreach ($basket_contents as $item) {
+                    echo ("<tr> <td>" . $StockItem['StockItemName'] . "</td>");
+                    echo ("<td>" . $item['amount'] . "</td>");
+                    echo ("<td>" . $item['SellPrice'] . "</td>");
+
                     echo $item['amount'] . ' X ' . $item['id'] .'<br>';
                 }?>
+            </table>
                 <form action="naw.php">
                     <input type="submit" value="Afrekenen">
                 </form>

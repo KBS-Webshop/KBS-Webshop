@@ -69,9 +69,10 @@ include __DIR__ . "/helpers/utils.php";
                     echo "Winkelmandje is leeg.";
                 }
                 if($totalprice > 0){
+                    $totalprice = str_replace('.', ',', sprintf("€%.2f", $totalprice));
                     ?>
                 <div>
-                    <h1 class="StockItemPriceTextcart">Totaal prijs: <?php echo str_replace('.', ',', sprintf("€ %.2f", $totalprice)); ?> </h1>
+                    <h1 class="StockItemPriceTextcart">Totaal prijs: <?php echo $totalprice ?> </h1>
                 </div>
                 <?php } ?>
             </div>
@@ -94,9 +95,14 @@ include __DIR__ . "/helpers/utils.php";
                     $StockItem = getStockItem($item["id"], $databaseConnection);
                     echo ("<tr> <td>" . $StockItem['StockItemName'] . "</td>");
                     echo ("<td>" . $item['amount'] . "</td>");
-                    echo "<td>".sprintf("€ %.2f", $StockItem['SellPrice'] * $item["amount"]);
-                }?>
-            </table>
+                    echo "<td>".sprintf("€%.2f", $StockItem['SellPrice'] * $item["amount"]);
+                }
+                echo ("<tr> <td></td> <th>totaalprijs</th>");
+                echo("<td>$totalprice</td></tr>");
+                echo '</table>';
+
+                ?>
+
                 <form action="naw.php">
                     <input type="submit" value="Afrekenen">
                 </form>

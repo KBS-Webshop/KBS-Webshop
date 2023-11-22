@@ -62,6 +62,11 @@ include __DIR__ . "/helpers/utils.php";
                                 </div>
                             </h1>
                         </div>
+                        <div class="buttonAfrekenen">
+                            <a href="afrekenen.php">
+                                <button>Afrekenen</button>
+                            </a>
+                        </div>
                         <?php
                     }
                 }

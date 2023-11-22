@@ -108,31 +108,53 @@ function getStockItemImage($id, $databaseConnection)
     return $R;
 }
 
-function addCustomer ($Cid, $Cname, $phoneNumber)
+function addCity ($cityName, $state, $country){
+    $Query = "
+    INSERT INTO cities (CityName, State, Country);
+    VALUES (?, ?, ?)";
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+    mysqli_stmt_bind_param($Statement, "ii", $cityName, $state, $country);
+    mysqli_stmt_execute($Statement);
+    $R = mysqli_stmt_get_result($Statement);
+    $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
+    return $R;
+}
+
+
+function addCustomer ($Cname, $phoneNumber)
 {
 
     $Query = "
-    INSERT INTO customers (CustomerID, CustomerName, PhoneNumber);
-    VALUES (?, ?, ?)";
-
-    $Statement = mysqli_prepare($databaseConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "iii", $Cid, $Cname, $phoneNumber);
-    mysqli_stmt_execute($Statement);
-    $R = mysqli_stmt_get_result($Statement);
-    $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
-
-    return $R;
-}
-function addOrder () {
-    $Query = "
-    INSERT INTO orders (OrderID, CustomerID);
+    INSERT INTO customers (CustomerName, PhoneNumber);
     VALUES (?, ?)";
 
     $Statement = mysqli_prepare($databaseConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "ii", $OrderID, $Cid);
+    mysqli_stmt_bind_param($Statement, "ii", $Cname, $phoneNumber);
     mysqli_stmt_execute($Statement);
     $R = mysqli_stmt_get_result($Statement);
     $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
 
     return $R;
 }
+function addOrder ($CID, $orderDate) {
+    $Query = "
+    INSERT INTO orders (CustomerID, OrderDate) VALUES (?, ?)";
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+    mysqli_stmt_bind_param($Statement, "ii", $CID, $OrderDate);
+    mysqli_stmt_execute($Statement);
+    $R = mysqli_stmt_get_result($Statement);
+    $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
+    return $R;
+}
+
+function addorderline($CID) {
+    $Query = "
+    INSERT INTO orderlines (CustomerID);
+    VALUES (?)";
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+    mysqli_stmt_bind_param($Statement, "i", $CID);
+    mysqli_stmt_execute($Statement);
+    $R = mysqli_stmt_get_result($Statement);
+    $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
+    return $R;
+    }

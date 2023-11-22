@@ -97,7 +97,7 @@ include __DIR__ . "/helpers/utils.php";
                     echo ("<td>" . $item['amount'] . "</td>");
                     echo "<td>".sprintf("€%.2f", $StockItem['SellPrice'] * $item["amount"]);
                 }
-                echo ("<tr> <td></td> <th>totaalprijs</th>");
+                echo ("<tr class='receivedTotalPrice'> <td></td> <th>totaalprijs</th>");
                 echo("<td>$totalprice</td></tr>");
                 echo '</table>';
 

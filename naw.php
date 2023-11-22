@@ -1,28 +1,79 @@
 <?php
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
-?>
+if (isset($_POST["naam"])) {
+    $Cname = $_POST["naam"];
+}
+if (isset($_POST["telefoonnummer"])) {
+    $phoneNumber = $_POST["telefoonnummer"];
+}
+if (isset($_POST["adress"])) {
+    $DeliveryAddress = $_POST["adress"];
+}
+if (isset($_POST["postcode"])) {
+    $DeliveryPostalCode = $_POST["postcode"];
+}
+if (isset($_POST["bezorgInstructies"])) {
+    $DeliveryInstructions = $_POST["bezorgInstructies"];
+}
 
-<form method="POST" class="naw-form" action="afrekenen.php">
+$betaald = false;
+function PlaceOrder(
+    $Cname,
+    $phoneNumber,
+    $DeliveryAddress,
+    $DeliveryPostalCode,
+    $DeliveryInstructions,
+    $databaseConnection,
+    $betaald
+) {
+
+    $orderstatus = "Wordt verwerkt";
+
+    if ($betaald == true) {
+
+        $customerId = getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection);
+        if ($customerId == null) {
+            addCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection);
+            $customerStatus = getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection);
+        }
+
+        addOrder($customerId, $DeliveryInstructions, $databaseConnection);
+
+        $OrderID = getOrderID($customerId, $databaseConnection);
+
+        $basket_contents = json_decode($_COOKIE["basket"], true);
+        foreach ($basket_contents as $item) {
+            addOrderline($OrderID, $item["id"], $databaseConnection);
+        }
+
+        $orderstatus = "Order is geplaatst";
+
+    } else {
+
+        $orderstatus = "Order is niet geplaatst";
+
+    }
+
+    return $orderstatus;
+}
+?>
+<html>
+
+<form method="POST" class="naw-form">
     <div class="naw-input">
             <label for="name">
-              Naam
+              Volledige Naam
             </label>
-        <input type="text" name="naam" id="naam">
+        <input type="text" name="naam" id="naam" required>
     </div>
 
     <div class="naw-input form-width-2">
         <div class="naw-input-inner">
                 <label for="name">
-                    Straatnaam
+                    Straatnaam & huisnummer
                 </label>
-            <input type="text" name="straatnaam" id="straatnaam">
-        </div>
-        <div class="naw-input-inner2">
-                <label for="name">
-                    Huisnummer
-                </label>
-            <input type="text" name="huisnummer" id="huisnummer">
+            <input type="text" name="adress" id="adress" required>
         </div>
     </div>
 
@@ -31,25 +82,7 @@ include __DIR__ . "/helpers/utils.php";
                 <label for="name">
                     Postcode
                 </label>
-            <input type="text" name="postcode" id="postcode">
-        </div>
-        <div class="naw-input-inner">
-            <label for="name">
-                Land
-            </label>
-            <input type="text" name="land" id="land">
-        </div>
-        <div class="naw-input-inner">
-            <label for="name">
-                Provincie
-            </label>
-            <input type="text" name="provincie" id="provincie">
-        </div>
-        <div class="naw-input-inner">
-            <label for="name">
-                Plaats
-            </label>
-            <input type="text" name="plaats" id="plaats">
+            <input type="text" name="postcode" id="postcode" required>
         </div>
     </div>
 
@@ -58,10 +91,16 @@ include __DIR__ . "/helpers/utils.php";
             <label for="name">
                 Telefoonnummer
             </label>
-            <input type="text" name="telefoonnummer" id="telefoonnummer">
+            <input type="text" name="telefoonnummer" id="telefoonnummer" required>
         </div>
     </div>
-
+<?php
+//print ($Cname); ?><!-- <BR> --><?php
+//print ($phoneNumber); ?><!-- <BR> --><?php
+//    print ($DeliveryAddress); ?><!-- <BR> --><?php
+//    print ($DeliveryPostalCode); ?><!-- <BR> --><?php
+//    print ($DeliveryInstructions); ?><!-- <BR> --><?php
+//    ?>
     <div class="radio-container">
         <div class="radio-label-naw">
                 <label>
@@ -87,10 +126,10 @@ include __DIR__ . "/helpers/utils.php";
 
     <div class="comments">
         <div>
-            <label for="opmerkingen">Opmerkingen</label>
+            <label for="bezorgInstructies">bezorg instructies</label>
         </div>
         <div>
-            <textarea id="opmerkingen" name="opmerkingen" rows="6" cols="50"></textarea>
+            <textarea id="bezorgInstructies" name="bezorgInstructies" rows="6" cols="50"></textarea>
         </div>
     </div>
 
@@ -98,6 +137,7 @@ include __DIR__ . "/helpers/utils.php";
         <input type="submit" value="Afrekenen" class="button primary">
     </div>
 </form>
+</html>
 
 
 <?php

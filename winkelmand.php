@@ -97,7 +97,7 @@ include __DIR__ . "/helpers/utils.php";
 
                         </div>
                         <div class="buttonAfrekenen">
-                            <a href="afrekenen.php">
+                            <a href="naw.php">
                                 <button>Afrekenen</button>
                             </a>
                         </div>

@@ -108,53 +108,67 @@ function getStockItemImage($id, $databaseConnection)
     return $R;
 }
 
-function addCity ($cityName, $state, $country){
+//function addCity ($cityName, $state, $country){
+//    $Query = "
+//    INSERT INTO cities (CityName, State, Country);
+//    VALUES (?, ?, ?)";
+//    $Statement = mysqli_prepare($databaseConnection, $Query);
+//    mysqli_stmt_bind_param($Statement, "ii", $cityName, $state, $country);
+//    mysqli_stmt_execute($Statement);
+//    $R = mysqli_stmt_get_result($Statement);
+//    $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
+//    return $R;
+//}
+
+
+function getCustomer($databaseConnection) {
     $Query = "
-    INSERT INTO cities (CityName, State, Country);
-    VALUES (?, ?, ?)";
+    SELECT CustomerID
+    FROM customers
+    WHERE CustomerName = ? AND PhoneNumber = ? AND DeliveryAddressLine2 = ? AND DeliveryPostalCode = ?";
+
     $Statement = mysqli_prepare($databaseConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "ii", $cityName, $state, $country);
+    mysqli_stmt_bind_param($Statement, "iiii", $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode);
     mysqli_stmt_execute($Statement);
     $R = mysqli_stmt_get_result($Statement);
     $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
     return $R;
 }
 
-
-function addCustomer ($Cname, $phoneNumber)
-{
-
+function addCustomer ($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection) {
     $Query = "
-    INSERT INTO customers (CustomerName, PhoneNumber);
+    INSERT INTO customers (CustomerName, PhoneNumber, DeliveryAddressLine2, DeliveryPostalCode)
+    VALUES (?, ?, ?, ?)";
+
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+    mysqli_stmt_bind_param($Statement, "ii", $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode);
+    mysqli_stmt_execute($Statement);
+}
+function getOrderID ($databaseConnection) {
+    $Query = "
+    SELECT max(OrderID)
+    FROM orders";
+
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+    mysqli_stmt_execute($Statement);
+    $R = mysqli_stmt_get_result($Statement);
+    $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
+    return $R;
+}
+function addOrder ($CustomerId, $DeliveryInstructions, $databaseConnection) {
+    $Query = "
+    INSERT INTO orders (CustomerID, OrderDate) 
     VALUES (?, ?)";
-
     $Statement = mysqli_prepare($databaseConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "ii", $Cname, $phoneNumber);
+    mysqli_stmt_bind_param($Statement, "ii", $CustomerId, $DeliveryInstructions);
     mysqli_stmt_execute($Statement);
-    $R = mysqli_stmt_get_result($Statement);
-    $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
-
-    return $R;
-}
-function addOrder ($CID, $orderDate) {
-    $Query = "
-    INSERT INTO orders (CustomerID, OrderDate) VALUES (?, ?)";
-    $Statement = mysqli_prepare($databaseConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "ii", $CID, $OrderDate);
-    mysqli_stmt_execute($Statement);
-    $R = mysqli_stmt_get_result($Statement);
-    $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
-    return $R;
 }
 
-function addorderline($CID) {
+function addOrderline($OrderID, $StockItemID, $databaseConnection) {
     $Query = "
-    INSERT INTO orderlines (CustomerID);
-    VALUES (?)";
+    INSERT INTO orderlines (OrderID, StockItemID);
+    VALUES (?, ?)";
     $Statement = mysqli_prepare($databaseConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "i", $CID);
+    mysqli_stmt_bind_param($Statement, "ii", $OrderID, $StockItemID);
     mysqli_stmt_execute($Statement);
-    $R = mysqli_stmt_get_result($Statement);
-    $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
-    return $R;
-    }
+}

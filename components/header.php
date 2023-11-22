@@ -60,15 +60,13 @@ $databaseConnection = connectToDatabase();
                 <li>
                     <a href="browse.php" class="HrefDecoration"><i class="fas fa-search search"></i> Zoeken</a>
                 </li>
+                <li>&nbsp;&nbsp;</li>
+                <li>
+                    <a href="winkelmand.php" class="HrefDecoration"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Winkelwagen</a>
+                </li>
             </ul>
 
             <!-- einde code voor US3 zoeken -->
-            <ul id="shoppingcart">
-                <a>
-                    <a href="winkelmand.php" class="HrefDecoration"><i class="fa fa-shopping-cart"
-                            aria-hidden="true"></i>Winkelwagen</a>
-                </a>
-            </ul>
 
         </div>
     </div>

@@ -7,50 +7,16 @@ include __DIR__ . "/helpers/utils.php";
         <ul>
             <div id="ResultsArea" class="Winkelmand">
                 <?php
+                $totalprice = 0;
                 if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
                     $basket_contents = json_decode($_COOKIE["basket"], true);
                     foreach ($basket_contents as $item) {
                         $StockItem = getStockItem($item["id"], $databaseConnection);
-                        $StockItemImage = getStockItemImage($item['id'], $databaseConnection); ?>
+                        $StockItemImage = getStockItemImage($item['id'], $databaseConnection);
 
-                        <style>
-                            .buttonAlignmentWinkelmand {
-                                display: flex;
-                                flex-direction: row;
-                            }
-                            .buttonWinkelmand {
-                                margin-top: %2;
-                                margin-left: %5;
-                                margin-right: %5;
-                            }
-                            .winkelmandInputNumber {
-                                background-color: #ffffff; /* Changed background color for number input */
-                                border: %0.1 solid #00000; /* Added border for number input */
-                                color: #0000a4; /* Changed text color for number input */
-                                padding: %2 %3;
-                                text-align: center;
-                                font-size: 16px;
-                                -moz-appearance: textfield;
-                                width: 50px;
-                                /* Chrome, Safari, Edge, Opera */
-                            }
+                        $totalprice += round(($item['amount'] * $StockItem['SellPrice']), 2);
 
-                            .winkelmandInputNumber::-webkit-outer-spin-button,
-                            .winkelmandInputNumber::-webkit-inner-spin-button {
-                                -webkit-appearance: none;
-                                margin: 0;
-                            }
-
-                            .winkelmandInputSubmit {
-                                background-color: #0000a4;
-                                border: %0.1 solid #00000;
-                                color: #ffffff;
-                                padding: %2 %4;
-                                text-align: center;
-                                font-size: 16px;
-                                cursor: pointer; /* Add cursor pointer for better usability */
-                            }
-                        </style>
+                        ?>
 
                         <div id="ProductFrame">
                             <?php
@@ -64,18 +30,18 @@ include __DIR__ . "/helpers/utils.php";
                             ?>
                             <div id="StockItemFrameRight" style="display: flex;flex-direction: column">
                                 <div class="CenterPriceLeft">
-                                    <h1 class="StockItemPriceText"> <?php print sprintf("€ %.2f", $StockItem['SellPrice'] * $item["amount"]); ?></h1>
+                                    <h1 class="StockItemPriceText"> <?php $price = sprintf("€ %.2f", $StockItem['SellPrice'] * $item["amount"]); $pricecoma= str_replace(".",",",$price);  print $pricecoma;?></h1>
                                     <h6> Inclusief BTW </h6>
                                 </div>
                             </div>
 
-                            <h1 class="StockItemID"> <?php print ("artikelnummer: ".$item["id"]."<br>")?></h1>
+                            <h1 class="StockItemID"> <?php print ("artikelnummer: " . $item["id"]."<br>")?></h1>
                             <h1 class="StockItemID1"> <?php print($StockItem["StockItemName"]."<br><br>aantal ") ?>
                                 <div class="buttonAlignmentWinkelmand">
                                     <form method="post" class="buttonWinkelmand">
                                         <input type="hidden" name="action" value="decrement">
                                         <input type="hidden" name="StockItemID" value="<?php echo $item["id"] ?>">
-                                        <input class="winkelmandInputSubmit" type="submit" value="-">
+                                        <input class="winkelmandInputSubmit winkelmandAantalKnop winkelmandMinKnop" type="submit" value="-">
                                     </form>
                                     <form method="post" class="buttonWinkelmand">
                                         <input class="winkelmandInputNumber" type="number" name="amount" value="<?php echo $item["amount"] ?>" min="1" max="<?php echo intval(preg_replace('/[^0-9]+/', '', $StockItem["QuantityOnHand"])); ?>" required>
@@ -85,10 +51,10 @@ include __DIR__ . "/helpers/utils.php";
                                     <form method="post" class="buttonWinkelmand">
                                         <input type="hidden" name="action" value="increment">
                                         <input type="hidden" name="StockItemID" value="<?php echo $item["id"] ?>">
-                                        <input class="winkelmandInputSubmit" type="submit" value="+">
+                                        <input class="winkelmandInputSubmit winkelmandAantalKnop winkelmandPlusKnop" type="submit" value="+">
                                     </form>
                                     <form method="post" class="buttonWinkelmand">
-                                        <input type="image" src="images/trashbin.svg" alt="Remove product">
+                                        <input type="image" src="images/trashbin.svg" alt="Remove product" class="winkelmandBinImage">
                                         <input type="hidden" name="action" value="remove">
                                         <input type="hidden" name="StockItemID" value="<?php echo $item["id"] ?>">
                                     </form>
@@ -97,14 +63,18 @@ include __DIR__ . "/helpers/utils.php";
 
                         </div>
 
-                        <?php
 
+
+                        <?php
                     }
-                } else {
+                }
+                else{
                     echo "Winkelmandje is leeg.";
                 }
                 ?>
-            </div>
+                <div>
+                    <h1 class="StockItemPriceTextcart">Totaal prijs: <?php echo '€'.str_replace('.', ',', $totalprice); ?> </h1>
+                </div>
         </ul>
     </div>
     

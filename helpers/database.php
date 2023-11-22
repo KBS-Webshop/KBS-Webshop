@@ -128,7 +128,7 @@ function getCustomer($databaseConnection) {
     WHERE CustomerName = ? AND PhoneNumber = ? AND DeliveryAddressLine2 = ? AND DeliveryPostalCode = ?";
 
     $Statement = mysqli_prepare($databaseConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "iiii", $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode);
+    mysqli_stmt_bind_param($Statement, "ssss", $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode);
     mysqli_stmt_execute($Statement);
     $R = mysqli_stmt_get_result($Statement);
     $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
@@ -141,7 +141,7 @@ function addCustomer ($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCod
     VALUES (?, ?, ?, ?)";
 
     $Statement = mysqli_prepare($databaseConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "ii", $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode);
+    mysqli_stmt_bind_param($Statement, "ssss", $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode);
     mysqli_stmt_execute($Statement);
 }
 function getOrderID ($databaseConnection) {
@@ -160,7 +160,7 @@ function addOrder ($CustomerId, $DeliveryInstructions, $databaseConnection) {
     INSERT INTO orders (CustomerID, OrderDate) 
     VALUES (?, ?)";
     $Statement = mysqli_prepare($databaseConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "ii", $CustomerId, $DeliveryInstructions);
+    mysqli_stmt_bind_param($Statement, "is", $CustomerId, $DeliveryInstructions);
     mysqli_stmt_execute($Statement);
 }
 

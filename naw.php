@@ -1,6 +1,12 @@
 <?php
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
+$Cname = " ";
+$phoneNumber = " ";
+$DeliveryAddress = " ";
+$DeliveryPostalCode = " ";
+$DeliveryInstructions = "";
+$betaald = true;
 if (isset($_POST["naam"])) {
     $Cname = $_POST["naam"];
 }
@@ -17,7 +23,6 @@ if (isset($_POST["bezorgInstructies"])) {
     $DeliveryInstructions = $_POST["bezorgInstructies"];
 }
 
-$betaald = false;
 function PlaceOrder(
     $Cname,
     $phoneNumber,
@@ -141,5 +146,10 @@ function PlaceOrder(
 
 
 <?php
+if (isset($_POST["naam"]) && isset($_POST["telefoonnummer"]) && isset($_POST["adress"]) && isset($_POST["postcode"])) {
+    $orderstatus = PlaceOrder($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $DeliveryInstructions, $databaseConnection, $betaald);
+    print ($orderstatus);
+
+}
 include __DIR__ . "/components/footer.php"
 ?>

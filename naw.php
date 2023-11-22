@@ -3,7 +3,7 @@ include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
 ?>
 
-<form action="POST" class="naw-form">
+<form method="POST" class="naw-form" action="afrekenen.php">
     <div class="naw-input">
             <label for="name">
               Naam

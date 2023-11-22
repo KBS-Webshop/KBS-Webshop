@@ -60,10 +60,14 @@ form .naw-input.form-width-5 .naw-input-inner, form .naw-input.form-width-5 .naw
 }
 .radio-label-naw label{
     font-size: 23px;
+    display: flex;
+    align-items: center;
 }
 
 .radio-label label{
     font-size: 23px;
+    display: flex;
+    align-items: center;
 }
 
 .radio-container {
@@ -71,7 +75,8 @@ form .naw-input.form-width-5 .naw-input-inner, form .naw-input.form-width-5 .naw
     margin-top: 3%;
     margin-bottom: 2%;
     margin-left: 2%;
-}
+    }
+
 .radio-label {
     margin-left: 13%;
 }

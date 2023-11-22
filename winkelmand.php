@@ -8,11 +8,13 @@ include __DIR__ . "/helpers/utils.php";
         <ul class="winkelmand">
             <div id="ResultsArea" class="Winkelmand">
                 <?php
+                $totalprice=0;
                 if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
                     $basket_contents = json_decode($_COOKIE["basket"], true);
                     foreach ($basket_contents as $item) {
                         $StockItem = getStockItem($item["id"], $databaseConnection);
                         $StockItemImage = getStockItemImage($item['id'], $databaseConnection);
+
 
                         $totalprice += $item['amount'] * $StockItem['SellPrice'];
 
@@ -69,7 +71,7 @@ include __DIR__ . "/helpers/utils.php";
                 if($totalprice > 0){
                     ?>
                 <div>
-                    <h1 class="StockItemPriceText">Totaal prijs: <?php echo str_replace('.', ',', sprintf("€ %.2f", $totalprice)); ?> </h1>
+                    <h1 class="StockItemPriceTextcart">Totaal prijs: <?php echo str_replace('.', ',', sprintf("€ %.2f", $totalprice)); ?> </h1>
                 </div>
                 <?php } ?>
             </div>
@@ -78,7 +80,6 @@ include __DIR__ . "/helpers/utils.php";
         if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
             ?>
         <div class="bonnetje-wrapper">
-            <br><br>
             <?php
 
                 $basket_contents = json_decode($_COOKIE["basket"], true);
@@ -90,11 +91,10 @@ include __DIR__ . "/helpers/utils.php";
 
                 <?php
                 foreach ($basket_contents as $item) {
+                    $StockItem = getStockItem($item["id"], $databaseConnection);
                     echo ("<tr> <td>" . $StockItem['StockItemName'] . "</td>");
                     echo ("<td>" . $item['amount'] . "</td>");
-                    echo ("<td>" . $item['SellPrice'] . "</td>");
-
-                    echo $item['amount'] . ' X ' . $item['id'] .'<br>';
+                    echo "<td>".sprintf("€ %.2f", $StockItem['SellPrice'] * $item["amount"]);
                 }?>
             </table>
                 <form action="naw.php">

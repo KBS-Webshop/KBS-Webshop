@@ -8,15 +8,14 @@ include __DIR__ . "/helpers/utils.php";
         <ul class="winkelmand">
             <div id="ResultsArea" class="Winkelmand">
                 <?php
-                $totalprice=0;
+                $totalprice = 0;
                 if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
                     $basket_contents = json_decode($_COOKIE["basket"], true);
                     foreach ($basket_contents as $item) {
                         $StockItem = getStockItem($item["id"], $databaseConnection);
                         $StockItemImage = getStockItemImage($item['id'], $databaseConnection);
 
-
-                        $totalprice += $item['amount'] * $StockItem['SellPrice'];
+                        $totalprice += round($item['amount'] * $StockItem['SellPrice'], 2);
 
                         ?>
 
@@ -32,31 +31,31 @@ include __DIR__ . "/helpers/utils.php";
                             ?>
                             <div id="StockItemFrameRight" style="display: flex;flex-direction: column">
                                 <div class="CenterPriceLeft">
-                                    <h1 class="StockItemPriceText"> <?php print sprintf("€ %.2f", $StockItem['SellPrice'] * $item["amount"]); ?></h1>
+                                    <h1 class="StockItemPriceText"> <?php $price = sprintf("€ %.2f", $StockItem['SellPrice'] * $item["amount"]); $pricecoma= str_replace(".",",",$price);  print $pricecoma;?></h1>
                                     <h6> Inclusief BTW </h6>
                                 </div>
                             </div>
 
-                            <h1 class="StockItemID"> <?php print ("artikelnummer: ".$item["id"]."<br>")?></h1>
+                            <h1 class="StockItemID"> <?php print ("artikelnummer: " . $item["id"]."<br>")?></h1>
                             <h1 class="StockItemID1"> <?php print($StockItem["StockItemName"]."<br><br>aantal ") ?>
                                 <div class="buttonAlignmentWinkelmand">
                                     <form method="post" class="buttonWinkelmand">
                                         <input type="hidden" name="action" value="decrement">
                                         <input type="hidden" name="StockItemID" value="<?php echo $item["id"] ?>">
-                                        <input class="winkelmandInputSubmit" type="submit" value="-">
+                                        <input class="winkelmandInputSubmit winkelmandAantalKnop winkelmandMinKnop" type="submit" value="-">
                                     </form>
                                     <form method="post" class="buttonWinkelmand">
-                                        <input class="winkelmandInputNumber" type="number" name="amount" value="<?php echo $item["amount"] ?>" min="1" max="999" required>
+                                        <input class="winkelmandInputNumber" type="number" name="amount" value="<?php echo $item["amount"] ?>" min="1" max="<?php echo intval(preg_replace('/[^0-9]+/', '', $StockItem["QuantityOnHand"])); ?>" required>
                                         <input type="hidden" name="action" value="change_amt">
                                         <input type="hidden" name="StockItemID" value="<?php echo $item["id"] ?>">
                                     </form>
                                     <form method="post" class="buttonWinkelmand">
                                         <input type="hidden" name="action" value="increment">
                                         <input type="hidden" name="StockItemID" value="<?php echo $item["id"] ?>">
-                                        <input class="winkelmandInputSubmit" type="submit" value="+">
+                                        <input class="winkelmandInputSubmit winkelmandAantalKnop winkelmandPlusKnop" type="submit" value="+">
                                     </form>
                                     <form method="post" class="buttonWinkelmand">
-                                        <input type="image" src="images/trashbin.svg" alt="Remove product">
+                                        <input type="image" src="images/trashbin.svg" alt="Remove product" class="winkelmandBinImage">
                                         <input type="hidden" name="action" value="remove">
                                         <input type="hidden" name="StockItemID" value="<?php echo $item["id"] ?>">
                                     </form>
@@ -65,7 +64,8 @@ include __DIR__ . "/helpers/utils.php";
                         </div>
                         <?php
                     }
-                } else {
+                }
+                else{
                     echo "Winkelmandje is leeg.";
                 }
                 if($totalprice > 0){

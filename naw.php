@@ -1,6 +1,8 @@
 <?php
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
+include __DIR__ . "/helpers/database.php";
+include
 $Cname = " ";
 $phoneNumber = " ";
 $DeliveryAddress = " ";
@@ -42,7 +44,14 @@ function PlaceOrder(
             addCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection);
             $customerStatus = getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection);
         }
-
+        if ($row['quantityOnHand'] < $item['amount']) {
+            $isInStock = 0;
+        } else {
+            $isInStock = 1;
+        }
+        $salesContactPersonID = 3262;
+        $currentDate = date("Y-m-d");
+        $estimatedDeliveryDate = date("Y-m-d", strtotime($currentDate . "+ 1 days"));
         addOrder($customerId, $DeliveryInstructions, $databaseConnection);
 
         $OrderID = getOrderID($customerId, $databaseConnection);

@@ -121,7 +121,7 @@ function getStockItemImage($id, $databaseConnection)
 //}
 
 
-function getCustomer($databaseConnection) {
+function getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection) {
     $Query = "
     SELECT CustomerID
     FROM customers
@@ -137,7 +137,7 @@ function getCustomer($databaseConnection) {
 
 function addCustomer ($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection) {
     $Query = "
-    INSERT INTO customers (CustomerName, PhoneNumber, DeliveryAddressLine2, DeliveryPostalCode)
+    INSERT INTO customers (CustomerName, PhoneNumber, DeliveryAddressLine2, DeliveryPostalCode, DeliveryAddressLine1, AccountOpenedDate, BillToCustomerID, PostalPostalCode, IsOnCreditHold, LastEditedBy, DeliveryMethodID, WebsiteURL, CustomerCategoryID, FaxNumber, StandardDiscountPercentage, PaymentDays, PostalCityID, DeliveryCityID, PostalAddressLine1, IsStatementSent, ValidFrom, ValidTo, PrimaryContactPersonID)
     VALUES (?, ?, ?, ?)";
 
     $Statement = mysqli_prepare($databaseConnection, $Query);

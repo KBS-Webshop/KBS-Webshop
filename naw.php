@@ -6,6 +6,8 @@ $phoneNumber = " ";
 $DeliveryAddress = " ";
 $DeliveryPostalCode = " ";
 $DeliveryInstructions = "";
+$amountOfProductsInOrder = 0;
+$quantityOnHand = 0;
 $betaald = true;
 if (isset($_POST["naam"])) {
     $Cname = $_POST["naam"];
@@ -22,8 +24,106 @@ if (isset($_POST["postcode"])) {
 if (isset($_POST["bezorgInstructies"])) {
     $DeliveryInstructions = $_POST["bezorgInstructies"];
 }
+if (isset($_POST["stad"])) {
+    $cityName = $_POST["stad"];
+}
+if (isset($_POST["provincie"])) {
+    $DeliveryProvince = $_POST["provincie"];
+}
+//if (isset($_POST["land"])) {
+//    $DeliveryCountry = $_POST["land"];
+//}
 
+function PlaceOrder(
+    $Cname,
+    $phoneNumber,
+    $DeliveryAddress,
+    $DeliveryPostalCode,
+    $DeliveryInstructions,
+    $databaseConnection,
+    $betaald,
+    $amountOfProductsInOrder,
+    $quantityOnHand,
+    $DeliveryProvince,
+    $cityName
+) {
 
+    $orderstatus = "Wordt verwerkt";
+
+    if ($betaald == true) {
+        $countryID = 153;
+        $newStateProvinceID = getNewStateProvinceID($databaseConnection);
+        $provinceID = getStateProvince($DeliveryProvince, $databaseConnection);
+        $stateProvinceCode = abbreviate($DeliveryProvince);
+        $newCityID = getNewCityID($databaseConnection);
+        $deliveryCityID = getCity($cityName, $databaseConnection);
+        $newCustomerID = getNewCustomerID($databaseConnection);
+        $customerId = getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection);
+        $customerCategoryID = 8;
+        $salesContactPersonID = 3262;
+        $deliveryMethodID = 3;
+        $standardDiscountPercentage = 0.000;
+        $isOnCreditHold = 0;
+        $isStatementSent = 0;
+        $paymentDays = 7;
+        $validTo = "9999-12-31 23:59:59";
+        $websiteURL = "https://KBS.renzeboerman.nl";
+        $currentDate = date("Y-m-d");
+        $estimatedDeliveryDate = date("Y-m-d", strtotime($currentDate . "+ 1 days"));
+        if ($DeliveryProvince == null) {
+            addStateProvince($newStateProvinceID, $stateProvinceCode, $DeliveryProvince, $countryID, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo,$databaseConnection);
+            $DeliveryProvince = getStateProvince($DeliveryProvince, $databaseConnection);
+        } else {
+            $DeliveryProvince = getStateProvince($DeliveryProvince, $databaseConnection);
+        }
+        if ($deliveryCityID == null) {
+            addCity ($newCityID, $cityName, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo, $databaseConnection);
+            $deliveryCityID = getCity($cityName, $databaseConnection);
+        } else {
+            $deliveryCityID = getCity($cityName, $databaseConnection);
+        }
+        if ($customerId == null) {
+            addCustomer($newCustomerID, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $deliveryCityID, $databaseConnection);
+            $customerId = getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection);
+        } else {
+            $customerId = getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection);
+        }
+        if ($quantityOnHand < $amountOfProductsInOrder) {
+            $isInStock = 0;
+        } else {
+            $isInStock = 1;
+        }
+        addOrder($customerId, $DeliveryInstructions, $currentDate, $estimatedDeliveryDate, $salesContactPersonID, $databaseConnection, $isInStock);
+
+        $OrderID = getOrderID($customerId, $databaseConnection);
+
+        $basket_contents = json_decode($_COOKIE["basket"], true);
+        foreach ($basket_contents as $item) {
+
+            if (isset($item["amount"])) {
+                $amountOfProductsInOrder = $item["amount"];
+            }
+            if (isset($row["quantityOnHand"])) {
+                $quantityOnHand = $row["quantityOnHand"];
+            }
+            $stockItemID = $item["id"];
+            $ProductDescription = getDescription($stockItemID, $databaseConnection);
+            $PackageTypeID = getPackageTypeID($stockItemID, $databaseConnection);
+            $UnitPrice = getUnitPrice($stockItemID, $databaseConnection);
+            $TaxRate = getTaxRate($stockItemID, $databaseConnection);
+            addOrderline($OrderID, $stockItemID, $ProductDescription, $PackageTypeID, $amountOfProductsInOrder, $UnitPrice, $TaxRate, $salesContactPersonID, $currentDate, $databaseConnection);
+        }
+
+        $orderstatus = "Order is geplaatst";
+
+    } else {
+
+        $orderstatus = "Order is niet geplaatst";
+
+    }
+
+    return $orderstatus;
+}
 ?>
 <html>
 
@@ -51,11 +151,23 @@ if (isset($_POST["bezorgInstructies"])) {
                 </label>
             <input type="text" name="postcode" id="postcode" required>
         </div>
+        <div class="naw-input-inner">
+            <label for="name" class ="inline-label">
+                Stad <span class="required"></span>
+            </label>
+            <input type="text" name="stad" id="stad" required>
+        </div>
+        <div class="naw-input-inner">
+            <label for="name" class ="inline-label">
+                provincie <span class="required"></span>
+            </label>
+            <input type="text" name="provincie" id="provincie" required>
+        </div>
     </div>
 
     <div class="naw-input form-width-5">
         <div class="naw-input-inner">
-            <label for="name">
+            <label for="name" class="required">
                 Telefoonnummer
             </label>
             <input type="text" name="telefoonnummer" id="telefoonnummer" >

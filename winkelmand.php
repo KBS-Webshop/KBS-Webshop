@@ -27,7 +27,7 @@ if(isset($_POST["mislukt"])){
 
                         ?>
 
-                        <div id="ProductFrame">
+                        <div id="ProductFrame2">
                             <?php
                             if (isset($StockItemImage[0]["ImagePath"])) { ?>
                             <a class="ListItem" href='view.php?id=<?php print $item["id"]; ?>'>

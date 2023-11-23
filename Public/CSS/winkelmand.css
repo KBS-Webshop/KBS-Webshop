@@ -81,7 +81,9 @@ ul#shoppingcart{
     width: 25%;
     border-radius: 10px;
     padding: 10px;
-    font-size: 16px;
+    font-size: 20px;
+    right: 20px;
+    position: fixed;
 
 }
 
@@ -92,6 +94,7 @@ ul#shoppingcart{
     text-transform: uppercase;
     font-weight: bold;
     margin-top: 25px;
+    width: 90%;
     text-align: right;
 }
 

@@ -2,6 +2,7 @@
 
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
+    
 ?>
 <h1> orderbevestiging</h1><br>
 <h4>$naam"bedankt voor uw bestelling bij nerdygatgets! uw bestel nummer is $bestelnummer</h4><br>
@@ -38,7 +39,7 @@ if (isset($StockItemImage[0]["ImagePath"])) { ?>
     </div>
 
     <h1 class="StockItemID"> <?php print ("artikelnummer: " . $item["id"]."<br>")?></h1>
-    <h1 class="StockItemID1"> <?php print($StockItem["StockItemName"]."<br><br>aantal ") ?>
+    <h1 class="StockItemID1"> <?php print($StockItem["StockItemName"]."<br><br>aantal: ". $item['amount']) ?>
     <div class="buttonAlignmentWinkelmand">
     <form method="post" class="buttonWinkelmand">
     <input type="hidden" name="action" value="decrement">
@@ -55,10 +56,11 @@ if (isset($StockItemImage[0]["ImagePath"])) { ?>
 <h3 class="StockItemPriceTextbevestiging">Totaalprijs: € <?php print str_replace(".",",",$totalprice)?></h3><br>
     <h3 class="verzendadres">verzendadres: </h3><br>
 <h4 class="verzendgegevens">
-    naam: $naam<br>
-    adres: $adres<br>
-    woonplaats en postcode: $woonplaats en $postcode<br>
-    land: $land
+    naam: <?php print $naam?><br>
+    adres: <?php print $adress?><br>
+    postcode: <?php print $postcode?>
+    telefoonnummer: <?php print $telefoonnummer?><br>
+
 </h4>
 
 

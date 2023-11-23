@@ -42,7 +42,14 @@ function PlaceOrder(
             addCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection);
             $customerStatus = getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection);
         }
-
+        if ($row['quantityOnHand'] < $item['amount']) {
+            $isInStock = 0;
+        } else {
+            $isInStock = 1;
+        }
+        $salesContactPersonID = 3262;
+        $currentDate = date("Y-m-d");
+        $estimatedDeliveryDate = date("Y-m-d", strtotime($currentDate . "+ 1 days"));
         addOrder($customerId, $DeliveryInstructions, $databaseConnection);
 
         $OrderID = getOrderID($customerId, $databaseConnection);
@@ -76,15 +83,9 @@ function PlaceOrder(
     <div class="naw-input form-width-2">
         <div class="naw-input-inner">
             <label for="straatnaam" class="inline-label">
-                Straatnaam <span class="required"></span>
+                Adress <span class="required"></span>
             </label>
-            <input type="text" name="straatnaam" id="straatnaam" required>
-        </div>
-        <div class="naw-input-inner2">
-            <label for="name" class="inline-label">
-                Huisnummer <span class="required"></span>
-            </label>
-            <input type="text" name="huisnummer" id="huisnummer" required>
+            <input type="text" name="adress" id="adress" required>
         </div>
     </div>
 
@@ -94,12 +95,6 @@ function PlaceOrder(
                     Postcode <span class="required"></span>
                 </label>
             <input type="text" name="postcode" id="postcode" required>
-        </div>
-        <div class="naw-input-inner">
-            <label for="name" class="inline-label">
-                Land <span class="required"></span>
-            </label>
-            <input type="text" name="land" id="land">
         </div>
     </div>
 

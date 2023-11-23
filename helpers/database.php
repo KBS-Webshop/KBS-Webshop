@@ -125,7 +125,7 @@ function getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode
     $Query = "
     SELECT CustomerID
     FROM customers
-    WHERE CustomerName = ? AND PhoneNumber = ? AND DeliveryAddressLine2 = ? AND DeliveryPostalCode = ?";
+    WHERE CustomerName = ? AND PhoneNumber = ? AND DeliveryAddressLine1 = ? AND DeliveryPostalCode = ?";
 
     $Statement = mysqli_prepare($databaseConnection, $Query);
     mysqli_stmt_bind_param($Statement, "ssss", $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode);
@@ -137,7 +137,7 @@ function getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode
 
 function addCustomer ($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection) {
     $Query = "
-    INSERT INTO customers (CustomerName, PhoneNumber, DeliveryAddressLine2, DeliveryPostalCode, DeliveryAddressLine1, AccountOpenedDate, BillToCustomerID, PostalPostalCode, IsOnCreditHold, LastEditedBy, DeliveryMethodID, WebsiteURL, CustomerCategoryID, FaxNumber, StandardDiscountPercentage, PaymentDays, PostalCityID, DeliveryCityID, PostalAddressLine1, IsStatementSent, ValidFrom, ValidTo, PrimaryContactPersonID)
+    INSERT INTO customers (CustomerName, PhoneNumber, DeliveryAddressLine1, DeliveryPostalCode)
     VALUES (?, ?, ?, ?)";
 
     $Statement = mysqli_prepare($databaseConnection, $Query);
@@ -155,12 +155,12 @@ function getOrderID ($databaseConnection) {
     $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
     return $R;
 }
-function addOrder ($CustomerId, $DeliveryInstructions, $databaseConnection) {
+function addOrder ($CustomerId, $DeliveryInstructions, $currentDate, $estimatedDeliveryDate , $salesContactPersonID, $databaseConnection, $isInStock) {
     $Query = "
-    INSERT INTO orders (CustomerID, OrderDate) 
-    VALUES (?, ?)";
+    INSERT INTO orders (CustomerID, OrderDate, ExpectedDeliveryDate, DeliveryInstructions, salespersonPersonID, IsUndersupplyBackordered, lastEditedBy)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     $Statement = mysqli_prepare($databaseConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "is", $CustomerId, $DeliveryInstructions);
+    mysqli_stmt_bind_param($Statement, "isssiiis", $CustomerId, $currentDate, $estimatedDeliveryDate , $DeliveryInstructions, $salesContactPersonID, $isInStock, $salesContactPersonID, $CurrentDate);
     mysqli_stmt_execute($Statement);
 }
 

@@ -1,9 +1,71 @@
 <?php
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
-?>
+$Cname = " ";
+$phoneNumber = " ";
+$DeliveryAddress = " ";
+$DeliveryPostalCode = " ";
+$DeliveryInstructions = "";
+$betaald = true;
+if (isset($_POST["naam"])) {
+    $Cname = $_POST["naam"];
+}
+if (isset($_POST["telefoonnummer"])) {
+    $phoneNumber = $_POST["telefoonnummer"];
+}
+if (isset($_POST["adress"])) {
+    $DeliveryAddress = $_POST["adress"];
+}
+if (isset($_POST["postcode"])) {
+    $DeliveryPostalCode = $_POST["postcode"];
+}
+if (isset($_POST["bezorgInstructies"])) {
+    $DeliveryInstructions = $_POST["bezorgInstructies"];
+}
 
-<form method="POST" class="naw-form" action="afrekenen.php">
+function PlaceOrder(
+    $Cname,
+    $phoneNumber,
+    $DeliveryAddress,
+    $DeliveryPostalCode,
+    $DeliveryInstructions,
+    $databaseConnection,
+    $betaald
+) {
+
+    $orderstatus = "Wordt verwerkt";
+
+    if ($betaald == true) {
+
+        $customerId = getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection);
+        if ($customerId == null) {
+            addCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection);
+            $customerStatus = getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection);
+        }
+
+        addOrder($customerId, $DeliveryInstructions, $databaseConnection);
+
+        $OrderID = getOrderID($customerId, $databaseConnection);
+
+        $basket_contents = json_decode($_COOKIE["basket"], true);
+        foreach ($basket_contents as $item) {
+            addOrderline($OrderID, $item["id"], $databaseConnection);
+        }
+
+        $orderstatus = "Order is geplaatst";
+
+    } else {
+
+        $orderstatus = "Order is niet geplaatst";
+
+    }
+
+    return $orderstatus;
+}
+?>
+<html>
+
+<form method="POST" class="naw-form">
     <div class="naw-input">
         <label for="name">
           Naam <span class="required"></span>
@@ -58,7 +120,13 @@ include __DIR__ . "/helpers/utils.php";
             <input type="text" name="email" id="email" required>
         </div>
     </div>
-
+<?php
+//print ($Cname); ?><!-- <BR> --><?php
+//print ($phoneNumber); ?><!-- <BR> --><?php
+//    print ($DeliveryAddress); ?><!-- <BR> --><?php
+//    print ($DeliveryPostalCode); ?><!-- <BR> --><?php
+//    print ($DeliveryInstructions); ?><!-- <BR> --><?php
+//    ?>
     <div class="radio-container">
 
         <fieldset>
@@ -92,7 +160,7 @@ include __DIR__ . "/helpers/utils.php";
             <label for="opmerkingen">Instructies voor de bezorger. (Optioneel)</label>
         </div>
         <div>
-            <textarea id="opmerkingen" name="opmerkingen" rows="6" cols="50"></textarea>
+            <textarea id="bezorgInstructies" name="bezorgInstructies" rows="6" cols="50"></textarea>
         </div>
     </div>
 
@@ -100,8 +168,14 @@ include __DIR__ . "/helpers/utils.php";
         <input type="submit" value="Afrekenen" class="button primary">
     </div>
 </form>
+</html>
 
 
 <?php
+if (isset($_POST["naam"]) && isset($_POST["telefoonnummer"]) && isset($_POST["adress"]) && isset($_POST["postcode"])) {
+    $orderstatus = PlaceOrder($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $DeliveryInstructions, $databaseConnection, $betaald);
+    print ($orderstatus);
+
+}
 include __DIR__ . "/components/footer.php"
 ?>

@@ -108,31 +108,67 @@ function getStockItemImage($id, $databaseConnection)
     return $R;
 }
 
-function addCustomer ($Cid, $Cname, $phoneNumber)
-{
+//function addCity ($cityName, $state, $country){
+//    $Query = "
+//    INSERT INTO cities (CityName, State, Country);
+//    VALUES (?, ?, ?)";
+//    $Statement = mysqli_prepare($databaseConnection, $Query);
+//    mysqli_stmt_bind_param($Statement, "ii", $cityName, $state, $country);
+//    mysqli_stmt_execute($Statement);
+//    $R = mysqli_stmt_get_result($Statement);
+//    $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
+//    return $R;
+//}
 
+
+function getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection) {
     $Query = "
-    INSERT INTO customers (CustomerID, CustomerName, PhoneNumber);
-    VALUES (?, ?, ?)";
+    SELECT CustomerID
+    FROM customers
+    WHERE CustomerName = ? AND PhoneNumber = ? AND DeliveryAddressLine2 = ? AND DeliveryPostalCode = ?";
 
     $Statement = mysqli_prepare($databaseConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "iii", $Cid, $Cname, $phoneNumber);
+    mysqli_stmt_bind_param($Statement, "ssss", $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode);
     mysqli_stmt_execute($Statement);
     $R = mysqli_stmt_get_result($Statement);
     $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
-
     return $R;
 }
-function addOrder () {
+
+function addCustomer ($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection) {
     $Query = "
-    INSERT INTO orders (OrderID, CustomerID);
-    VALUES (?, ?)";
+    INSERT INTO customers (CustomerName, PhoneNumber, DeliveryAddressLine2, DeliveryPostalCode, DeliveryAddressLine1, AccountOpenedDate, BillToCustomerID, PostalPostalCode, IsOnCreditHold, LastEditedBy, DeliveryMethodID, WebsiteURL, CustomerCategoryID, FaxNumber, StandardDiscountPercentage, PaymentDays, PostalCityID, DeliveryCityID, PostalAddressLine1, IsStatementSent, ValidFrom, ValidTo, PrimaryContactPersonID)
+    VALUES (?, ?, ?, ?)";
 
     $Statement = mysqli_prepare($databaseConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "ii", $OrderID, $Cid);
+    mysqli_stmt_bind_param($Statement, "ssss", $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode);
+    mysqli_stmt_execute($Statement);
+}
+function getOrderID ($databaseConnection) {
+    $Query = "
+    SELECT max(OrderID)
+    FROM orders";
+
+    $Statement = mysqli_prepare($databaseConnection, $Query);
     mysqli_stmt_execute($Statement);
     $R = mysqli_stmt_get_result($Statement);
     $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
-
     return $R;
+}
+function addOrder ($CustomerId, $DeliveryInstructions, $databaseConnection) {
+    $Query = "
+    INSERT INTO orders (CustomerID, OrderDate) 
+    VALUES (?, ?)";
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+    mysqli_stmt_bind_param($Statement, "is", $CustomerId, $DeliveryInstructions);
+    mysqli_stmt_execute($Statement);
+}
+
+function addOrderline($OrderID, $StockItemID, $databaseConnection) {
+    $Query = "
+    INSERT INTO orderlines (OrderID, StockItemID);
+    VALUES (?, ?)";
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+    mysqli_stmt_bind_param($Statement, "ii", $OrderID, $StockItemID);
+    mysqli_stmt_execute($Statement);
 }

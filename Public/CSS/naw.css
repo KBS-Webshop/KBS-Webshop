@@ -17,12 +17,14 @@ form .naw-input.form-width-2 .naw-input-inner2, form .naw-input.form-width-2 .na
 }
 
 form .naw-input.form-width-4, form .naw-input.form-width-4 label {
+    width: 65%;
     display: flex;
     justify-content: space-between;
 }
 
+
 form .naw-input.form-width-4 .naw-input-inner, form .naw-input.form-width-4 .naw-input-inner label {
-    width: 20%;
+    width: 42%;
 }
 
 form .naw-input.form-width-5 .naw-input-inner, form .naw-input.form-width-5 .naw-input-inner label {
@@ -48,6 +50,10 @@ form .naw-input.form-width-5 .naw-input-inner, form .naw-input.form-width-5 .naw
     max-width: 60%;
 }
 
+.naw-form .inline-label {
+    display: inline !important;
+}
+
 .naw-form .naw-submit-wrapper {
     display: flex;
     flex-direction: row-reverse;
@@ -55,8 +61,8 @@ form .naw-input.form-width-5 .naw-input-inner, form .naw-input.form-width-5 .naw
 
 
 .radio-label-naw {
-    display: flex;
-    justify-content: flex-start;
+    display: block;
+    margin-bottom: 5px;
 }
 .radio-label-naw label{
     font-size: 23px;
@@ -78,18 +84,18 @@ form .naw-input.form-width-5 .naw-input-inner, form .naw-input.form-width-5 .naw
     }
 
 .radio-label {
-    margin-left: 13%;
+    margin-left: 20%;
+    display: block;
+    margin-bottom: 5px;
 }
 
 .comments {
     margin-left: 2%;
 }
 
-
-
-
-
-
-
-
+.required::after {
+    content: "*";
+    color: red;
+    margin-left: 5px;
+}
 

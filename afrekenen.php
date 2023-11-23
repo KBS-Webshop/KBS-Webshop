@@ -2,7 +2,10 @@
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
 
-
+$_SESSION["naam"]=$_POST["naam"];
+$_SESSION["telefoonnummer"]=$_POST["telefoonnummer"];
+$_SESSION["adress"]=$_POST["adress"];
+$_SESSION["postcode"]=$_POST["postcode"];
 ?>
 <html>
 <form method="post" name="mislukt" action="winkelmand.php">

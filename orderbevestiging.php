@@ -2,10 +2,13 @@
 
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
-    
+    $naam=$_SESSION["naam"];
+    $telefoonnummer=$_SESSION["telefoonnummer"];
+    $adress=$_SESSION["adress"];
+    $postcode=$_SESSION["postcode"];
 ?>
 <h1> orderbevestiging</h1><br>
-<h4>$naam"bedankt voor uw bestelling bij nerdygatgets! uw bestel nummer is $bestelnummer</h4><br>
+<h4><?php print $naam?>"bedankt voor uw bestelling bij nerdygatgets! uw bestel nummer is <?php print $bestelnummer?></h4><br>
 <h1>Bestel overzicht</h1>
     <div class="winkelmand-wrapper">
     <ul class="winkelmand">
@@ -54,11 +57,11 @@ if (isset($StockItemImage[0]["ImagePath"])) { ?>
 ?>
 <br>
 <h3 class="StockItemPriceTextbevestiging">Totaalprijs: € <?php print str_replace(".",",",$totalprice)?></h3><br>
-    <h3 class="verzendadres">verzendadres: </h3><br>
+    <h3 class="verzendadres">verzendadres: </h3>
 <h4 class="verzendgegevens">
     naam: <?php print $naam?><br>
     adres: <?php print $adress?><br>
-    postcode: <?php print $postcode?>
+    postcode: <?php print $postcode?><br>
     telefoonnummer: <?php print $telefoonnummer?><br>
 
 </h4>

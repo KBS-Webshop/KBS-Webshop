@@ -84,7 +84,7 @@ form .naw-input.form-width-5 .naw-input-inner, form .naw-input.form-width-5 .naw
     }
 
 .radio-label {
-    margin-left: 20%;
+    margin-left: 50%;
     display: block;
     margin-bottom: 5px;
 }
@@ -98,4 +98,7 @@ form .naw-input.form-width-5 .naw-input-inner, form .naw-input.form-width-5 .naw
     color: red;
     margin-left: 5px;
 }
-
+.nerdy{
+    min-height: 30px;
+    min-width: 30px;
+}

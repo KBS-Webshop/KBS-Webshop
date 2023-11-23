@@ -65,7 +65,7 @@ function PlaceOrder(
 ?>
 <html>
 
-<form method="POST" class="naw-form">
+<form method="POST" class="naw-form" action="afrekenen.php">
     <div class="naw-input">
         <label for="name">
           Naam <span class="required"></span>
@@ -143,16 +143,20 @@ function PlaceOrder(
         </div>
         </fieldset>
 
+        <fieldset>
+
         <div class="radio-label">
+            <legend>Betaalmogelijkheden</legend>
                 <label>
                     <input type="radio" name="betaalmethode" id="iDeal" required>
                     iDeal
                 </label>
                 <label>
-                    <input type="radio" name="betaalmethode" id="Nerdygadgets Giftcard" required>
+                    <input class="nerdy" type="radio" name="betaalmethode" id="Nerdygadgets Giftcard" required>
                     Nerdygadgets Gifcard
                 </label>
         </div>
+        </fieldset>
     </div>
 
     <div class="comments">

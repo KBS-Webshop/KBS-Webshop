@@ -2,7 +2,15 @@
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
 ?>
-    <h2>Winkelmandje</h2>
+    <h2>Winkelmandje</h2><br>
+<?php
+if(isset($_POST["mislukt"])){
+    print ("betaling mislukt probeer het opnieuw");
+}
+
+    ?>
+
+
 
     <div class="winkelmand-wrapper">
         <ul class="winkelmand">

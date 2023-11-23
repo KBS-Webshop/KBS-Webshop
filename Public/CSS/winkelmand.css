@@ -94,3 +94,7 @@ ul#shoppingcart{
     margin-top: 25px;
     text-align: right;
 }
+
+.receivedTotalPrice {
+    border-top: 1px solid black;
+}

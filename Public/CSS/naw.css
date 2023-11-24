@@ -1,5 +1,5 @@
 form .naw-input, form .naw-input label {
-    width: 100%;
+    width: 85%;
     margin-left: 2%;
 }
 
@@ -9,7 +9,7 @@ form .naw-input.form-width-2, form .naw-input.form-width-2 label {
 }
 
 form .naw-input.form-width-2 .naw-input-inner, form .naw-input.form-width-2 .naw-input-inner label {
-    width: 65%;
+    width: 100%;
 }
 
 form .naw-input.form-width-2 .naw-input-inner2, form .naw-input.form-width-2 .naw-input-inner2 label {
@@ -24,11 +24,12 @@ form .naw-input.form-width-4, form .naw-input.form-width-4 label {
 
 
 form .naw-input.form-width-4 .naw-input-inner, form .naw-input.form-width-4 .naw-input-inner label {
-    width: 42%;
+    width: 52%;
+    margin-right: 7%;
 }
 
 form .naw-input.form-width-5 .naw-input-inner, form .naw-input.form-width-5 .naw-input-inner label {
-    width: 47%;
+    width: 52%;
 }
 
 .button {

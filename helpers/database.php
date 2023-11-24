@@ -123,7 +123,7 @@ function getNewStateProvinceID($databaseConnection)
 {
     $Query = "
     SELECT max(StateProvinceID)
-    FROM provinces";
+    FROM stateprovinces";
 
     $Statement = mysqli_prepare($databaseConnection, $Query);
     mysqli_stmt_execute($Statement);
@@ -135,7 +135,7 @@ function getNewStateProvinceID($databaseConnection)
 function getStateProvince ($DeliveryProvince, $databaseConnection) {
     $Query = "
     SELECT StateProvinceID
-    FROM provinces
+    FROM stateprovinces
     WHERE StateProvinceName = ?";
 
     $Statement = mysqli_prepare($databaseConnection, $Query);
@@ -147,7 +147,7 @@ function getStateProvince ($DeliveryProvince, $databaseConnection) {
 }
 function addStateProvince ($newStateProvinceID, $stateProvinceCode, $provinceName, $countryID, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo,$databaseConnection) {
     $Query = "
-    INSERT INTO provinces (StateProvinceID, StateProvinceCode, StateProvinceName, CountryID, SalesTerritory, LastEditedBy, ValidFrom, ValidTo
+    INSERT INTO stateprovinces (StateProvinceID, StateProvinceCode, StateProvinceName, CountryID, SalesTerritory, LastEditedBy, ValidFrom, ValidTo)
     VALUES (?, ?, ?)";
     $Statement = mysqli_prepare($databaseConnection, $Query);
     mysqli_stmt_bind_param($Statement, "issisiss", $newStateProvinceID, $stateProvinceCode, $provinceName, $countryID, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo);
@@ -183,7 +183,7 @@ function getCity ($cityName, $databaseConnection) {
 
 function addCity ($newCityID, $cityName, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo, $databaseConnection){
     $Query = "
-    INSERT INTO cities (CityID, CityName, State, LastEditedBy, ValidFrom, ValidTo);
+    INSERT INTO cities (CityID, CityName, StateProvinceID, LastEditedBy, ValidFrom, ValidTo)
     VALUES (?, ?, ?)";
     $Statement = mysqli_prepare($databaseConnection, $Query);
     mysqli_stmt_bind_param($Statement, "ississ", $newCityID, $cityName, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo);
@@ -249,7 +249,7 @@ function addOrder ($CustomerId, $DeliveryInstructions, $currentDate, $estimatedD
 
 function getDescription ($stockItemID, $databaseConnection) {
     $Query = "
-    SELECT Description
+    SELECT MarketingComments
     FROM stockitems
     WHERE StockItemID = ?";
 
@@ -261,8 +261,9 @@ function getDescription ($stockItemID, $databaseConnection) {
     return $R;
 }
 function getPackageTypeID ($stockItemID, $databaseConnection) {
+    # UnitPackageID of OuterPackageID
     $Query = "
-    SELECT PackageTypeID
+    SELECT UnitPackageID
     FROM stockitems
     WHERE StockItemID = ?";
 
@@ -310,7 +311,7 @@ function getTaxRate ($stockItemID, $databaseConnection) {
 
 function addOrderline($OrderID, $stockItemID, $ProductDescription, $PackageTypeID, $amountOfProductsInOrder, $UnitPrice, $TaxRate, $salesContactPersonID, $currentDate, $databaseConnection) {
     $Query = "
-    INSERT INTO orderlines (OrderID, StockItemID, Description, PackageTypeID, Quantity, UnitPrice, TaxRate, PickedQuantity, LastEditedBy);
+    INSERT INTO orderlines (OrderID, StockItemID, Description, PackageTypeID, Quantity, UnitPrice, TaxRate, PickedQuantity, LastEditedBy)
     VALUES (?, ?)";
     $Statement = mysqli_prepare($databaseConnection, $Query);
     mysqli_stmt_bind_param($Statement, "ii", $OrderID, $stockItemID, $ProductDescription, $PackageTypeID, $amountOfProductsInOrder, $UnitPrice, $TaxRate, $amountOfProductsInOrder, $salesContactPersonID, $currentDate);

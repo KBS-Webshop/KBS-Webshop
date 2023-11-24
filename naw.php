@@ -158,7 +158,8 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
 </div>
 <html>
 
-<form method="POST" name="bevestig" class="naw-form" action="afrekenen.php">
+<!--<form method="POST" name="bevestig" class="naw-form" action="afrekenen.php">-->
+    <form method="POST" class="naw-form">
     <div class="naw-input">
         <label for="name">
           Naam <span class="required"></span>
@@ -271,7 +272,7 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
 
 <?php
 if (isset($_POST["naam"]) && isset($_POST["telefoonnummer"]) && isset($_POST["adress"]) && isset($_POST["postcode"])) {
-    $orderstatus = PlaceOrder($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $DeliveryInstructions, $databaseConnection, $betaald);
+    $orderstatus = PlaceOrder($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $DeliveryInstructions, $databaseConnection, $betaald, $amountOfProductsInOrder, $quantityOnHand, $DeliveryProvince, $cityName);
     print ($orderstatus);
 
 }

@@ -129,6 +129,8 @@ function getNewStateProvinceID($databaseConnection)
     mysqli_stmt_execute($Statement);
     $R = mysqli_stmt_get_result($Statement);
     $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
+    print(array_keys($R[0]));
+    $R = intval($R[0]['StateProvinceID'], 10);
     $R = $R + 1;
     return $R;
 }
@@ -160,10 +162,10 @@ function getNewCityID ($databaseConnection) {
     FROM cities";
 
     $Statement = mysqli_prepare($databaseConnection, $Query);
-    mysqli_stmt_bind_param($Statement);
     mysqli_stmt_execute($Statement);
     $R = mysqli_stmt_get_result($Statement);
     $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
+    $R = intval($R, 10);
     $R = $R + 1;
     return $R;
 }
@@ -200,6 +202,7 @@ function getNewCustomerID($databaseConnection)
     mysqli_stmt_execute($Statement);
     $R = mysqli_stmt_get_result($Statement);
     $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
+    $R = intval($R, 10);
     $R = $R + 1;
     return $R;
 }

@@ -35,7 +35,8 @@ if (isset($_POST["provincie"])) {
 //}
 
 ?>
-<h2><bestelgegevens></bestelgegevens></h2><br>
+<h2>bestelgegevens</h2><br>
+<h2><bestelgegevens></bestelgegevens></h2>
 <?php
 if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
 ?>
@@ -50,16 +51,18 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
         <th>Prijs</th>
 
         <?php
+        $totalprice=0;
         foreach ($basket_contents as $item) {
-            $totalprice=0;
             $StockItem = getStockItem($item["id"], $databaseConnection);
             $totalprice += round($item['amount'] * $StockItem['SellPrice'], 2);
             echo ("<tr> <td>" . $StockItem['StockItemName'] . "</td>");
             echo ("<td>" . $item['amount'] . "</td>");
-            echo "<td>".sprintf("€%.2f", $StockItem['SellPrice'] * $item["amount"]);
+            echo "<td>".str_replace(".",",",sprintf("€%.2f", $StockItem['SellPrice'] * $item["amount"]));
+
         }
         echo ("<tr class='receivedTotalPrice'> <td></td> <th>totaalprijs</th>");
-        echo("<td>$totalprice</td></tr>");
+        $totalprice1=str_replace(".",",",$totalprice);
+        echo("<td>€$totalprice1</td></tr>");
         echo '</table>';
 
         ?>

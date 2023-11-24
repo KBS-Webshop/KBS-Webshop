@@ -144,12 +144,13 @@ function getStateProvince ($DeliveryProvince, $databaseConnection) {
     mysqli_stmt_execute($Statement);
     $R = mysqli_stmt_get_result($Statement);
     $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
+    $R = intval($R[0]['StateProvinceID']);
     return $R;
 }
 function addStateProvince ($newStateProvinceID, $stateProvinceCode, $provinceName, $countryID, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo,$databaseConnection) {
     $Query = "
     INSERT INTO stateprovinces (StateProvinceID, StateProvinceCode, StateProvinceName, CountryID, SalesTerritory, LastEditedBy, ValidFrom, ValidTo)
-    VALUES (?, ?, ?)";
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     $Statement = mysqli_prepare($databaseConnection, $Query);
     mysqli_stmt_bind_param($Statement, "issisiss", $newStateProvinceID, $stateProvinceCode, $provinceName, $countryID, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo);
     mysqli_stmt_execute($Statement);
@@ -178,14 +179,14 @@ function getCity ($cityName, $databaseConnection) {
     mysqli_stmt_bind_param($Statement, "i", $cityName);
     mysqli_stmt_execute($Statement);
     $R = mysqli_stmt_get_result($Statement);
-    $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
-    return $R;
+    $R = mysqil_fecth_assoc($R);
+    return intval($R['CityID'], 10);
 }
 
 function addCity ($newCityID, $cityName, $StateProvinceID, $salesContactPersonID, $currentDate, $validTo, $databaseConnection){
     $Query = "
     INSERT INTO cities (CityID, CityName, StateProvinceID, LastEditedBy, ValidFrom, ValidTo)
-    VALUES (?, ?, ?)";
+    VALUES (?, ?, ?, ?, ?, ?)";
     $Statement = mysqli_prepare($databaseConnection, $Query);
     mysqli_stmt_bind_param($Statement, "isiiss", $newCityID, $cityName, $StateProvinceID, $salesContactPersonID, $currentDate, $validTo);
     mysqli_stmt_execute($Statement);
@@ -216,13 +217,14 @@ function getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode
     mysqli_stmt_execute($Statement);
     $R = mysqli_stmt_get_result($Statement);
     $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
+    $R = intval($R[0]['CustomerID'], 10);
     return $R;
 }
 
 function addCustomer ($newCustomerID, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $deliveryCityID, $databaseConnection) {
     $Query = "
     INSERT INTO customers (CustomerID, CustomerName, BillToCustomerID, CustomerCategoryID, PrimaryContactPersonID, DeliveryMethodID, DeliveryCityID, PostalCityID, AccountOpenedDate, StandardDiscountPercentage, IsStatementSent, IsOnCreditHold, PaymentDays, PhoneNumber, FaxNumber, WebsiteURL, DeliveryAddressLine1, DeliveryPostalCode, PostalAddressLine1, PostalPostalCode, LastEditedBy, ValidFrom, ValidTo)
-    VALUES (?, ?, ?, ?)";
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?)";
 
     $Statement = mysqli_prepare($databaseConnection, $Query);
     mysqli_stmt_bind_param($Statement, "isiiiiiisiiiisssssssiss", $newCustomerID, $Cname, $newCustomerID, $customCategoryID, $salesContactPersonID, $deliveryMethodID, $deliveryCityID, $deliveryCityID, $currentDate, $standardDiscountPercentage, $isStatementSent, $isOnCreditHold, $paymentDays, $phoneNumber, $phoneNumber, $websiteURL, $DeliveryAddress, $DeliveryPostalCode, $DeliveryAddress, $DeliveryPostalCode, $salesContactPersonID, $CurrentDate, $validTo);
@@ -237,6 +239,7 @@ function getOrderID ($databaseConnection) {
     mysqli_stmt_execute($Statement);
     $R = mysqli_stmt_get_result($Statement);
     $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
+    $R = intval($R[0]['max(OrderID)'], 10);
     return $R;
 }
 function addOrder ($CustomerId, $DeliveryInstructions, $currentDate, $estimatedDeliveryDate , $salesContactPersonID, $databaseConnection, $isInStock) {

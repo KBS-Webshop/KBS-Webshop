@@ -185,7 +185,6 @@ if (isset($_POST["naam"]) && isset($_POST["telefoonnummer"]) && isset($_POST["ad
     print ($orderstatus);
 
 }
-$_SESSION["orderID"]=getOrderID($customerId, $databaseConnection);
 
 include __DIR__ . "/components/footer.php"
 ?>

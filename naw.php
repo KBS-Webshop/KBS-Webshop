@@ -100,7 +100,7 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
         </div>
         <div class="naw-input-inner">
             <label for="name" class ="inline-label">
-                provincie <span class="required"></span>
+                Provincie <span class="required"></span>
             </label>
             <input type="text" name="provincie" id="provincie" required>
         </div>

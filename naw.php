@@ -71,7 +71,7 @@ function PlaceOrder(
         $currentDate = date("Y-m-d");
         $estimatedDeliveryDate = date("Y-m-d", strtotime($currentDate . "+ 1 days"));
         if ($StateProvinceID == null) {
-            addStateProvince($newStateProvinceID, $stateProvinceCode, $DeliveryProvince, $countryID, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo,$databaseConnection);
+            addStateProvince($newStateProvinceID, $stateProvinceCode, $StateProvinceID, $countryID, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo,$databaseConnection);
             $StateProvinceID = getStateProvince($DeliveryProvince, $databaseConnection);
         } else {
             $StateProvinceID = getStateProvince($DeliveryProvince, $databaseConnection);
@@ -83,7 +83,7 @@ function PlaceOrder(
             $deliveryCityID = getCity($cityName, $databaseConnection);
         }
         if ($customerId == null) {
-            addCustomer($newCustomerID, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $deliveryCityID, $StateProvinceID, $countryID, $customerCategoryID, $salesContactPersonID, $DeliveryInstructions, $deliveryMethodID, $standardDiscountPercentage, $isOnCreditHold, $isStatementSent, $paymentDays, $currentDate, $validTo, $websiteURL, $databaseConnection);
+            addCustomer($newCustomerID, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $deliveryCityID, $deliveryCityID, $countryID, $customerCategoryID, $salesContactPersonID, $DeliveryInstructions, $deliveryMethodID, $standardDiscountPercentage, $isOnCreditHold, $isStatementSent, $paymentDays, $currentDate, $validTo, $websiteURL, $databaseConnection);
             $customerId = getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection);
         } else {
             $customerId = getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection);

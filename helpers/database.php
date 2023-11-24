@@ -181,12 +181,12 @@ function getCity ($cityName, $databaseConnection) {
     return $R;
 }
 
-function addCity ($newCityID, $cityName, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo, $databaseConnection){
+function addCity ($newCityID, $cityName, $StateProvinceID, $salesContactPersonID, $currentDate, $validTo, $databaseConnection){
     $Query = "
     INSERT INTO cities (CityID, CityName, StateProvinceID, LastEditedBy, ValidFrom, ValidTo)
     VALUES (?, ?, ?)";
     $Statement = mysqli_prepare($databaseConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "ississ", $newCityID, $cityName, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo);
+    mysqli_stmt_bind_param($Statement, "isiiss", $newCityID, $cityName, $StateProvinceID, $salesContactPersonID, $currentDate, $validTo);
     mysqli_stmt_execute($Statement);
 }
 
@@ -223,7 +223,7 @@ function addCustomer ($newCustomerID, $Cname, $phoneNumber, $DeliveryAddress, $D
     VALUES (?, ?, ?, ?)";
 
     $Statement = mysqli_prepare($databaseConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "isiiiiiisiiiisssssssiss", $newCustomerID, $Cname, $newCustomerID, $customCategoryID, $salesContactPersonID, $deliveryMethodID, $deliveryCityID, $postalCityID, $currentDate, $standardDiscountPercentage, $isStatementSent, $isOnCreditHold, $paymentDays, $phoneNumber, $phoneNumber, $websiteURL, $DeliveryAddress, $DeliveryPostalCode, $DeliveryAddress, $DeliveryPostalCode, $salesContactPersonID, $CurrentDate, $validTo);
+    mysqli_stmt_bind_param($Statement, "isiiiiiisiiiisssssssiss", $newCustomerID, $Cname, $newCustomerID, $customCategoryID, $salesContactPersonID, $deliveryMethodID, $deliveryCityID, $deliveryCityID, $currentDate, $standardDiscountPercentage, $isStatementSent, $isOnCreditHold, $paymentDays, $phoneNumber, $phoneNumber, $websiteURL, $DeliveryAddress, $DeliveryPostalCode, $DeliveryAddress, $DeliveryPostalCode, $salesContactPersonID, $CurrentDate, $validTo);
     mysqli_stmt_execute($Statement);
 }
 function getOrderID ($databaseConnection) {

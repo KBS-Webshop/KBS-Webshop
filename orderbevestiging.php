@@ -6,9 +6,11 @@ include __DIR__ . "/helpers/utils.php";
     $telefoonnummer=$_SESSION["telefoonnummer"];
     $adress=$_SESSION["adress"];
     $postcode=$_SESSION["postcode"];
+    $stad=$_SESSION["stad"];
+    $orderID=$_SESSION["orderID"]
 ?>
 <h1> orderbevestiging</h1><br>
-<h4><?php print $naam?>"bedankt voor uw bestelling bij nerdygatgets! uw bestel nummer is <?php print $bestelnummer?></h4><br>
+<h4><?php print $naam?> bedankt voor uw bestelling bij nerdygatgets! uw bestel nummer is <?php print $orderID?></h4><br>
 <h1>Bestel overzicht</h1>
     <div class="winkelmand-wrapper">
     <ul class="winkelmand">
@@ -60,7 +62,7 @@ if (isset($StockItemImage[0]["ImagePath"])) { ?>
     <h3 class="verzendadres">verzendadres: </h3>
 <h4 class="verzendgegevens">
     naam: <?php print $naam?><br>
-    adres: <?php print $adress?><br>
+    adres: <?php print $adress." in ". $stad?><br>
     postcode: <?php print $postcode?><br>
     telefoonnummer: <?php print $telefoonnummer?><br>
 

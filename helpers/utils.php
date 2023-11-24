@@ -20,33 +20,77 @@ function PlaceOrder(
     $DeliveryPostalCode,
     $DeliveryInstructions,
     $databaseConnection,
-    $betaald
+    $betaald,
+    $amountOfProductsInOrder,
+    $quantityOnHand,
+    $DeliveryProvince,
+    $cityName
 ) {
 
     $orderstatus = "Wordt verwerkt";
 
     if ($betaald == true) {
-
+        $countryID = 153;
+        $newStateProvinceID = getNewStateProvinceID($databaseConnection);
+        $provinceID = getStateProvince($DeliveryProvince, $databaseConnection);
+        $stateProvinceCode = abbreviate($DeliveryProvince);
+        $newCityID = getNewCityID($databaseConnection);
+        $deliveryCityID = getCity($cityName, $databaseConnection);
+        $newCustomerID = getNewCustomerID($databaseConnection);
         $customerId = getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection);
-        if ($customerId == null) {
-            addCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection);
-            $customerStatus = getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection);
+        $customerCategoryID = 8;
+        $salesContactPersonID = 3262;
+        $deliveryMethodID = 3;
+        $standardDiscountPercentage = 0.000;
+        $isOnCreditHold = 0;
+        $isStatementSent = 0;
+        $paymentDays = 7;
+        $validTo = "9999-12-31 23:59:59";
+        $websiteURL = "https://KBS.renzeboerman.nl";
+        $currentDate = date("Y-m-d");
+        $estimatedDeliveryDate = date("Y-m-d", strtotime($currentDate . "+ 1 days"));
+        if ($DeliveryProvince == null) {
+            addStateProvince($newStateProvinceID, $stateProvinceCode, $DeliveryProvince, $countryID, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo,$databaseConnection);
+            $DeliveryProvince = getStateProvince($DeliveryProvince, $databaseConnection);
+        } else {
+            $DeliveryProvince = getStateProvince($DeliveryProvince, $databaseConnection);
         }
-        if ($row['quantityOnHand'] < $item['amount']) {
+        if ($deliveryCityID == null) {
+            addCity ($newCityID, $cityName, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo, $databaseConnection);
+            $deliveryCityID = getCity($cityName, $databaseConnection);
+        } else {
+            $deliveryCityID = getCity($cityName, $databaseConnection);
+        }
+        if ($customerId == null) {
+            addCustomer($newCustomerID, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $deliveryCityID, $databaseConnection);
+            $customerId = getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection);
+        } else {
+            $customerId = getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection);
+        }
+        if ($quantityOnHand < $amountOfProductsInOrder) {
             $isInStock = 0;
         } else {
             $isInStock = 1;
         }
-        $salesContactPersonID = 3262;
-        $currentDate = date("Y-m-d");
-        $estimatedDeliveryDate = date("Y-m-d", strtotime($currentDate . "+ 1 days"));
-        addOrder($customerId, $DeliveryInstructions, $databaseConnection);
+        addOrder($customerId, $DeliveryInstructions, $currentDate, $estimatedDeliveryDate, $salesContactPersonID, $databaseConnection, $isInStock);
 
         $OrderID = getOrderID($customerId, $databaseConnection);
 
         $basket_contents = json_decode($_COOKIE["basket"], true);
         foreach ($basket_contents as $item) {
-            addOrderline($OrderID, $item["id"], $databaseConnection);
+
+            if (isset($item["amount"])) {
+                $amountOfProductsInOrder = $item["amount"];
+            }
+            if (isset($row["quantityOnHand"])) {
+                $quantityOnHand = $row["quantityOnHand"];
+            }
+            $stockItemID = $item["id"];
+            $ProductDescription = getDescription($stockItemID, $databaseConnection);
+            $PackageTypeID = getPackageTypeID($stockItemID, $databaseConnection);
+            $UnitPrice = getUnitPrice($stockItemID, $databaseConnection);
+            $TaxRate = getTaxRate($stockItemID, $databaseConnection);
+            addOrderline($OrderID, $stockItemID, $ProductDescription, $PackageTypeID, $amountOfProductsInOrder, $UnitPrice, $TaxRate, $salesContactPersonID, $currentDate, $databaseConnection);
         }
 
         $orderstatus = "Order is geplaatst";

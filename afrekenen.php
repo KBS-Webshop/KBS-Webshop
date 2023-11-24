@@ -6,6 +6,7 @@ $_SESSION["naam"]=$_POST["naam"];
 $_SESSION["telefoonnummer"]=$_POST["telefoonnummer"];
 $_SESSION["adress"]=$_POST["adress"];
 $_SESSION["postcode"]=$_POST["postcode"];
+$_SESSION["stad"]=$_POST["stad"]
 ?>
 <html>
 <form method="post" name="mislukt" action="winkelmand.php">

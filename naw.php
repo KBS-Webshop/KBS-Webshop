@@ -70,20 +70,20 @@ function PlaceOrder(
         $websiteURL = "https://KBS.renzeboerman.nl";
         $currentDate = date("Y-m-d");
         $estimatedDeliveryDate = date("Y-m-d", strtotime($currentDate . "+ 1 days"));
-        if ($DeliveryProvince == null) {
+        if ($StateProvinceID == null) {
             addStateProvince($newStateProvinceID, $stateProvinceCode, $DeliveryProvince, $countryID, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo,$databaseConnection);
-            $DeliveryProvince = getStateProvince($DeliveryProvince, $databaseConnection);
+            $StateProvinceID = getStateProvince($DeliveryProvince, $databaseConnection);
         } else {
-            $DeliveryProvince = getStateProvince($DeliveryProvince, $databaseConnection);
+            $StateProvinceID = getStateProvince($DeliveryProvince, $databaseConnection);
         }
         if ($deliveryCityID == null) {
-            addCity ($newCityID, $cityName, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo, $databaseConnection);
+            addCity ($newCityID, $cityName, $StateProvinceID, $salesContactPersonID, $currentDate, $validTo, $databaseConnection);
             $deliveryCityID = getCity($cityName, $databaseConnection);
         } else {
             $deliveryCityID = getCity($cityName, $databaseConnection);
         }
         if ($customerId == null) {
-            addCustomer($newCustomerID, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $deliveryCityID, $DeliveryProvince, $countryID, $customerCategoryID, $salesContactPersonID, $DeliveryInstructions, $deliveryMethodID, $standardDiscountPercentage, $isOnCreditHold, $isStatementSent, $paymentDays, $currentDate, $validTo, $websiteURL, $databaseConnection);
+            addCustomer($newCustomerID, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $deliveryCityID, $StateProvinceID, $countryID, $customerCategoryID, $salesContactPersonID, $DeliveryInstructions, $deliveryMethodID, $standardDiscountPercentage, $isOnCreditHold, $isStatementSent, $paymentDays, $currentDate, $validTo, $websiteURL, $databaseConnection);
             $customerId = getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection);
         } else {
             $customerId = getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection);

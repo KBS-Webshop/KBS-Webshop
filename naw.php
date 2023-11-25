@@ -47,7 +47,6 @@ function PlaceOrder(
     $DeliveryProvince,
     $cityName
 ) {
-
     $orderstatus = "Wordt verwerkt";
 
     if ($betaald == true) {
@@ -83,7 +82,24 @@ function PlaceOrder(
             $deliveryCityID = getCity($cityName, $dbConnection);
         }
         if ($customerId == null) {
-            addCustomer($newCustomerID, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $deliveryCityID, $deliveryCityID, $countryID, $customerCategoryID, $salesContactPersonID, $DeliveryInstructions, $deliveryMethodID, $standardDiscountPercentage, $isOnCreditHold, $isStatementSent, $paymentDays, $currentDate, $validTo, $websiteURL, $dbConnection);
+            addCustomer(
+                    $newCustomerID,
+                    $Cname,
+                    $phoneNumber,
+                    $DeliveryAddress,
+                    $DeliveryPostalCode,
+                    $deliveryCityID,
+                    $customerCategoryID,
+                    $salesContactPersonID,
+                    $deliveryMethodID,
+                    $currentDate,
+                    $standardDiscountPercentage,
+                    $isStatementSent,
+                    $isOnCreditHold,
+                    $paymentDays,
+                    $websiteURL,
+                    $validTo,
+                    $dbConnection);
             $customerId = getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $dbConnection);
         } else {
             $customerId = getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $dbConnection);
@@ -272,7 +288,18 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
 
 <?php
 if (isset($_POST["naam"]) && isset($_POST["telefoonnummer"]) && isset($_POST["adress"]) && isset($_POST["postcode"])) {
-    $orderstatus = PlaceOrder($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $DeliveryInstructions, $dbConnection, $betaald, $amountOfProductsInOrder, $quantityOnHand, $DeliveryProvince, $cityName);
+    $orderstatus = PlaceOrder(
+            $Cname,
+            $phoneNumber,
+            $DeliveryAddress,
+            $DeliveryPostalCode,
+            $DeliveryInstructions,
+            $betaald,
+            $amountOfProductsInOrder,
+            $quantityOnHand,
+            $dbConnection,
+            $DeliveryProvince,
+            $cityName);
     print ($orderstatus);
 
 }

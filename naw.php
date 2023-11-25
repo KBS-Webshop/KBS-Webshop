@@ -40,10 +40,10 @@ function PlaceOrder(
     $DeliveryAddress,
     $DeliveryPostalCode,
     $DeliveryInstructions,
-    $databaseConnection,
     $betaald,
     $amountOfProductsInOrder,
     $quantityOnHand,
+    $databaseConnection,
     $DeliveryProvince,
     $cityName
 ) {

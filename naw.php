@@ -35,6 +35,7 @@ if (isset($_POST["provincie"])) {
 //}
 $dbConnection = connectToDatabase(); #TODO: 2e connectie word opgesteld moet later fixen dat we hier omheen komen.
 function PlaceOrder(
+    $dbConnection,
     $Cname,
     $phoneNumber,
     $DeliveryAddress,
@@ -43,7 +44,6 @@ function PlaceOrder(
     $betaald,
     $amountOfProductsInOrder,
     $quantityOnHand,
-    $dbConnection,
     $DeliveryProvince,
     $cityName
 ) {
@@ -52,12 +52,12 @@ function PlaceOrder(
     if ($betaald == true) {
         $countryID = 153;
         $newStateProvinceID = getNewStateProvinceID($dbConnection);
-        $StateProvinceID = getStateProvince($DeliveryProvince, $dbConnection);
+        $StateProvinceID = getStateProvince($dbConnection, $DeliveryProvince);
         $stateProvinceCode = abbreviate($DeliveryProvince);
         $newCityID = getNewCityID($dbConnection);
-        $deliveryCityID = getCity($cityName, $dbConnection);
+        $deliveryCityID = getCity($dbConnection, $cityName);
         $newCustomerID = getNewCustomerID($dbConnection);
-        $customerId = getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $dbConnection);
+        $customerId = getCustomer($dbConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode);
         $customerCategoryID = 8;
         $salesContactPersonID = 3262;
         $deliveryMethodID = 3;
@@ -70,19 +70,20 @@ function PlaceOrder(
         $currentDate = date("Y-m-d");
         $estimatedDeliveryDate = date("Y-m-d", strtotime($currentDate . "+ 1 days"));
         if ($StateProvinceID == null) {
-            addStateProvince($newStateProvinceID, $stateProvinceCode, $countryID, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo,$dbConnection);
-            $StateProvinceID = getStateProvince($DeliveryProvince, $dbConnection);
+            addStateProvince($dbConnection, $newStateProvinceID, $stateProvinceCode, $countryID, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo);
+            $StateProvinceID = getStateProvince($dbConnection, $DeliveryProvince);
         } else {
-            $StateProvinceID = getStateProvince($DeliveryProvince, $dbConnection);
+            $StateProvinceID = getStateProvince($dbConnection, $DeliveryProvince);
         }
         if ($deliveryCityID == null) {
-            addCity ($newCityID, $cityName, $StateProvinceID, $salesContactPersonID, $currentDate, $validTo, $dbConnection);
-            $deliveryCityID = getCity($cityName, $dbConnection);
+            addCity ($dbConnection, $newCityID, $cityName, $StateProvinceID, $salesContactPersonID, $currentDate, $validTo);
+            $deliveryCityID = getCity($dbConnection,$cityName);
         } else {
-            $deliveryCityID = getCity($cityName, $dbConnection);
+            $deliveryCityID = getCity($dbConnection, $cityName);
         }
         if ($customerId == null) {
             addCustomer(
+                    $dbConnection,
                     $newCustomerID,
                     $Cname,
                     $phoneNumber,
@@ -98,20 +99,19 @@ function PlaceOrder(
                     $isOnCreditHold,
                     $paymentDays,
                     $websiteURL,
-                    $validTo,
-                    $dbConnection);
-            $customerId = getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $dbConnection);
+                    $validTo);
+            $customerId = getCustomer($dbConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode);
         } else {
-            $customerId = getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $dbConnection);
+            $customerId = getCustomer($dbConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode);
         }
         if ($quantityOnHand < $amountOfProductsInOrder) {
             $isInStock = 0;
         } else {
             $isInStock = 1;
         }
-        addOrder($customerId, $DeliveryInstructions, $currentDate, $estimatedDeliveryDate, $salesContactPersonID, $dbConnection, $isInStock);
+        addOrder($dbConnection, $customerId, $DeliveryInstructions, $currentDate, $estimatedDeliveryDate, $salesContactPersonID, $isInStock);
 
-        $OrderID = getOrderID($customerId, $dbConnection);
+        $OrderID = getOrderID($dbConnection);
 
         $basket_contents = json_decode($_COOKIE["basket"], true);
         foreach ($basket_contents as $item) {
@@ -123,11 +123,11 @@ function PlaceOrder(
                 $quantityOnHand = $row["quantityOnHand"];
             }
             $stockItemID = $item["id"];
-            $ProductDescription = getDescription($stockItemID, $dbConnection);
-            $PackageTypeID = getPackageTypeID($stockItemID, $dbConnection);
-            $UnitPrice = getUnitPrice($stockItemID, $dbConnection);
-            $TaxRate = getTaxRate($stockItemID, $dbConnection);
-            addOrderline($OrderID, $stockItemID, $ProductDescription, $PackageTypeID, $amountOfProductsInOrder, $UnitPrice, $TaxRate, $salesContactPersonID, $currentDate, $dbConnection);
+            $ProductDescription = getDescription($dbConnection, $stockItemID);
+            $PackageTypeID = getPackageTypeID($dbConnection, $stockItemID);
+            $UnitPrice = getUnitPrice($dbConnection, $stockItemID);
+            $TaxRate = getTaxRate($dbConnection, $stockItemID);
+            addOrderline($dbConnection, $OrderID, $stockItemID, $ProductDescription, $PackageTypeID, $amountOfProductsInOrder, $UnitPrice, $TaxRate, $salesContactPersonID, $currentDate);
         }
 
         $orderstatus = "Order is geplaatst";
@@ -287,19 +287,20 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
 
 
 <?php
-if (isset($_POST["naam"]) && isset($_POST["telefoonnummer"]) && isset($_POST["adress"]) && isset($_POST["postcode"])) {
+if (isset($_POST["naam"]) && isset($_POST["telefoonnummer"]) && isset($_POST["adress"]) && isset($_POST["postcode"]) && isset($_POST["provincie"]) && isset($_POST["stad"])) {
     $orderstatus = PlaceOrder(
-            $Cname,
-            $phoneNumber,
-            $DeliveryAddress,
-            $DeliveryPostalCode,
-            $DeliveryInstructions,
-            $betaald,
-            $amountOfProductsInOrder,
-            $quantityOnHand,
-            $dbConnection,
-            $DeliveryProvince,
-            $cityName);
+        $dbConnection,
+        $Cname,
+        $phoneNumber,
+        $DeliveryAddress,
+        $DeliveryPostalCode,
+        $DeliveryInstructions,
+        $betaald,
+        $amountOfProductsInOrder,
+        $quantityOnHand,
+        $DeliveryProvince,
+        $cityName
+    );
     print ($orderstatus);
 
 }

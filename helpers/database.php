@@ -180,11 +180,16 @@ function getCity ($dbConnection, $cityName) {
     WHERE CityName = ?";
 
     $Statement = mysqli_prepare($dbConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "i", $cityName);
+    mysqli_stmt_bind_param($Statement, "s", $cityName);
     mysqli_stmt_execute($Statement);
     $R = mysqli_stmt_get_result($Statement);
     $R = mysqli_fetch_assoc($R);
-    return intval($R['CityID'], 10);
+    if ($R == null) {
+        return $R;
+    } else {
+        $R = intval($R['CityID'], 10);
+        return $R;
+    }
 }
 
 function addCity ($dbConnection, $newCityID, $cityName, $StateProvinceID, $salesContactPersonID, $currentDate, $validTo){

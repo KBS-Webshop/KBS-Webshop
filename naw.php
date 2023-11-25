@@ -1,145 +1,6 @@
 <?php
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
-$Cname = " ";
-$phoneNumber = " ";
-$DeliveryAddress = " ";
-$DeliveryPostalCode = " ";
-$DeliveryInstructions = "";
-$amountOfProductsInOrder = 0;
-$quantityOnHand = 0;
-$betaald = true;
-if (isset($_POST["naam"])) {
-    $Cname = $_POST["naam"];
-}
-if (isset($_POST["telefoonnummer"])) {
-    $phoneNumber = $_POST["telefoonnummer"];
-}
-if (isset($_POST["adress"])) {
-    $DeliveryAddress = $_POST["adress"];
-}
-if (isset($_POST["postcode"])) {
-    $DeliveryPostalCode = $_POST["postcode"];
-}
-if (isset($_POST["bezorgInstructies"])) {
-    $DeliveryInstructions = $_POST["bezorgInstructies"];
-}
-if (isset($_POST["stad"])) {
-    $cityName = $_POST["stad"];
-}
-if (isset($_POST["provincie"])) {
-    $DeliveryProvince = $_POST["provincie"];
-}
-//if (isset($_POST["land"])) {
-//    $DeliveryCountry = $_POST["land"];
-//}
-$dbConnection = connectToDatabase(); #TODO: 2e connectie word opgesteld moet later fixen dat we hier omheen komen.
-function PlaceOrder(
-    $dbConnection,
-    $Cname,
-    $phoneNumber,
-    $DeliveryAddress,
-    $DeliveryPostalCode,
-    $DeliveryInstructions,
-    $betaald,
-    $amountOfProductsInOrder,
-    $quantityOnHand,
-    $DeliveryProvince,
-    $cityName
-) {
-    $orderstatus = "Wordt verwerkt";
-
-    if ($betaald == true) {
-        $countryID = 153;
-        $newStateProvinceID = getNewStateProvinceID($dbConnection);
-        $StateProvinceID = getStateProvince($dbConnection, $DeliveryProvince);
-        $stateProvinceCode = abbreviate($DeliveryProvince);
-        $newCityID = getNewCityID($dbConnection);
-        $deliveryCityID = getCity($dbConnection, $cityName);
-        $newCustomerID = getNewCustomerID($dbConnection);
-        $customerId = getCustomer($dbConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode);
-        $customerCategoryID = 8;
-        $salesContactPersonID = 3262;
-        $deliveryMethodID = 3;
-        $standardDiscountPercentage = 0.000;
-        $isOnCreditHold = 0;
-        $isStatementSent = 0;
-        $paymentDays = 7;
-        $validTo = "9999-12-31 23:59:59";
-        $websiteURL = "https://KBS.renzeboerman.nl";
-        $currentDate = date("Y-m-d");
-        $estimatedDeliveryDate = date("Y-m-d", strtotime($currentDate . "+ 1 days"));
-        if ($StateProvinceID == null) {
-            addStateProvince($dbConnection, $newStateProvinceID, $stateProvinceCode, $countryID, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo);
-            $StateProvinceID = getStateProvince($dbConnection, $DeliveryProvince);
-        } else {
-            $StateProvinceID = getStateProvince($dbConnection, $DeliveryProvince);
-        }
-        if ($deliveryCityID == null) {
-            addCity ($dbConnection, $newCityID, $cityName, $StateProvinceID, $salesContactPersonID, $currentDate, $validTo);
-            $deliveryCityID = getCity($dbConnection,$cityName);
-        } else {
-            $deliveryCityID = getCity($dbConnection, $cityName);
-        }
-        if ($customerId == null) {
-            addCustomer(
-                    $dbConnection,
-                    $newCustomerID,
-                    $Cname,
-                    $phoneNumber,
-                    $DeliveryAddress,
-                    $DeliveryPostalCode,
-                    $deliveryCityID,
-                    $customerCategoryID,
-                    $salesContactPersonID,
-                    $deliveryMethodID,
-                    $currentDate,
-                    $standardDiscountPercentage,
-                    $isStatementSent,
-                    $isOnCreditHold,
-                    $paymentDays,
-                    $websiteURL,
-                    $validTo);
-            $customerId = getCustomer($dbConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode);
-        } else {
-            $customerId = getCustomer($dbConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode);
-        }
-        if ($quantityOnHand < $amountOfProductsInOrder) {
-            $isInStock = 0;
-        } else {
-            $isInStock = 1;
-        }
-        addOrder($dbConnection, $customerId, $DeliveryInstructions, $currentDate, $estimatedDeliveryDate, $salesContactPersonID, $isInStock);
-
-        $OrderID = getOrderID($dbConnection);
-
-        $basket_contents = json_decode($_COOKIE["basket"], true);
-        foreach ($basket_contents as $item) {
-
-            if (isset($item["amount"])) {
-                $amountOfProductsInOrder = $item["amount"];
-            }
-            if (isset($row["quantityOnHand"])) {
-                $quantityOnHand = $row["quantityOnHand"];
-            }
-            $stockItemID = $item["id"];
-            $ProductDescription = getDescription($dbConnection, $stockItemID);
-            $PackageTypeID = getPackageTypeID($dbConnection, $stockItemID);
-            $UnitPrice = getUnitPrice($dbConnection, $stockItemID);
-            $TaxRate = getTaxRate($dbConnection, $stockItemID);
-            addOrderline($dbConnection, $OrderID, $stockItemID, $ProductDescription, $PackageTypeID, $amountOfProductsInOrder, $UnitPrice, $TaxRate, $salesContactPersonID, $currentDate);
-        }
-
-        $orderstatus = "Order is geplaatst";
-
-    } else {
-
-        $orderstatus = "Order is niet geplaatst";
-
-    }
-
-    return $orderstatus;
-}
 ?>
 <h2>bestelgegevens</h2><br>
 <?php
@@ -158,7 +19,7 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
         <?php
         foreach ($basket_contents as $item) {
             $totalprice=0;
-            $StockItem = getStockItem($item["id"], $dbConnection);
+            $StockItem = getStockItem($item["id"], $databaseConnection);
             $totalprice += round($item['amount'] * $StockItem['SellPrice'], 2);
             echo ("<tr> <td>" . $StockItem['StockItemName'] . "</td>");
             echo ("<td>" . $item['amount'] . "</td>");
@@ -229,13 +90,6 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
             <input type="text" name="email" id="email" required>
         </div>
     </div>
-<?php
-//print ($Cname); ?><!-- <BR> --><?php
-//print ($phoneNumber); ?><!-- <BR> --><?php
-//    print ($DeliveryAddress); ?><!-- <BR> --><?php
-//    print ($DeliveryPostalCode); ?><!-- <BR> --><?php
-//    print ($DeliveryInstructions); ?><!-- <BR> --><?php
-//    ?>
     <div class="radio-container">
 
         <fieldset>
@@ -286,23 +140,5 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
 
 
 <?php
-if (isset($_POST["naam"]) && isset($_POST["telefoonnummer"]) && isset($_POST["adress"]) && isset($_POST["postcode"]) && isset($_POST["provincie"]) && isset($_POST["stad"])) {
-    $orderstatus = PlaceOrder(
-        $dbConnection,
-        $Cname,
-        $phoneNumber,
-        $DeliveryAddress,
-        $DeliveryPostalCode,
-        $DeliveryInstructions,
-        $betaald,
-        $amountOfProductsInOrder,
-        $quantityOnHand,
-        $DeliveryProvince,
-        $cityName
-    );
-    print ($orderstatus);
-
-}
-
 include __DIR__ . "/components/footer.php"
 ?>

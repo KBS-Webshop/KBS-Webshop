@@ -133,7 +133,7 @@ function getNewStateProvinceID($dbConnection)
     $R = $R + 1;
     return $R;
 }
-function getStateProvince ($provinceName, $dbConnection) {
+function getStateProvince ($dbConnection, $provinceName) {
     $Query = "
     SELECT StateProvinceID
     FROM stateprovinces
@@ -151,7 +151,7 @@ function getStateProvince ($provinceName, $dbConnection) {
         return $R;
     }
 }
-function addStateProvince ($newStateProvinceID, $stateProvinceCode, $countryID, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo,$dbConnection) {
+function addStateProvince ($dbConnection, $newStateProvinceID, $stateProvinceCode, $countryID, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo) {
     $Query = "
     INSERT INTO stateprovinces (StateProvinceID, StateProvinceCode, StateProvinceName, CountryID, SalesTerritory, LastEditedBy, ValidFrom, ValidTo)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -173,7 +173,7 @@ function getNewCityID ($dbConnection) {
     $R = $R + 1;
     return $R;
 }
-function getCity ($cityName, $dbConnection) {
+function getCity ($dbConnection, $cityName) {
     $Query = "
     SELECT CityID
     FROM cities
@@ -187,7 +187,7 @@ function getCity ($cityName, $dbConnection) {
     return intval($R['CityID'], 10);
 }
 
-function addCity ($newCityID, $cityName, $StateProvinceID, $salesContactPersonID, $currentDate, $validTo, $dbConnection){
+function addCity ($dbConnection, $newCityID, $cityName, $StateProvinceID, $salesContactPersonID, $currentDate, $validTo){
     $Query = "
     INSERT INTO cities (CityID, CityName, StateProvinceID, LastEditedBy, ValidFrom, ValidTo)
     VALUES (?, ?, ?, ?, ?, ?)";
@@ -210,7 +210,7 @@ function getNewCustomerID($dbConnection)
     $R = $R + 1;
     return $R;
 }
-function getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $dbConnection) {
+function getCustomer($dbConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode) {
     $Query = "
     SELECT CustomerID
     FROM customers
@@ -229,7 +229,7 @@ function getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode
     }
 }
 
-function addCustomer ($newCustomerID, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $deliveryCityID, $customCategoryID, $salesContactPersonID, $deliveryMethodID, $currentDate, $standardDiscountPercentage, $isStatementSent, $isOnCreditHold, $paymentDays, $websiteURL, $validTo, $dbConnection) {
+function addCustomer ($dbConnection, $newCustomerID, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $deliveryCityID, $customCategoryID, $salesContactPersonID, $deliveryMethodID, $currentDate, $standardDiscountPercentage, $isStatementSent, $isOnCreditHold, $paymentDays, $websiteURL, $validTo) {
     $Query = "
     INSERT INTO customers (CustomerID, CustomerName, BillToCustomerID, CustomerCategoryID, PrimaryContactPersonID, DeliveryMethodID, DeliveryCityID, PostalCityID, AccountOpenedDate, StandardDiscountPercentage, IsStatementSent, IsOnCreditHold, PaymentDays, PhoneNumber, FaxNumber, WebsiteURL, DeliveryAddressLine1, DeliveryPostalCode, PostalAddressLine1, PostalPostalCode, LastEditedBy, ValidFrom, ValidTo)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?)";
@@ -249,7 +249,7 @@ function getOrderID ($dbConnection) {
     $R = intval($R[0]['max(OrderID)'], 10);
     return $R;
 }
-function addOrder ($CustomerId, $DeliveryInstructions, $currentDate, $estimatedDeliveryDate , $salesContactPersonID, $dbConnection, $isInStock) {
+function addOrder ($dbConnection, $CustomerId, $DeliveryInstructions, $currentDate, $estimatedDeliveryDate , $salesContactPersonID, $isInStock) {
     $Query = "
     INSERT INTO orders (CustomerID, OrderDate, ExpectedDeliveryDate, DeliveryInstructions, salespersonPersonID, IsUndersupplyBackordered, lastEditedBy)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -259,7 +259,7 @@ function addOrder ($CustomerId, $DeliveryInstructions, $currentDate, $estimatedD
 }
 
 #mijn versie
-//function getDescription ($stockItemID, $dbConnection) {
+//function getDescription ($dbConnection, $stockItemID) {
 //    $Query = "
 //    SELECT MarketingComments
 //    FROM stockitems
@@ -272,7 +272,7 @@ function addOrder ($CustomerId, $DeliveryInstructions, $currentDate, $estimatedD
 //    $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
 //    return $R;
 //}
-//function getPackageTypeID ($stockItemID, $dbConnection) {
+//function getPackageTypeID ($dbConnection, $stockItemID) {
 //    # UnitPackageID of OuterPackageID
 //    $Query = "
 //    SELECT UnitPackageID
@@ -286,7 +286,7 @@ function addOrder ($CustomerId, $DeliveryInstructions, $currentDate, $estimatedD
 //    $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
 //    return $R;
 //}
-//function getUnitPrice ($stockItemID, $dbConnection) {
+//function getUnitPrice ($dbConnection, $stockItemID) {
 //    $Query = "
 //    SELECT UnitPrice
 //    FROM stockitems
@@ -299,7 +299,7 @@ function addOrder ($CustomerId, $DeliveryInstructions, $currentDate, $estimatedD
 //    $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
 //    return $R;
 //}
-//function getTaxRate ($stockItemID, $dbConnection) {
+//function getTaxRate ($dbConnection, $stockItemID) {
 //    $Query = "
 //    SELECT TaxRate
 //    FROM stockitems
@@ -313,7 +313,7 @@ function addOrder ($CustomerId, $DeliveryInstructions, $currentDate, $estimatedD
 //    return $R;
 //}
 # chatgpt versie
-function getDescription($stockItemID, $dbConnection) {
+function getDescription($dbConnection, $stockItemID) {
     $Query = "
     SELECT MarketingComments
     FROM stockitems
@@ -327,7 +327,7 @@ function getDescription($stockItemID, $dbConnection) {
     return $R['MarketingComments'];
 }
 
-function getPackageTypeID($stockItemID, $dbConnection) {
+function getPackageTypeID($dbConnection, $stockItemID) {
     $Query = "
     SELECT UnitPackageID
     FROM stockitems
@@ -341,7 +341,7 @@ function getPackageTypeID($stockItemID, $dbConnection) {
     return $R['UnitPackageID'];
 }
 
-function getUnitPrice($stockItemID, $dbConnection) {
+function getUnitPrice($dbConnection, $stockItemID) {
     $Query = "
     SELECT UnitPrice
     FROM stockitems
@@ -355,7 +355,7 @@ function getUnitPrice($stockItemID, $dbConnection) {
     return $R['UnitPrice'];
 }
 
-function getTaxRate($stockItemID, $dbConnection) {
+function getTaxRate($dbConnection, $stockItemID) {
     $Query = "
     SELECT TaxRate
     FROM stockitems
@@ -386,7 +386,7 @@ function getTaxRate($stockItemID, $dbConnection) {
 //    mysqli_stmt_execute($Statement);
 //}
 # chatgpt versie
-function addOrderline($OrderID, $stockItemID, $ProductDescription, $PackageTypeID, $amountOfProductsInOrder, $UnitPrice, $TaxRate, $salesContactPersonID, $currentDate, $dbConnection) {
+function addOrderline($dbConnection, $OrderID, $stockItemID, $ProductDescription, $PackageTypeID, $amountOfProductsInOrder, $UnitPrice, $TaxRate, $salesContactPersonID, $currentDate) {
     $Query = "
     INSERT INTO orderlines (OrderID, StockItemID, Description, PackageTypeID, Quantity, UnitPrice, TaxRate, PickedQuantity, LastEditedBy, LastEditedWhen)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";

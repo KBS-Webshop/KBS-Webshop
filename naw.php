@@ -71,7 +71,7 @@ function PlaceOrder(
         $currentDate = date("Y-m-d");
         $estimatedDeliveryDate = date("Y-m-d", strtotime($currentDate . "+ 1 days"));
         if ($StateProvinceID == null) {
-            addStateProvince($newStateProvinceID, $stateProvinceCode, $StateProvinceID, $countryID, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo,$databaseConnection);
+            addStateProvince($newStateProvinceID, $stateProvinceCode, $countryID, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo,$databaseConnection);
             $StateProvinceID = getStateProvince($DeliveryProvince, $databaseConnection);
         } else {
             $StateProvinceID = getStateProvince($DeliveryProvince, $databaseConnection);

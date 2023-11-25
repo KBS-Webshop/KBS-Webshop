@@ -43,7 +43,7 @@ function PlaceOrder(
     $betaald,
     $amountOfProductsInOrder,
     $quantityOnHand,
-    $databaseConnection,
+    $dbConnection,
     $DeliveryProvince,
     $cityName
 ) {
@@ -52,13 +52,13 @@ function PlaceOrder(
 
     if ($betaald == true) {
         $countryID = 153;
-        $newStateProvinceID = getNewStateProvinceID($databaseConnection);
-        $StateProvinceID = getStateProvince($DeliveryProvince, $databaseConnection);
+        $newStateProvinceID = getNewStateProvinceID($dbConnection);
+        $StateProvinceID = getStateProvince($DeliveryProvince, $dbConnection);
         $stateProvinceCode = abbreviate($DeliveryProvince);
-        $newCityID = getNewCityID($databaseConnection);
-        $deliveryCityID = getCity($cityName, $databaseConnection);
-        $newCustomerID = getNewCustomerID($databaseConnection);
-        $customerId = getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection);
+        $newCityID = getNewCityID($dbConnection);
+        $deliveryCityID = getCity($cityName, $dbConnection);
+        $newCustomerID = getNewCustomerID($dbConnection);
+        $customerId = getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $dbConnection);
         $customerCategoryID = 8;
         $salesContactPersonID = 3262;
         $deliveryMethodID = 3;
@@ -71,31 +71,31 @@ function PlaceOrder(
         $currentDate = date("Y-m-d");
         $estimatedDeliveryDate = date("Y-m-d", strtotime($currentDate . "+ 1 days"));
         if ($StateProvinceID == null) {
-            addStateProvince($newStateProvinceID, $stateProvinceCode, $countryID, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo,$databaseConnection);
-            $StateProvinceID = getStateProvince($DeliveryProvince, $databaseConnection);
+            addStateProvince($newStateProvinceID, $stateProvinceCode, $countryID, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo,$dbConnection);
+            $StateProvinceID = getStateProvince($DeliveryProvince, $dbConnection);
         } else {
-            $StateProvinceID = getStateProvince($DeliveryProvince, $databaseConnection);
+            $StateProvinceID = getStateProvince($DeliveryProvince, $dbConnection);
         }
         if ($deliveryCityID == null) {
-            addCity ($newCityID, $cityName, $StateProvinceID, $salesContactPersonID, $currentDate, $validTo, $databaseConnection);
-            $deliveryCityID = getCity($cityName, $databaseConnection);
+            addCity ($newCityID, $cityName, $StateProvinceID, $salesContactPersonID, $currentDate, $validTo, $dbConnection);
+            $deliveryCityID = getCity($cityName, $dbConnection);
         } else {
-            $deliveryCityID = getCity($cityName, $databaseConnection);
+            $deliveryCityID = getCity($cityName, $dbConnection);
         }
         if ($customerId == null) {
-            addCustomer($newCustomerID, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $deliveryCityID, $deliveryCityID, $countryID, $customerCategoryID, $salesContactPersonID, $DeliveryInstructions, $deliveryMethodID, $standardDiscountPercentage, $isOnCreditHold, $isStatementSent, $paymentDays, $currentDate, $validTo, $websiteURL, $databaseConnection);
-            $customerId = getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection);
+            addCustomer($newCustomerID, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $deliveryCityID, $deliveryCityID, $countryID, $customerCategoryID, $salesContactPersonID, $DeliveryInstructions, $deliveryMethodID, $standardDiscountPercentage, $isOnCreditHold, $isStatementSent, $paymentDays, $currentDate, $validTo, $websiteURL, $dbConnection);
+            $customerId = getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $dbConnection);
         } else {
-            $customerId = getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $databaseConnection);
+            $customerId = getCustomer($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $dbConnection);
         }
         if ($quantityOnHand < $amountOfProductsInOrder) {
             $isInStock = 0;
         } else {
             $isInStock = 1;
         }
-        addOrder($customerId, $DeliveryInstructions, $currentDate, $estimatedDeliveryDate, $salesContactPersonID, $databaseConnection, $isInStock);
+        addOrder($customerId, $DeliveryInstructions, $currentDate, $estimatedDeliveryDate, $salesContactPersonID, $dbConnection, $isInStock);
 
-        $OrderID = getOrderID($customerId, $databaseConnection);
+        $OrderID = getOrderID($customerId, $dbConnection);
 
         $basket_contents = json_decode($_COOKIE["basket"], true);
         foreach ($basket_contents as $item) {
@@ -107,11 +107,11 @@ function PlaceOrder(
                 $quantityOnHand = $row["quantityOnHand"];
             }
             $stockItemID = $item["id"];
-            $ProductDescription = getDescription($stockItemID, $databaseConnection);
-            $PackageTypeID = getPackageTypeID($stockItemID, $databaseConnection);
-            $UnitPrice = getUnitPrice($stockItemID, $databaseConnection);
-            $TaxRate = getTaxRate($stockItemID, $databaseConnection);
-            addOrderline($OrderID, $stockItemID, $ProductDescription, $PackageTypeID, $amountOfProductsInOrder, $UnitPrice, $TaxRate, $salesContactPersonID, $currentDate, $databaseConnection);
+            $ProductDescription = getDescription($stockItemID, $dbConnection);
+            $PackageTypeID = getPackageTypeID($stockItemID, $dbConnection);
+            $UnitPrice = getUnitPrice($stockItemID, $dbConnection);
+            $TaxRate = getTaxRate($stockItemID, $dbConnection);
+            addOrderline($OrderID, $stockItemID, $ProductDescription, $PackageTypeID, $amountOfProductsInOrder, $UnitPrice, $TaxRate, $salesContactPersonID, $currentDate, $dbConnection);
         }
 
         $orderstatus = "Order is geplaatst";

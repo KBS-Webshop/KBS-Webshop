@@ -33,7 +33,7 @@ if (isset($_POST["provincie"])) {
 //if (isset($_POST["land"])) {
 //    $DeliveryCountry = $_POST["land"];
 //}
-
+$dbConnection = connectToDatabase(); #TODO: 2e connectie word opgesteld moet later fixen dat we hier omheen komen.
 function PlaceOrder(
     $Cname,
     $phoneNumber,
@@ -142,7 +142,7 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
         <?php
         foreach ($basket_contents as $item) {
             $totalprice=0;
-            $StockItem = getStockItem($item["id"], $databaseConnection);
+            $StockItem = getStockItem($item["id"], $dbConnection);
             $totalprice += round($item['amount'] * $StockItem['SellPrice'], 2);
             echo ("<tr> <td>" . $StockItem['StockItemName'] . "</td>");
             echo ("<td>" . $item['amount'] . "</td>");
@@ -272,7 +272,7 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
 
 <?php
 if (isset($_POST["naam"]) && isset($_POST["telefoonnummer"]) && isset($_POST["adress"]) && isset($_POST["postcode"])) {
-    $orderstatus = PlaceOrder($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $DeliveryInstructions, $databaseConnection, $betaald, $amountOfProductsInOrder, $quantityOnHand, $DeliveryProvince, $cityName);
+    $orderstatus = PlaceOrder($Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $DeliveryInstructions, $dbConnection, $betaald, $amountOfProductsInOrder, $quantityOnHand, $DeliveryProvince, $cityName);
     print ($orderstatus);
 
 }

@@ -109,6 +109,7 @@ function PlaceOrder(
         } else {
             $isInStock = 1;
         }
+        print ($customerId . "<BR>" . $DeliveryInstructions . "<BR>" . $currentDate . "<BR>" . $estimatedDeliveryDate . "<BR>" . $salesContactPersonID . "<BR>" . $isInStock . "<BR>");
         addOrder($dbConnection, $customerId, $DeliveryInstructions, $currentDate, $estimatedDeliveryDate, $salesContactPersonID, $isInStock);
 
         $OrderID = getOrderID($dbConnection);

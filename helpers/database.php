@@ -251,68 +251,13 @@ function getOrderID ($dbConnection) {
 }
 function addOrder ($dbConnection, $CustomerId, $DeliveryInstructions, $currentDate, $estimatedDeliveryDate , $salesContactPersonID, $isInStock) {
     $Query = "
-    INSERT INTO orders (CustomerID, OrderDate, ExpectedDeliveryDate, DeliveryInstructions, salespersonPersonID, IsUndersupplyBackordered, lastEditedBy, lastEditedWhen)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    INSERT INTO orders (CustomerID, OrderDate, ExpectedDeliveryDate, DeliveryInstructions, salespersonPersonID, ContactPersonID, IsUndersupplyBackordered, lastEditedBy, lastEditedWhen)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $Statement = mysqli_prepare($dbConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "isssiiis", $CustomerId, $currentDate, $estimatedDeliveryDate , $DeliveryInstructions, $salesContactPersonID, $isInStock, $salesContactPersonID , $currentDate);
+    mysqli_stmt_bind_param($Statement, "isssiiiis", $CustomerId, $currentDate, $estimatedDeliveryDate , $DeliveryInstructions, $salesContactPersonID, $salesContactPersonID, $isInStock, $salesContactPersonID , $currentDate);
     mysqli_stmt_execute($Statement);
 }
 
-#mijn versie
-//function getDescription ($dbConnection, $stockItemID) {
-//    $Query = "
-//    SELECT MarketingComments
-//    FROM stockitems
-//    WHERE StockItemID = ?";
-//
-//    $Statement = mysqli_prepare($dbConnection, $Query);
-//    mysqli_stmt_bind_param($Statement, "i", $stockItemID);
-//    mysqli_stmt_execute($Statement);
-//    $R = mysqli_stmt_get_result($Statement);
-//    $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
-//    return $R;
-//}
-//function getPackageTypeID ($dbConnection, $stockItemID) {
-//    # UnitPackageID of OuterPackageID
-//    $Query = "
-//    SELECT UnitPackageID
-//    FROM stockitems
-//    WHERE StockItemID = ?";
-//
-//    $Statement = mysqli_prepare($dbConnection, $Query);
-//    mysqli_stmt_bind_param($Statement, "i", $stockItemID);
-//    mysqli_stmt_execute($Statement);
-//    $R = mysqli_stmt_get_result($Statement);
-//    $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
-//    return $R;
-//}
-//function getUnitPrice ($dbConnection, $stockItemID) {
-//    $Query = "
-//    SELECT UnitPrice
-//    FROM stockitems
-//    WHERE StockItemID = ?";
-//
-//    $Statement = mysqli_prepare($dbConnection, $Query);
-//    mysqli_stmt_bind_param($Statement, "i", $stockItemID);
-//    mysqli_stmt_execute($Statement);
-//    $R = mysqli_stmt_get_result($Statement);
-//    $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
-//    return $R;
-//}
-//function getTaxRate ($dbConnection, $stockItemID) {
-//    $Query = "
-//    SELECT TaxRate
-//    FROM stockitems
-//    WHERE StockItemID = ?";
-//
-//    $Statement = mysqli_prepare($dbConnection, $Query);
-//    mysqli_stmt_bind_param($Statement, "i", $stockItemID);
-//    mysqli_stmt_execute($Statement);
-//    $R = mysqli_stmt_get_result($Statement);
-//    $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
-//    return $R;
-//}
-# chatgpt versie
 function getDescription($dbConnection, $stockItemID) {
     $Query = "
     SELECT MarketingComments
@@ -369,28 +314,11 @@ function getTaxRate($dbConnection, $stockItemID) {
     return $R['TaxRate'];
 }
 
-//function getProductInfo($stockItemID, $dbConnection) # TODO: potentieel om te zetten naar een functie die alle productinfo in 1 keer ophaalt.
-//{
-//    $ProductDescription = getDescription($stockItemID, $dbConnection);
-//    $PackageTypeID = getPackageTypeID($stockItemID, $dbConnection);
-//    $UnitPrice = getUnitPrice($stockItemID, $dbConnection);
-//    $TaxRate = getTaxRate($stockItemID, $dbConnection);
-//}
-# mijn versie
-//function addOrderline($OrderID, $stockItemID, $ProductDescription, $PackageTypeID, $amountOfProductsInOrder, $UnitPrice, $TaxRate, $salesContactPersonID, $currentDate, $dbConnection) {
-//    $Query = "
-//    INSERT INTO orderlines (OrderID, StockItemID, Description, PackageTypeID, Quantity, UnitPrice, TaxRate, PickedQuantity, LastEditedBy)
-//    VALUES (?, ?)";
-//    $Statement = mysqli_prepare($dbConnection, $Query);
-//    mysqli_stmt_bind_param($Statement, "ii", $OrderID, $stockItemID, $ProductDescription, $PackageTypeID, $amountOfProductsInOrder, $UnitPrice, $TaxRate, $amountOfProductsInOrder, $salesContactPersonID, $currentDate);
-//    mysqli_stmt_execute($Statement);
-//}
-# chatgpt versie
 function addOrderline($dbConnection, $OrderID, $stockItemID, $ProductDescription, $PackageTypeID, $amountOfProductsInOrder, $UnitPrice, $TaxRate, $salesContactPersonID, $currentDate) {
     $Query = "
     INSERT INTO orderlines (OrderID, StockItemID, Description, PackageTypeID, Quantity, UnitPrice, TaxRate, PickedQuantity, LastEditedBy, LastEditedWhen)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $Statement = mysqli_prepare($dbConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "isiiidddis", $OrderID, $stockItemID, $ProductDescription, $PackageTypeID, $amountOfProductsInOrder, $UnitPrice, $TaxRate, $amountOfProductsInOrder, $salesContactPersonID, $currentDate);
+    mysqli_stmt_bind_param($Statement, "iisiidddis", $OrderID, $stockItemID, $ProductDescription, $PackageTypeID, $amountOfProductsInOrder, $UnitPrice, $TaxRate, $amountOfProductsInOrder, $salesContactPersonID, $currentDate);
     mysqli_stmt_execute($Statement);
 }

@@ -7,7 +7,7 @@ include __DIR__ . "/helpers/utils.php";
     $adress=$_SESSION["adress"];
     $postcode=$_SESSION["postcode"];
     $stad=$_SESSION["stad"];
-    $orderID=$_SESSION["orderID"]
+    $orderID = getOrderID($databaseConnection);
 ?>
 <h1> orderbevestiging</h1><br>
 <h4><?php print $naam?> bedankt voor uw bestelling bij nerdygatgets! uw bestel nummer is <?php print $orderID?></h4><br>

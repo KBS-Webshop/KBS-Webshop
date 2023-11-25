@@ -109,7 +109,6 @@ function PlaceOrder(
         } else {
             $isInStock = 1;
         }
-        print ($customerId . "<BR>" . $DeliveryInstructions . "<BR>" . $currentDate . "<BR>" . $estimatedDeliveryDate . "<BR>" . $salesContactPersonID . "<BR>" . $isInStock . "<BR>");
         addOrder($dbConnection, $customerId, $DeliveryInstructions, $currentDate, $estimatedDeliveryDate, $salesContactPersonID, $isInStock);
 
         $OrderID = getOrderID($dbConnection);
@@ -175,8 +174,7 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
 </div>
 <html>
 
-<!--<form method="POST" name="bevestig" class="naw-form" action="afrekenen.php">-->
-    <form method="POST" class="naw-form">
+<form method="POST" name="bevestig" class="naw-form" action="afrekenen.php">
     <div class="naw-input">
         <label for="name">
           Naam <span class="required"></span>

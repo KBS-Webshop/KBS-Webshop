@@ -17,14 +17,15 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
         <th>Prijs</th>
 
         <?php
+        $totalprice=0;
         foreach ($basket_contents as $item) {
-            $totalprice=0;
             $StockItem = getStockItem($item["id"], $databaseConnection);
             $totalprice += round($item['amount'] * $StockItem['SellPrice'], 2);
             echo ("<tr> <td>" . $StockItem['StockItemName'] . "</td>");
             echo ("<td>" . $item['amount'] . "</td>");
             echo "<td>".sprintf("€%.2f", $StockItem['SellPrice'] * $item["amount"]);
         }
+        $totalprice = sprintf("€%.2f", $totalprice);
         echo ("<tr class='receivedTotalPrice'> <td></td> <th>totaalprijs</th>");
         echo("<td>$totalprice</td></tr>");
         echo '</table>';

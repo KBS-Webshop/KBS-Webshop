@@ -20,7 +20,7 @@ if(isset($_POST["mislukt"])){
                 if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
                     $basket_contents = json_decode($_COOKIE["basket"], true);
                     foreach ($basket_contents as $item) {
-                        $StockItem = getStockItem($item["id"], $databaseConnection);
+                         $StockItem = getStockItem($item["id"], $databaseConnection);
                         $StockItemImage = getStockItemImage($item['id'], $databaseConnection);
 
                         $totalprice += round($item['amount'] * $StockItem['SellPrice'], 2);

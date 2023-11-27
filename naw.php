@@ -23,11 +23,13 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
             $totalprice += round($item['amount'] * $StockItem['SellPrice'], 2);
             echo ("<tr> <td>" . $StockItem['StockItemName'] . "</td>");
             echo ("<td>" . $item['amount'] . "</td>");
-            echo "<td>".sprintf("€%.2f", $StockItem['SellPrice'] * $item["amount"]);
+            echo "<td>".str_replace(".",",",sprintf("€%.2f", $StockItem['SellPrice'] * $item["amount"]));
+
         }
         $totalprice = sprintf("€%.2f", $totalprice);
         echo ("<tr class='receivedTotalPrice'> <td></td> <th>totaalprijs</th>");
-        echo("<td>$totalprice</td></tr>");
+        $totalprice1=str_replace(".",",",$totalprice);
+        echo("<td>€$totalprice1</td></tr>");
         echo '</table>';
 
         ?>

@@ -28,3 +28,11 @@
     margin-top: 25px;
     text-align: right;
 }
+#ProductFrame1 {
+    width: 120%;
+    height: 250px;
+    margin-top: 15px;
+    position: relative;
+    padding: 1px;
+    border-bottom: 1px solid #5a6268;
+}

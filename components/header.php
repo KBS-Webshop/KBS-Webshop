@@ -21,6 +21,7 @@ $databaseConnection = connectToDatabase();
     <!-- Style sheets-->
     <link rel="stylesheet" href="Public/CSS/style.css" type="text/css">
     <link rel="stylesheet" href="Public/CSS/header.css" type="text/css">
+    <link rel="stylesheet" href="Public/CSS/orderbevestiging.css" type="text/css">
     <link rel="stylesheet" href="Public/CSS/winkelmand.css" type="text/css">
     <link rel="stylesheet" href="Public/CSS/naw.css" type="text/css">
     <link rel="stylesheet" href="Public/CSS/bootstrap.min.css" type="text/css">

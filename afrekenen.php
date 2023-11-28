@@ -11,7 +11,7 @@ $_SESSION["bezorgInstructies"] = $_POST["bezorgInstructies"];
 $_SESSION["provincie"] = $_POST["provincie"];
 ?>
 <html>
-<form method="post" name="mislukt" action="orderbevestiging.php">
+<form method="post" name="mislukt" action="winkelmand.php">
     <input type="submit" name="mislukt" value="betaling annuleren">
 </form>
 <form method="post" name="gelukt" action="orderbevestiging.php">

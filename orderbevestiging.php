@@ -24,6 +24,7 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
         $StockItemImage = getStockItemImage($item['id'], $databaseConnection);
 
         $totalprice += round($item['amount'] * $StockItem['SellPrice'], 2);
+        changevoorraad($item["amount"] ,$StockItem,$databaseConnection);
 
         ?>
     <div id="ProductFrame1">
@@ -46,10 +47,6 @@ if (isset($StockItemImage[0]["ImagePath"])) { ?>
     <h1 class="StockItemID"> <?php print ("artikelnummer: " . $item["id"]."<br>")?></h1>
     <h1 class="StockItemID1"> <?php print($StockItem["StockItemName"]."<br><br>aantal: ". $item['amount']) ?>
     <div class="buttonAlignmentWinkelmand">
-    <form method="post" class="buttonWinkelmand">
-    <input type="hidden" name="action" value="decrement">
-    <input type="hidden" name="StockItemID" value="<?php echo $item["id"] ?>">
-           </form>
                                 </div>
                             </h1>
                         </div>

@@ -327,3 +327,13 @@ function addOrderline($dbConnection, $OrderID, $stockItemID, $ProductDescription
     mysqli_stmt_bind_param($Statement, "iisiidddis", $OrderID, $stockItemID, $ProductDescription, $PackageTypeID, $amountOfProductsInOrder, $UnitPrice, $TaxRate, $amountOfProductsInOrder, $salesContactPersonID, $currentDate);
     mysqli_stmt_execute($Statement);
 }
+function changevoorraad($amount, $stockItemID, $dbConnection){
+    $Query = "UPDATE nerdygadgets.stockitemholdings t
+              SET t.QuantityOnHand = t.QuantityOnHand - ?
+              WHERE t.StockItemID = ?";
+
+    $Statement = mysqli_prepare($dbConnection, $Query);
+    mysqli_stmt_bind_param($Statement, "ii", $amount, $stockItemID);
+    mysqli_stmt_execute($Statement);
+
+}

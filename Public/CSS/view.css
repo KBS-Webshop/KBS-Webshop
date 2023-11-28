@@ -1,0 +1,58 @@
+.ProductsAlsoBoughtGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.ProductAlsoBoughtWrapper {
+    width: 50%;
+}
+
+.ProductInformationWrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+.ProductInformation {
+    display: flex;
+    flex-direction: column;
+    min-width: 50%;
+}
+
+.ProductsAlsoBoughtGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 10px;
+}
+
+@media screen and (max-width: 1600px) {
+    .ProductsAlsoBoughtGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.ProductAlsoBoughtWrapper {
+    width: 50%;
+}
+
+.ProductAlsoBoughtWrapper h5 {
+    font-size: 1.1rem;
+}
+
+.ProductAlsoBoughtWrapper .ListItem {
+    color: #0000a4;
+    max-width: 75%;
+}
+
+
+.ProductInformationWrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+.ProductInformation {
+    display: flex;
+    flex-direction: column;
+}

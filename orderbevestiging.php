@@ -192,7 +192,7 @@ $betaald = TRUE;
 
     return $orderstatus;
     }
-//if (isset($_SESSION["naam"]) && isset($_SESSION["telefoonnummer"]) && isset($_SESSION["adress"]) && isset($_SESSION["postcode"]) && isset($_SESSION["provincie"]) && isset($_SESSION["stad"])) {
+if (isset($_SESSION["naam"]) && isset($_SESSION["telefoonnummer"]) && isset($_SESSION["adress"]) && isset($_SESSION["postcode"]) && isset($_SESSION["provincie"]) && isset($_SESSION["stad"])) {
     PlaceOrder(
         $dbConnection,
         $Cname,
@@ -206,6 +206,6 @@ $betaald = TRUE;
         $DeliveryProvince,
         $cityName
     );
-//}
+}
 include __DIR__ . "/components/footer.php"
 ?>

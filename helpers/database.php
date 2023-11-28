@@ -108,8 +108,6 @@ function getStockItemImage($id, $databaseConnection)
     return $R;
 }
 
-
-
 function abbreviate($string){ # maakt een afkorting van de ingevoerde waarde
     $abbreviation = "";
     $string = ucwords($string);
@@ -335,4 +333,33 @@ function changevoorraad($dbConnection, $amount, $stockItemID){
     mysqli_stmt_bind_param($Statement, "ii", $amount, $stockItemID);
     mysqli_stmt_execute($Statement);
 
+}
+
+function getAlsoBought($id, $databaseConnection) {
+
+    $Query = "
+        SELECT o.StockItemID, s.StockItemName, si.ImagePath StockItemImage, (RecommendedRetailPrice*(1+(s.TaxRate/100))) AS SellPrice, COUNT(*) kerenSamengekocht
+        FROM orderlines o
+        JOIN stockitems s ON o.StockItemID = s.StockItemID
+        JOIN stockitemimages si ON si.StockItemID = o.StockItemID
+        JOIN stockitemholdings sh ON o.StockItemID = sh.StockItemID
+        WHERE OrderID IN (
+            SELECT OrderID
+            FROM orderlines
+            WHERE StockItemID = ?
+        ) AND o.StockItemID != ?
+        GROUP BY o.StockItemID, s.StockItemName, si.ImagePath, SellPrice
+        ORDER BY kerenSamengekocht DESC
+        LIMIT 6;
+    ";
+
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+
+    mysqli_stmt_bind_param($Statement, "ii", $id, $id);
+
+    mysqli_stmt_execute($Statement);
+    $R = mysqli_stmt_get_result($Statement);
+    $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
+
+    return $R;
 }

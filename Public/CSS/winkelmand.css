@@ -16,6 +16,10 @@ ul#shoppingcart{
     padding-left: 0;
 }
 
+button.add-to-cart-button {
+    background-color: transparent;
+}
+  
 .winkelmandAantalKnop {
     width: 50px;
     font-weight: bold;
@@ -72,6 +76,7 @@ ul#shoppingcart{
 .winkelmandBinImage {
     transform: scale(0.9);
 }
+  
 .StockItemPriceTextcart {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     color: #0000a4;

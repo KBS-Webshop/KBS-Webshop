@@ -4,6 +4,7 @@ include __DIR__ . "/components/header.php";
 
 $StockItem = getStockItem($_GET['id'], $databaseConnection);
 $StockItemImage = getStockItemImage($_GET['id'], $databaseConnection);
+$AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
 ?>
 <div id="CenteredContent">
     <?php
@@ -85,61 +86,99 @@ $StockItemImage = getStockItemImage($_GET['id'], $databaseConnection);
                         <form method="post">
                             <input type="hidden" name="action" value="add">
                             <input type="hidden" name="StockItemID" value="<?php echo $StockItem["StockItemID"]; ?>">
-                            <button type="submit" name="addToCart" value="addItemToCart">
+                            <button class="add-to-cart-button" type="submit" name="addToCart" value="addItemToCart">
                                 <i class="fa fa-cart-plus fa-lg"></i>
                             </button>
-
                         </form>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="StockItemDescription">
-            <h3>Artikel beschrijving</h3>
-            <p><?php print $StockItem['SearchDetails']; ?></p>
-        </div>
-        <div id="StockItemSpecifications">
-            <h3>Artikel specificaties</h3>
-            <?php
-            $CustomFields = json_decode($StockItem['CustomFields'], true);
-            if (is_array($CustomFields)) { ?>
-                <table>
-                <thead>
-                <th>Naam</th>
-                <th>Data</th>
-                </thead>
-                <?php
-                foreach ($CustomFields as $SpecName => $SpecText) { ?>
-                    <tr>
-                        <td>
-                            <?php print $SpecName; ?>
-                        </td>
-                        <td>
-                            <?php
-                            if (is_array($SpecText)) {
-                                foreach ($SpecText as $SubText) {
-                                    print $SubText . " ";
-                                }
-                            } else {
-                                print $SpecText;
-                            }
-                            ?>
-                        </td>
-                    </tr>
-                <?php } ?>
-                </table><?php
-            } else { ?>
-                <p>
-                    <?php print $StockItem['CustomFields']; ?>.
-                </p>
-                <?php
-            }
+        <div class="ProductInformationWrapper">
+            <div class="ProductInformation">
+                <div id="StockItemDescription">
+                    <h3>Artikel beschrijving</h3>
+                    <p><?php print $StockItem['SearchDetails']; ?></p>
+                </div>
+                <div id="StockItemSpecifications">
+                    <h3>Artikel specificaties</h3>
+                    <?php
+                    $CustomFields = json_decode($StockItem['CustomFields'], true);
+                    if (is_array($CustomFields)) { ?>
+                        <table>
+                        <thead>
+                        <th>Naam</th>
+                        <th>Data</th>
+                        </thead>
+                        <?php
+                        foreach ($CustomFields as $SpecName => $SpecText) { ?>
+                            <tr>
+                                <td>
+                                    <?php print $SpecName; ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    if (is_array($SpecText)) {
+                                        foreach ($SpecText as $SubText) {
+                                            print $SubText . " ";
+                                        }
+                                    } else {
+                                        print $SpecText;
+                                    }
+                                    ?>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                        </table><?php
+                    } else { ?>
+                        <p>
+                            <?php print $StockItem['CustomFields']; ?>.
+                        </p>
+                        <?php
+                    }
+                    ?>
+
+                </div>
+            </div>
+
+            <?php 
+                if(count($AlsoBought) != 0) {
             ?>
-            
+            <div class="ProductAlsoBoughtWrapper">
+                <h3>Vaak samen gekocht</h3>
+                <div class="ProductsAlsoBoughtGrid">
+                    <?php
+                        foreach ($AlsoBought as $product) {
+                            ?>
+                            <a class="ListItem" href='view.php?id=<?php echo $product['StockItemID']; ?>'>
+                                <?php
+                                    if (isset($product["StockItemImage"])) { ?>
+                                        <div class="ImgFrame"
+                                            style="background-image: url('<?php print "Public/StockItemIMG/" . $product["StockItemImage"]; ?>'); background-size: contain; background-repeat: no-repeat; background-position: center;"></div>
+                                <?php } ?>
+                                <h5><?php echo $product["StockItemName"] ?></h5>
+                                <?php echo sprintf("€ %.2f", $product['SellPrice']) ?></p>
+                                <form method="post">
+                                    <input type="hidden" name="action" value="add">
+                                    <input type="hidden" name="StockItemID" value="<?php echo $product['StockItemID']; ?>">
+                                    <button class="add-to-cart-button" type="submit" name="addToCart" value="addItemToCart">
+                                        <i class="fa fa-cart-plus fa-lg"></i>
+                                    </button>
+                                </form>
+                            </a>
+                            <?php
+                        }
+                    ?>
+                </div>
+            </div>
+            <?php 
+                }
+            ?>
         </div>
         <?php
     } else {
         ?><h2 id="ProductNotFound">Het opgevraagde product is niet gevonden.</h2><?php
     } ?>
+</div>
 </div>

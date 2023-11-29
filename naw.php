@@ -1,9 +1,7 @@
 <?php
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
-?>
-<h2>bestelgegevens</h2><br>
-<?php
+
 if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
 ?>
 <div class="bonnetje-wrapper">
@@ -29,7 +27,7 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
         $totalprice = sprintf("€%.2f", $totalprice);
         echo ("<tr class='receivedTotalPrice'> <td></td> <th>totaalprijs</th>");
         $totalprice1=str_replace(".",",",$totalprice);
-        echo("<td>€$totalprice1</td></tr>");
+        echo("<td>$totalprice1</td></tr>");
         echo '</table>';
 
         ?>
@@ -37,6 +35,10 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
         <?php } ?>
 </div>
 <html>
+
+<h2>Bestelgegevens</h2>
+
+<p id="errorMsg" class="error-text"></p>
 
 <form method="POST" name="bevestig" class="naw-form" action="afrekenen.php">
     <div class="naw-input">
@@ -81,7 +83,7 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
             <label for="name" class="required">
                 Telefoonnummer
             </label>
-            <input type="text" name="telefoonnummer" id="telefoonnummer" >
+            <input type="text" name="telefoonnummer" id="telefoonnummer">
         </div>
     </div>
 
@@ -119,7 +121,7 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
                 </label>
                 <label>
                     <input class="nerdy" type="radio" name="betaalmethode" id="Nerdygadgets Giftcard" required>
-                    Nerdygadgets Gifcard
+                    Nerdygadgets Giftcard
                 </label>
         </div>
         </fieldset>

@@ -8,7 +8,7 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
 
 $_SESSION["naam"]=$_POST["naam"];
 $_SESSION["telefoonnummer"]=$_POST["telefoonnummer"];
-$_SESSION["adress"]=$_POST["adress"];
+$_SESSION["adress"]=$_POST["adress"] . " " . $_POST["huisnummer"];
 $_SESSION["postcode"]=$_POST["postcode"];
 $_SESSION["stad"]=$_POST["stad"];
 $_SESSION["bezorgInstructies"] = $_POST["bezorgInstructies"];

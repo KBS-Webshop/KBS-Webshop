@@ -78,14 +78,11 @@ function changeAmount($id, $amount)
 function incrementAmount($id)
 {
     if (isset($_COOKIE["basket"])) {
-        $basket = json_decode($_COOKIE["basket"], true);
-
-        # voor elk product, als het id in de cookie overeenkomt met de gegeven id, verhoog het aantal met 1
-        if (isset($basket[$id])) {
-            $basket[$id]['amount'] += 1;
-            setcookie("basket", json_encode($basket), 2147483647);
-        }
-
+        $basket = json_decode($_COOKIE["basket"], true); # voor elk product, als het id in de cookie overeenkomt met de gegeven id, verhoog het aantal met 1
+            if (isset($basket[$id])) {
+                $basket[$id]['amount'] += 1;
+                setcookie("basket", json_encode($basket), 2147483647);
+            }
     }
 }
 

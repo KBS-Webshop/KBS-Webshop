@@ -16,7 +16,7 @@ $databaseConnection = connectToDatabase();
     <script src="Public/JS/bootstrap.min.js"></script>
     <script src="Public/JS/popper.min.js"></script>
     <script src="Public/JS/resizer.js"></script>
-    <script src="Public/JS/cookie.js"></script>
+    <script src="Public/JS/validate_input.js"></script>
 
     <!-- Style sheets-->
     <link rel="stylesheet" href="Public/CSS/style.css" type="text/css">

@@ -17,9 +17,7 @@ $_SESSION["provincie"] = $_POST["provincie"];
 foreach ($basket_contents as $item) {
 $StockItem = getStockItem($item["id"], $databaseConnection);
 if (intval(preg_replace('/[^0-9]+/', '', $StockItem["QuantityOnHand"]))<$item["amount"]){
-    $GeenVoorraad=$item;
-    header("Location: winkelmand.php");
-
+    header("Location: winkelmand.php?message=geen_voorraad");
     ?>
 
 <?php

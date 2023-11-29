@@ -113,38 +113,6 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
             <input type="text" name="email" id="email" required>
         </div>
     </div>
-    <div class="radio-container">
-
-        <fieldset>
-            <legend>Verzendopties</legend>
-        <div class="radio-label-naw">
-                <label>
-                    <input type="radio" name="Verzending" id="standaardVerzending" required>
-                    Standaard verzending
-                </label>
-                <label>
-                    <input type="radio" name="Verzending" id="expressVerzending" required>
-                    Express verzending
-                </label>
-        </div>
-        </fieldset>
-
-        <fieldset>
-
-        <div class="radio-label">
-            <legend>Betaalmogelijkheden</legend>
-                <label>
-                    <input type="radio" name="betaalmethode" id="iDeal" required>
-                    iDeal
-                </label>
-                <label>
-                    <input class="nerdy" type="radio" name="betaalmethode" id="Nerdygadgets Giftcard" required>
-                    Nerdygadgets Gifcard
-                </label>
-        </div>
-        </fieldset>
-    </div>
-
     <div class="comments">
         <div>
             <label for="opmerkingen">Instructies voor de bezorger. (Optioneel)</label>

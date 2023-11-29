@@ -9,7 +9,7 @@ form .naw-input.form-width-2, form .naw-input.form-width-2 label {
 }
 
 form .naw-input.form-width-2 .naw-input-inner, form .naw-input.form-width-2 .naw-input-inner label {
-    width: 100%;
+    width: 48%;
 }
 
 form .naw-input.form-width-2 .naw-input-inner2, form .naw-input.form-width-2 .naw-input-inner2 label {
@@ -17,7 +17,7 @@ form .naw-input.form-width-2 .naw-input-inner2, form .naw-input.form-width-2 .na
 }
 
 form .naw-input.form-width-4, form .naw-input.form-width-4 label {
-    width: 65%;
+    width: 68.5%;
     display: flex;
     justify-content: space-between;
 }
@@ -25,7 +25,7 @@ form .naw-input.form-width-4, form .naw-input.form-width-4 label {
 
 form .naw-input.form-width-4 .naw-input-inner, form .naw-input.form-width-4 .naw-input-inner label {
     width: 52%;
-    margin-right: 7%;
+    margin-right: 8%;
 }
 
 form .naw-input.form-width-5 .naw-input-inner, form .naw-input.form-width-5 .naw-input-inner label {

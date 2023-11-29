@@ -41,7 +41,7 @@ if (isset($_SESSION["naam"]) && isset($_SESSION["telefoonnummer"]) && isset($_SE
 }
 ?>
 <h1> orderbevestiging</h1><br>
-<h4><?php print $naam?> bedankt voor uw bestelling bij nerdygatgets! uw bestel nummer is <?php print $orderID?></h4><br>
+<h4><?php print $naam?>, bedankt voor uw bestelling bij NerdyGadgets! Uw bestel nummer is: <?php print $orderID?></h4><br>
 <h1>Bestel overzicht</h1>
     <div class="winkelmand-wrapper">
     <ul class="winkelmand">
@@ -95,36 +95,5 @@ if (isset($StockItemImage[0]["ImagePath"])) { ?>
 
 </h4>
 <?php
-//$betaald = TRUE;
-//    $Cname = " ";
-//    $phoneNumber = " ";
-//    $DeliveryAddress = " ";
-//    $DeliveryPostalCode = " ";
-//    $DeliveryInstructions = "";
-//    $amountOfProductsInOrder = 0;
-//    $quantityOnHand = 0;
-//    $Cname = $_SESSION["naam"];
-//    $phoneNumber = $_SESSION["telefoonnummer"];
-//    $DeliveryAddress = $_SESSION["adress"];
-//    $DeliveryPostalCode = $_SESSION["postcode"];
-//    $DeliveryInstructions = $_SESSION["bezorgInstructies"];
-//    $cityName = $_SESSION["stad"];
-//    $DeliveryProvince = $_SESSION["provincie"];
-//
-//if (isset($_SESSION["naam"]) && isset($_SESSION["telefoonnummer"]) && isset($_SESSION["adress"]) && isset($_SESSION["postcode"]) && isset($_SESSION["provincie"]) && isset($_SESSION["stad"])) {
-//    PlaceOrder(
-//        $databaseConnection,
-//        $Cname,
-//        $phoneNumber,
-//        $DeliveryAddress,
-//        $DeliveryPostalCode,
-//        $DeliveryInstructions,
-//        $betaald,
-//        $amountOfProductsInOrder,
-//        $quantityOnHand,
-//        $DeliveryProvince,
-//        $cityName
-//    );
-//}
 include __DIR__ . "/components/footer.php"
 ?>

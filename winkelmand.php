@@ -5,7 +5,7 @@ include __DIR__ . "/helpers/utils.php";
     <h2>Winkelmandje</h2><br>
 <?php
 if(isset($_POST["mislukt"])){
-    print ("<h3 style='color: red'>betaling mislukt probeer het opnieuw</h3>");
+    print ("<h3 style='color: red'>Betaling mislukt, probeer het opnieuw.</h3>");
 }
 
     ?>

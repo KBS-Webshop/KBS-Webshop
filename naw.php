@@ -29,7 +29,7 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
         $totalprice = sprintf("€%.2f", $totalprice);
         echo ("<tr class='receivedTotalPrice'> <td></td> <th>totaalprijs</th>");
         $totalprice1=str_replace(".",",",$totalprice);
-        echo("<td>€$totalprice1</td></tr>");
+        echo("<td>$totalprice1</td></tr>");
         echo '</table>';
 
         ?>
@@ -49,9 +49,15 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
     <div class="naw-input form-width-2">
         <div class="naw-input-inner">
             <label for="straatnaam" class="inline-label">
-                Adress <span class="required"></span>
+                Straatnaam <span class="required"></span>
             </label>
             <input type="text" name="adress" id="adress" required>
+        </div>
+        <div class="naw-input-inner">
+            <label for="huisnummer" class="inline-label">
+                Huisnummer <span class="required"></span>
+            </label>
+            <input type="text" name="huisnummer" id="huisnummer" required>
         </div>
     </div>
 
@@ -72,7 +78,21 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
             <label for="name" class ="inline-label">
                 Provincie <span class="required"></span>
             </label>
-            <input type="text" name="provincie" id="provincie" required>
+            <select name="provincie" id="provincie" required>
+                <option value="Overijssel">Overijssel</option>
+                <option value="Groningen">Groningen</option>
+                <option value="Noord-Holland">Noord-Holland</option>
+                <option value="Zuid-Holland">Zuid-Holland</option>
+                <option value="Drenthe">Drenthe</option>
+                <option value="Gelderland">Gelderland</option>
+                <option value="Zeeland">Zeeland</option>
+                <option value="Utrecht">Utrecht</option>
+                <option value="Friesland">Friesland</option>
+                <option value="Limburg">Limburg</option>
+                <option value="Limburg">Brabant</option>
+                <option value="Flevoland">Flevoland</option>
+            </select>
+            <!-- <input type="text" name="provincie" id="provincie" required> -->
         </div>
     </div>
 

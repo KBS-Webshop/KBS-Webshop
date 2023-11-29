@@ -71,7 +71,7 @@ function getStockItem($id, $databaseConnection)
             StockItemName,
             CONCAT('Voorraad: ',QuantityOnHand)AS QuantityOnHand,
             SearchDetails, 
-            (CASE WHEN (RecommendedRetailPrice*(1+(TaxRate/100))) > 50 THEN 0 ELSE 6.95 END) AS SendCosts, MarketingComments, CustomFields, SI.Video,
+            (CASE WHEN (RecommendedRetailPrice*(1+(TaxRate/100))) > 50 THEN 0 ELSE 6.95 END) AS SendCosts, MarketingComments, CustomFields, SI.Video, UnitPackageID, UnitPrice, TaxRate,
             (SELECT ImagePath FROM stockgroups JOIN stockitemstockgroups USING(StockGroupID) WHERE StockItemID = SI.StockItemID LIMIT 1) as BackupImagePath   
             FROM stockitems SI 
             JOIN stockitemholdings SIH USING(stockitemid)
@@ -261,68 +261,12 @@ function addOrder ($dbConnection, $CustomerId, $DeliveryInstructions, $currentDa
     mysqli_stmt_execute($Statement);
 }
 
-function getDescription($dbConnection, $stockItemID) {
-    $Query = "
-    SELECT MarketingComments
-    FROM stockitems
-    WHERE StockItemID = ?";
-
-    $Statement = mysqli_prepare($dbConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "i", $stockItemID);
-    mysqli_stmt_execute($Statement);
-    $R = mysqli_stmt_get_result($Statement);
-    $R = mysqli_fetch_assoc($R);
-    return $R['MarketingComments'];
-}
-
-function getPackageTypeID($dbConnection, $stockItemID) {
-    $Query = "
-    SELECT UnitPackageID
-    FROM stockitems
-    WHERE StockItemID = ?";
-
-    $Statement = mysqli_prepare($dbConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "i", $stockItemID);
-    mysqli_stmt_execute($Statement);
-    $R = mysqli_stmt_get_result($Statement);
-    $R = mysqli_fetch_assoc($R);
-    return $R['UnitPackageID'];
-}
-
-function getUnitPrice($dbConnection, $stockItemID) {
-    $Query = "
-    SELECT UnitPrice
-    FROM stockitems
-    WHERE StockItemID = ?";
-
-    $Statement = mysqli_prepare($dbConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "i", $stockItemID);
-    mysqli_stmt_execute($Statement);
-    $R = mysqli_stmt_get_result($Statement);
-    $R = mysqli_fetch_assoc($R);
-    return $R['UnitPrice'];
-}
-
-function getTaxRate($dbConnection, $stockItemID) {
-    $Query = "
-    SELECT TaxRate
-    FROM stockitems
-    WHERE StockItemID = ?";
-
-    $Statement = mysqli_prepare($dbConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "i", $stockItemID);
-    mysqli_stmt_execute($Statement);
-    $R = mysqli_stmt_get_result($Statement);
-    $R = mysqli_fetch_assoc($R);
-    return $R['TaxRate'];
-}
-
-function addOrderline($dbConnection, $OrderID, $stockItemID, $ProductDescription, $PackageTypeID, $amountOfProductsInOrder, $UnitPrice, $TaxRate, $salesContactPersonID, $currentDate) {
+function addOrderline($dbConnection, $OrderID, $stockItemID, $StockItem, $amountOfProductsInOrder, $salesContactPersonID, $currentDate) {
     $Query = "
     INSERT INTO orderlines (OrderID, StockItemID, Description, PackageTypeID, Quantity, UnitPrice, TaxRate, PickedQuantity, LastEditedBy, LastEditedWhen)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $Statement = mysqli_prepare($dbConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "iisiidddis", $OrderID, $stockItemID, $ProductDescription, $PackageTypeID, $amountOfProductsInOrder, $UnitPrice, $TaxRate, $amountOfProductsInOrder, $salesContactPersonID, $currentDate);
+    mysqli_stmt_bind_param($Statement, "iisiidddis", $OrderID, $stockItemID, $StockItem["MarketingComments"], $StockItem["UnitPackageID"], $amountOfProductsInOrder, $StockItem["UnitPrice"], $StockItem["TaxRate"], $amountOfProductsInOrder, $salesContactPersonID, $currentDate);
     mysqli_stmt_execute($Statement);
 }
 function changevoorraad($dbConnection, $amount, $stockItemID){

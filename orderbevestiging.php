@@ -25,7 +25,6 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
         $StockItemImage = getStockItemImage($item['id'], $databaseConnection);
 
                         $totalprice += round($item['amount'] * $StockItem['SellPrice'], 2);
-//                        changevoorraad($item["amount"] ,$StockItem,$databaseConnection);
 
         ?>
     <div id="ProductFrame1">
@@ -66,11 +65,6 @@ if (isset($StockItemImage[0]["ImagePath"])) { ?>
 
 </h4>
 <?php
-//if ($_SESSION["gelukt"] == TRUE){
-//    $betaald = TRUE;
-//} else {
-//    $betaald = FALSE;
-//}
 $betaald = TRUE;
     $Cname = " ";
     $phoneNumber = " ";
@@ -86,7 +80,6 @@ $betaald = TRUE;
     $DeliveryInstructions = $_SESSION["bezorgInstructies"];
     $cityName = $_SESSION["stad"];
     $DeliveryProvince = $_SESSION["provincie"];
-//    $dbConnection = connectToDatabase(); #TODO: 2e connectie word opgesteld moet later fixen dat we hier omheen komen.
 
     function PlaceOrder(
         $databaseConnection,
@@ -185,12 +178,13 @@ $betaald = TRUE;
             }
 
             $stockItemID = $item["id"];
-            $ProductDescription = getDescription($databaseConnection, $stockItemID);
-            $PackageTypeID = getPackageTypeID($databaseConnection, $stockItemID);
-            $UnitPrice = getUnitPrice($databaseConnection, $stockItemID);
-            $TaxRate = getTaxRate($databaseConnection, $stockItemID);
+//            $ProductDescription = getDescription($databaseConnection, $stockItemID);
+//            $PackageTypeID = getPackageTypeID($databaseConnection, $stockItemID);
+//            $UnitPrice = getUnitPrice($databaseConnection, $stockItemID);
+//            $TaxRate = getTaxRate($databaseConnection, $stockItemID);
+            $StockItem = getStockItem($stockItemID, $databaseConnection);
             changevoorraad($databaseConnection, $amountOfProductsInOrder, $stockItemID);
-            addOrderline($databaseConnection, $OrderID, $stockItemID, $ProductDescription, $PackageTypeID, $amountOfProductsInOrder, $UnitPrice, $TaxRate, $salesContactPersonID, $currentDate);
+            addOrderline($databaseConnection, $OrderID, $stockItemID, $StockItem, $amountOfProductsInOrder, $salesContactPersonID, $currentDate);
         }
 
     $orderstatus = "Order is geplaatst";

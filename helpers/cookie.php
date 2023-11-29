@@ -103,4 +103,8 @@ function decrementAmount($id)
     }
 }
 
+function clearCookie() {
+    setcookie("basket", "", time()-3600);
+}
+
 ?>

@@ -8,7 +8,7 @@ if(isset($_POST["mislukt"])){
     print ("<h3 style='color: red'>Betaling mislukt, probeer het opnieuw.</h3>");
 }
 if (isset($_GET["message"])){
-    print ("<h3 style='color: red'>product dat u wilt bestellen is niet meer op voorraad</h3>");
+    print ("<h3 style='color: red'>".$_SESSION["itemNietOpVoorraad"]." is niet meer op voorraad (nog maar ".$_SESSION["QuantityOnHand"]." op voorraad).</h3>");
 }
 
     ?>

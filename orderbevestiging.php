@@ -86,19 +86,20 @@ $betaald = TRUE;
     $DeliveryInstructions = $_SESSION["bezorgInstructies"];
     $cityName = $_SESSION["stad"];
     $DeliveryProvince = $_SESSION["provincie"];
-    $dbConnection = connectToDatabase(); #TODO: 2e connectie word opgesteld moet later fixen dat we hier omheen komen.
+//    $dbConnection = connectToDatabase(); #TODO: 2e connectie word opgesteld moet later fixen dat we hier omheen komen.
+
     function PlaceOrder(
-    $dbConnection,
-    $Cname,
-    $phoneNumber,
-    $DeliveryAddress,
-    $DeliveryPostalCode,
-    $DeliveryInstructions,
-    $betaald,
-    $amountOfProductsInOrder,
-    $quantityOnHand,
-    $DeliveryProvince,
-    $cityName
+        $databaseConnection,
+        $Cname,
+        $phoneNumber,
+        $DeliveryAddress,
+        $DeliveryPostalCode,
+        $DeliveryInstructions,
+        $betaald,
+        $amountOfProductsInOrder,
+        $quantityOnHand,
+        $DeliveryProvince,
+        $cityName
     ) {
     $orderstatus = "Wordt verwerkt";
 
@@ -162,14 +163,13 @@ $betaald = TRUE;
         } else {
             $customerId = getCustomer($databaseConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode);
         }
-
         if ($quantityOnHand < $amountOfProductsInOrder) {
             $isInStock = 0;
         } else {
             $isInStock = 1;
         }
-
-    $OrderID = getOrderID($dbConnection);
+        addOrder($databaseConnection, $customerId, $DeliveryInstructions, $currentDate, $estimatedDeliveryDate, $salesContactPersonID, $isInStock);
+    $OrderID = getOrderID($databaseConnection);
 
         $basket_contents = json_decode($_COOKIE["basket"], true);
 
@@ -205,7 +205,7 @@ $betaald = TRUE;
     }
 if (isset($_SESSION["naam"]) && isset($_SESSION["telefoonnummer"]) && isset($_SESSION["adress"]) && isset($_SESSION["postcode"]) && isset($_SESSION["provincie"]) && isset($_SESSION["stad"])) {
     PlaceOrder(
-        $dbConnection,
+        $databaseConnection,
         $Cname,
         $phoneNumber,
         $DeliveryAddress,

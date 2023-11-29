@@ -86,7 +86,7 @@ if (isset($StockItemImage[0]["ImagePath"])) { ?>
 ?>
 <br>
 <h3 class="StockItemPriceTextbevestiging">Totaalprijs: € <?php print str_replace(".",",",$totalprice)?></h3><br>
-    <h3 class="verzendadres">verzendadres: </h3>
+    <h3 class="verzendadres">uw Gegevens: </h3>
 <h4 class="verzendgegevens">
     naam: <?php print $naam?><br>
     adres: <?php print $adress." in ". $stad?><br>

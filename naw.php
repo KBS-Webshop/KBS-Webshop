@@ -143,5 +143,6 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
 
 
 <?php
+
 include __DIR__ . "/components/footer.php"
 ?>

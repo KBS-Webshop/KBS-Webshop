@@ -4,12 +4,14 @@ ul#shoppingcart{
     position: absolute;
 }
 
-#ResultsArea.Winkelmand  {
-    width: 75%;
+.winkelmand-wrapper {
+    padding-left: 2.5rem;
+    display: flex;
 }
 
-.winkelmand-wrapper {
-    padding-left: 2.5rem
+.winkelmand-wrapper .winkelmand {
+    width: 80%;
+    padding-right: 1rem;
 }
 
 .winkelmand-wrapper ul {
@@ -76,7 +78,19 @@ button.add-to-cart-button {
 .winkelmandBinImage {
     transform: scale(0.9);
 }
-  
+
+.bonnetje-wrapper{
+    background-color: #EDEDED;
+    height: 600px;
+    width: 25%;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 20px;
+    right: 20px;
+    position: fixed;
+
+}
+
 .StockItemPriceTextcart {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     color: #0000a4;
@@ -84,5 +98,19 @@ button.add-to-cart-button {
     text-transform: uppercase;
     font-weight: bold;
     margin-top: 25px;
+    width: 90%;
     text-align: right;
+}
+
+.receivedTotalPrice {
+    border-top: 1px solid black;
+}
+
+#ProductFrame2 {
+    width: 90%;
+    height: 250px;
+    margin-top: 15px;
+    position: relative;
+    padding: 1px;
+    border-bottom: 1px solid #5a6268;
 }

@@ -16,12 +16,14 @@ $databaseConnection = connectToDatabase();
     <script src="Public/JS/bootstrap.min.js"></script>
     <script src="Public/JS/popper.min.js"></script>
     <script src="Public/JS/resizer.js"></script>
-    <script src="Public/JS/cookie.js"></script>
+    <script src="Public/JS/validate_input.js"></script>
 
     <!-- Style sheets-->
     <link rel="stylesheet" href="Public/CSS/style.css" type="text/css">
     <link rel="stylesheet" href="Public/CSS/header.css" type="text/css">
+    <link rel="stylesheet" href="Public/CSS/orderbevestiging.css" type="text/css">
     <link rel="stylesheet" href="Public/CSS/winkelmand.css" type="text/css">
+    <link rel="stylesheet" href="Public/CSS/naw.css" type="text/css">
     <link rel="stylesheet" href="Public/CSS/view.css" type="text/css">
     <link rel="stylesheet" href="Public/CSS/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="Public/CSS/typekit.css">

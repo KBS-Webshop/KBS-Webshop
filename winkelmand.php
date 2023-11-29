@@ -2,23 +2,35 @@
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
 ?>
+    <h2>Winkelmandje</h2><br>
+<?php
+if(isset($_POST["mislukt"])){
+    print ("<h3 style='color: red'>Betaling mislukt, probeer het opnieuw.</h3>");
+}
+if (isset($_GET["message"])){
+    print ("<h3 style='color: red'>".$_SESSION["itemNietOpVoorraad"]." is niet meer op voorraad (nog maar ".$_SESSION["QuantityOnHand"]." op voorraad).</h3>");
+}
+
+    ?>
+
+
+
     <div class="winkelmand-wrapper">
-        <h2>Winkelmandje</h2>
-        <ul>
+        <ul class="winkelmand">
             <div id="ResultsArea" class="Winkelmand">
                 <?php
                 $totalprice = 0;
                 if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
                     $basket_contents = json_decode($_COOKIE["basket"], true);
                     foreach ($basket_contents as $item) {
-                        $StockItem = getStockItem($item["id"], $databaseConnection);
+                         $StockItem = getStockItem($item["id"], $databaseConnection);
                         $StockItemImage = getStockItemImage($item['id'], $databaseConnection);
 
-                        $totalprice += round(($item['amount'] * $StockItem['SellPrice']), 2);
+                        $totalprice += round($item['amount'] * $StockItem['SellPrice'], 2);
 
                         ?>
 
-                        <div id="ProductFrame">
+                        <div id="ProductFrame2">
                             <?php
                             if (isset($StockItemImage[0]["ImagePath"])) { ?>
                             <a class="ListItem" href='view.php?id=<?php print $item["id"]; ?>'>
@@ -60,22 +72,54 @@ include __DIR__ . "/helpers/utils.php";
                                     </form>
                                 </div>
                             </h1>
-
                         </div>
-
-
-
+                        
                         <?php
                     }
                 }
                 else{
                     echo "Winkelmandje is leeg.";
                 }
-                ?>
+                if($totalprice > 0){
+                    $totalprice = str_replace('.', ',', sprintf("€%.2f", $totalprice));
+                    ?>
                 <div>
-                    <h1 class="StockItemPriceTextcart">Totaal prijs: <?php echo '€'.str_replace('.', ',', $totalprice); ?> </h1>
+                    <h1 class="StockItemPriceTextcart">Totaal prijs: <?php echo $totalprice ?> </h1>
                 </div>
+                <?php } ?>
+            </div>
         </ul>
+        <?php
+        if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
+            ?>
+        <div class="bonnetje-wrapper">
+            <?php
+
+                $basket_contents = json_decode($_COOKIE["basket"], true);
+                ?>
+            <table>
+                <th>Product</th>
+                <th>Aantal</th>
+                <th>Prijs</th>
+
+                <?php
+                foreach ($basket_contents as $item) {
+                    $StockItem = getStockItem($item["id"], $databaseConnection);
+                    echo ("<tr> <td>" . $StockItem['StockItemName'] . "</td>");
+                    echo ("<td>" . $item['amount'] . "</td>");
+                    echo "<td>".sprintf("€%.2f", $StockItem['SellPrice'] * $item["amount"]);
+                }
+                echo ("<tr class='receivedTotalPrice'> <td></td> <th>totaalprijs</th>");
+                echo("<td>$totalprice</td></tr>");
+                echo '</table>';
+
+                ?>
+
+                <form action="naw.php">
+                    <input type="submit" value="Afrekenen">
+                </form>
+            <?php } ?>
+        </div>
     </div>
     
 

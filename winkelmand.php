@@ -63,7 +63,10 @@ if (isset($_GET["message"])){
                                     <form method="post" class="buttonWinkelmand">
                                         <input type="hidden" name="action" value="increment">
                                         <input type="hidden" name="StockItemID" value="<?php echo $item["id"] ?>">
-                                        <input class="winkelmandInputSubmit winkelmandAantalKnop winkelmandPlusKnop" type="submit" value="+">
+                                        <input class="winkelmandInputSubmit winkelmandAantalKnop winkelmandPlusKnop" type="submit"
+                                            <?php if (preg_replace('/[^0-9]+/', '', $StockItem["QuantityOnHand"]) <= $item['amount'])
+                                                echo  'disabled'?>
+                                               value="+">
                                     </form>
                                     <form method="post" class="buttonWinkelmand">
                                         <input type="image" src="images/trashbin.svg" alt="Remove product" class="winkelmandBinImage">

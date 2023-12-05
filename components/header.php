@@ -2,6 +2,7 @@
 session_start();
 include "helpers/cookie.php";
 include "helpers/database.php";
+include "CSS/loginPage.css";
 $databaseConnection = connectToDatabase();
 ?>
 <!DOCTYPE html>
@@ -59,6 +60,9 @@ $databaseConnection = connectToDatabase();
             <!-- code voor US3: zoeken -->
 
             <ul id="ul-class-navigation">
+                <li>
+                    <a href="CustomerLogin.php" class="fa fa-user">Inloggen</a>
+                </li>
                 <li>
                     <a href="browse.php" class="HrefDecoration"><i class="fas fa-search search"></i> Zoeken</a>
                 </li>

@@ -307,3 +307,4 @@ function getAlsoBought($id, $databaseConnection) {
 
     return $R;
 }
+

@@ -8,7 +8,7 @@ function getNewID($databaseConnection) {
     return $result["MAX(SpecialDealID)"] + 1;
 }
 
-function getExistingDiscounts($databaseConnection)
+function getCurrentDiscounts($databaseConnection)
 {
     $query = "SELECT * FROM specialdeals";
     $result = mysqli_query($databaseConnection, $query);
@@ -25,12 +25,19 @@ function getDiscount($id, $databaseConnection)
     return mysqli_fetch_assoc($result);
 }
 
-function updateDiscount($id, $discount, $databaseConnection)
+function updateDiscountOrEndDate($id, $databaseConnection, $discount=null, $endDate=null)
 {
-    $query = "UPDATE specialdeals SET DiscountPercentage = ? WHERE SpecialDealID = ?";
-    $statement = mysqli_prepare($databaseConnection, $query);
-    mysqli_stmt_bind_param($statement, "ii", $discount, $id);
-    mysqli_stmt_execute($statement);
+    if (!$discount) {
+        $query = "UPDATE specialdeals SET EndDate = ? WHERE SpecialDealID = ?";
+        $statement = mysqli_prepare($databaseConnection, $query);
+        mysqli_stmt_bind_param($statement, "si", $endDate, $id);
+        mysqli_stmt_execute($statement);
+    } else {
+        $query = "UPDATE specialdeals SET DiscountPercentage = ? WHERE SpecialDealID = ?";
+        $statement = mysqli_prepare($databaseConnection, $query);
+        mysqli_stmt_bind_param($statement, "ii", $discount, $id);
+        mysqli_stmt_execute($statement);
+    }
 }
 
 function deleteDiscount($id, $databaseConnection)
@@ -41,14 +48,15 @@ function deleteDiscount($id, $databaseConnection)
     mysqli_stmt_execute($statement);
 }
 
-function createDiscount($stockItemID, $discount, $endDate, $databaseConnection)
+function createDiscount($stockItemID, $discount, $startDate, $endDate, $databaseConnection)
 {
     $id = getNewID($databaseConnection);
 
     $query = "INSERT INTO specialdeals (SpecialDealID, StockItemID, CustomerID, BuyingGroupID, CustomerCategoryID, StockGroupID, DealDescription, StartDate, EndDate, DiscountAmount, DiscountPercentage, UnitPrice, LastEditedBy, LastEditedWhen) 
-                VALUES (?, ?, NULL, NULL, NULL, NULL, NULL, NULL, ?, NULL, ?, NULL, 3262, NOW())";
+                VALUES (?, ?, NULL, NULL, NULL, NULL, '', ?, ?, NULL, ?, NULL, 3262, NOW())";
     $statement = mysqli_prepare($databaseConnection, $query);
-    mysqli_stmt_bind_param($statement, "iisii", $id, $stockItemID, $endDate, $discount);
+
+    mysqli_stmt_bind_param($statement, "iissi", $id, $stockItemID, $startDate, $endDate, $discount);
     mysqli_stmt_execute($statement);
 
     return $id;

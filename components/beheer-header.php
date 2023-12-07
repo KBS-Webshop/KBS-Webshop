@@ -11,6 +11,7 @@ include "../helpers/database/database.php";
 include "../helpers/database/loyalty.php";
 include "../helpers/database/order.php";
 include "../helpers/database/stock.php";
+include "../helpers/database/discount.php";
 
 $databaseConnection = connectToDatabase();
 ?>
@@ -53,6 +54,9 @@ $databaseConnection = connectToDatabase();
                     </li>
                     <li>
                         <a href="/beheer/loyalty.php" class="HrefDecoration">Loyalty</a>
+                    </li>
+                    <li>
+                        <a href="/beheer/discount.php" class="HrefDecoration">Discount</a>
                     </li>
                 </ul>
             </div>

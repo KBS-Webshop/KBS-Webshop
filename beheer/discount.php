@@ -2,18 +2,19 @@
 include "../components/beheer-header.php";
 include "../helpers/utils.php";
 
-//if(isset($_GET["id"])) {
-//    $loyaltyItem = getLoyaltyDeal($_GET["id"], $databaseConnection);
-//}
-//
-//if(isset($_POST["title"]) && isset($_POST["title"]) &&
-//    isset($_POST["title"]) && isset($_POST["title"]) && isset($_POST["title"])) {
-//    if (isset($_GET["id"])) {
-//        updateLoyaltyDeal($_GET["id"], $_POST, $databaseConnection);
-//    } else {
-//        createLoyaltyDeal($_POST, $databaseConnection);
-//    }
-//}
+$currentDiscounts = getCurrentDiscounts($databaseConnection);
+
+if(isset($_POST["stockItemID"]) && isset($_POST["discountPercentage"]) &&
+    isset($_POST["endDate"])) {
+    if (isset($_GET["id"])) {
+        if (!isset($_POST["discountPercentage"])) {$_POST["discountPercentage"] = '';}
+        if (!isset($_POST["endDate"])) {$_POST["endDate"] = '';}
+
+        updateDiscountOrEndDate($_GET["id"], $databaseConnection, $_POST["discountPercentage"], $_POST["endDate"]);
+    } else {
+        createDiscount($_POST['stockItemID'], $_POST['discountPercentage'], $_POST['startDate'], $_POST['endDate'], $databaseConnection);
+    }
+}
 ?>
 
 
@@ -21,33 +22,39 @@ include "../helpers/utils.php";
     <h3>Korting toevoegen</h3>
     <form class="loyalty-form" method="POST">
         <div>
-            <label for="title">Title <span class="required"></span></label>
-            <input type="text" name="title" id="title" <?php if(isset($_GET["id"])) print "value='" . $loyaltyItem["title"] . "'" ?>>
+            <label for="title">Product ID <span class="required"></span></label>
+            <input type="text" name="stockItemID" id="title" required>
         </div>
         <div>
-            <label for="description">Beschrijving <span class="required"></span></label>
-            <input type="text" name="description" id="description" <?php if(isset($_GET["id"])) print "value='" . $loyaltyItem["description"] . "'" ?>>
+            <label for="points">Korting percentage <span class="required"></span></label>
+            <input type="number" name="discountPercentage" id="discount">
         </div>
         <div>
-            <label for="points">Benodigde punten <span class="required"></span></label>
-            <input type="number" name="points" id="points" <?php if(isset($_GET["id"])) print "value='" . $loyaltyItem["points"] . "'" ?>>
+            <label for="discount">Actie van <span class="required"></span></label>
+            <input type="date" name="startDate" id="startDate">
         </div>
         <div>
-            <label for="discount">Korting percentage <span class="required"></span></label>
-            <input type="number" name="discount" id="discount" <?php if(isset($_GET["id"])) print "value='" . $loyaltyItem["discount"] . "'" ?>>
-        </div>
-        <div>
-            <input type="checkbox" name="free_shipping" id="free_shipping" value="1" <?php if(isset($_GET["id"]) && $loyaltyItem["free_shipping"] == 1) print("checked") ?>>
-            <label for="free_shipping">Gratis verzending</span></label>
+            <label for="discount">Actie tot <span class="required"></span></label>
+            <input type="date" name="endDate" id="endDate">
         </div>
         <div>
             <input type="submit" value="Verstuur" class="button primary">
         </div>
     </form>
-    <a href="/beheer/loyalty.php"><i class="fa fa-arrow-left"></i> Ga terug</a>
+<!--    <a href="/beheer/loyalty.php"><i class="fa fa-arrow-left"></i> Ga terug</a>-->
 </div>
 <?php
-foreach
+if (!empty($currentDiscounts)) {
+    foreach ($currentDiscounts as $discount) {
+        ?>
+
+        <div>
+            <?php // print_r($discount) ?>
+        </div>
+
+        <?php
+    }
+}
 
 include "../components/footer.php"
 ?>

@@ -44,7 +44,7 @@ isset($_POST["title"]) && isset($_POST["title"]) && isset($_POST["title"])) {
             <input type="submit" value="Verstuur" class="button primary">
         </div>
     </form>
-    <a href="/beheer/loyalty.php"><i class="fa fa-arrow-left"></i> Ga terug</a>
+    <a href="loyalty.php"><i class="fa fa-arrow-left"></i> Ga terug</a>
 </div>
 <?php
 include "../components/footer.php"

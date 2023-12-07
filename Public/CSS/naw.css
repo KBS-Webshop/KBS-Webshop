@@ -43,6 +43,10 @@ form .naw-input.form-width-5 .naw-input-inner, form .naw-input.form-width-5 .naw
     color: white;
 }
 
+.button.btn-small {
+    padding: .5rem;
+}
+
 .button.secondary {
 
 }

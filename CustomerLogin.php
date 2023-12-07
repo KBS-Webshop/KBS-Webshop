@@ -29,6 +29,9 @@ include __DIR__ . "/helpers/utils.php";
         <label for="password">wachtwoord</label>
         <input type="password" class="loginPassword" name="password" required>
     </div>
+    <div>
+    <a>Nog geen account? Maak </a><a href="createAccount.php">hier</a><a> een account aan</a>
+    </div>
     <h2>Uw informatie</h2>
     <div class="informationBox">
         <label>Naam: </label>

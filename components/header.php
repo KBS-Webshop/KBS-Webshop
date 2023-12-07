@@ -1,7 +1,17 @@
 <?php
 session_start();
+
+require 'vendor/autoload.php';
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
+
 include "helpers/cookie.php";
-include "helpers/database.php";
+include "/helpers/database/database.php";
+include "/helpers/database/loyalty.php";
+include "/helpers/database/order.php";
+include "/helpers/database/stock.php";
+
 $databaseConnection = connectToDatabase();
 ?>
 <!DOCTYPE html>
@@ -25,6 +35,7 @@ $databaseConnection = connectToDatabase();
     <link rel="stylesheet" href="Public/CSS/winkelmand.css" type="text/css">
     <link rel="stylesheet" href="Public/CSS/naw.css" type="text/css">
     <link rel="stylesheet" href="Public/CSS/view.css" type="text/css">
+    <link rel="stylesheet" href="Public/CSS/loyalty.css" type="text/css">
     <link rel="stylesheet" href="Public/CSS/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="Public/CSS/typekit.css">
 </head>

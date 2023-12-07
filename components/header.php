@@ -7,10 +7,10 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
 include "helpers/cookie.php";
-include "/helpers/database/database.php";
-include "/helpers/database/loyalty.php";
-include "/helpers/database/order.php";
-include "/helpers/database/stock.php";
+include "helpers/database/database.php";
+include "helpers/database/loyalty.php";
+include "helpers/database/order.php";
+include "helpers/database/stock.php";
 
 $databaseConnection = connectToDatabase();
 ?>

@@ -28,3 +28,18 @@ table.loyalty-table tr:not(:first-child):hover{
 .loyalty-wrapper a:hover {
     color: black
 }
+
+form.sentence-form {
+    display: flex;
+    flex-direction: column;
+}
+
+form.sentence-form input[type="number"] {
+    width: 5rem;
+    height: 2rem;
+    margin: 0 .5rem;
+}
+
+form.sentence-form .flex-inline-form {
+    display: flex;
+}

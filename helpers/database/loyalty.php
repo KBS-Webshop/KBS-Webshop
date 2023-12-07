@@ -83,5 +83,36 @@ function createLoyaltyDeal($values, $databaseConnection) {
     mysqli_stmt_execute($Statement);
 }
 
+function updateLoyaltyConfiguration($points, $price, $databaseConnection) {
+    $Query = "
+        UPDATE loyalty_configuration
+        SET price_per_points = ?, points_per_price = ?
+    ";
+
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+
+    mysqli_stmt_bind_param(
+        $Statement, 
+        "ii",
+        $price,
+        $points,
+    );
+    mysqli_stmt_execute($Statement);
+}
+
+function getLoyaltyConfiguration($databaseConnection) {
+    $Query = "
+        SELECT * FROM loyalty_configuration
+    ";
+
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+
+    mysqli_stmt_execute($Statement);
+    $R = mysqli_stmt_get_result($Statement);
+    $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
+
+    return $R[0];
+}
+
 ?>
 

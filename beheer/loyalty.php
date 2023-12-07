@@ -7,7 +7,10 @@ $loyaltyItems = getAllLoyaltyDeals($databaseConnection);
 
 <div id="CenteredContent">
     <h3>Loyaliteits kortingen</h3>
+    <div>
     <a href="deal.php" class="button primary btn-small">Maak nieuwe aan</a>
+    <a href="configuratie.php" class="button secondary btn-small">Configuratie</a>
+    </div>
     <table class="loyalty-table">
         <tr>
             <th>Title</th>

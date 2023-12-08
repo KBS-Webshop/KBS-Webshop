@@ -127,3 +127,14 @@ function getDiscountByStockItemID($id, $databaseConnection)
     $result = mysqli_stmt_get_result($statement);
     return mysqli_fetch_assoc($result);
 }
+
+function getAmountOrderedLast72Hours($id, $databaseConnection)
+{
+    $query = "SELECT SUM(Quantity) FROM orderlines WHERE StockItemID = ? AND (DATEDIFF(NOW(), LastEditedWhen) < 3)";
+    $statement = mysqli_prepare($databaseConnection, $query);
+    mysqli_stmt_bind_param($statement, "i", $id);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    $result = mysqli_fetch_assoc($result);
+    return $result["SUM(Quantity)"];
+}

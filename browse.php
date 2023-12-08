@@ -223,6 +223,8 @@ if (isset($amount)) {
     <?php
     if (isset($ReturnableResult) && count($ReturnableResult) > 0) {
         foreach ($ReturnableResult as $row) {
+            $currentDiscount = getDiscountByStockItemID($row['StockItemID'], $databaseConnection);
+            $amtSoldLast72Hrs = getAmountOrderedLast72Hours($row['StockItemID'], $databaseConnection);
             if($row['QuantityOnHand']>0){
             ?>
             <a class="ListItem" href='view.php?id=<?php print $row['StockItemID']; ?>'>
@@ -230,7 +232,9 @@ if (isset($amount)) {
                     <?php
                     if (isset($row['ImagePath'])) { ?>
                         <div class="ImgFrame"
-                             style="background-image: url('<?php print "Public/StockItemIMG/" . $row['ImagePath']; ?>'); background-size: contain; background-repeat: no-repeat; background-position: center;"></div>
+                             style="background-image: url('<?php print "Public/StockItemIMG/" . $row['ImagePath']; ?>'); background-size: contain; background-repeat: no-repeat; background-position: center;">
+                            <?php if ($amtSoldLast72Hrs >= 5) { ?><div class="flame"></div><?php } ?>
+                        </div>
                     <?php } else if (isset($row['BackupImagePath'])) { ?>
                         <div class="ImgFrame"
                              style="background-image: url('<?php print "Public/StockGroupIMG/" . $row['BackupImagePath'] ?>'); background-size: cover;"></div>
@@ -239,7 +243,17 @@ if (isset($amount)) {
 
                     <div id="StockItemFrameRight">
                         <div class="CenterPriceLeftChild">
-                            <h1 class="StockItemPriceText"><?php print sprintf(" %0.2f", $row["RecommendedRetailPrice"]= berekenVerkoopPrijs($row["RecommendedRetailPrice"], $row["TaxRate"])); ?></h1>
+                            <?php if ($currentDiscount) { ?><h1><b><?php echo intval(-$currentDiscount['DiscountPercentage'], 10) ?>%</b></h1>
+                                <h4 id="clock<?php echo $row['StockItemID'] ?>" style="font-weight: bold;"></h4>
+                                <h2 class="StockItemPriceText">
+                                    <s class="strikedtext">
+                                        <?php print sprintf("€ %.2f", $row['SellPrice']); ?>
+                                    </s>
+                                    <?php print sprintf("€ %.2f", $row['SellPrice'] * ($currentDiscount['DiscountPercentage'] / 100)) ; ?>
+                                </h2>
+                            <?php } else { ?>
+                                <h2 class="StockItemPriceText"><?php print sprintf("€ %.2f", $row['SellPrice']); ?></h2>
+                            <?php } ?>
                             <h6>Inclusief BTW </h6>
                             <form method="post">
                                 <input type="hidden" name="action" value="add">
@@ -253,11 +267,23 @@ if (isset($amount)) {
                     </div>
                     <h1 class="StockItemID">Artikelnummer: <?php print $row["StockItemID"]; ?></h1>
                     <p class="StockItemName"><?php print $row["StockItemName"]; ?></p>
+                    <?php if ($amtSoldLast72Hrs >= 5) { ?><p><b>ERG GEWILD: dit product is afgelopen 72 uur <?php echo $amtSoldLast72Hrs ?> keer verkocht.</b></p><?php } ?>
                     <p class="StockItemComments"><?php print $row["MarketingComments"]; ?></p>
                     <h4 class="ItemQuantity"><?php print getVoorraadTekst($row["QuantityOnHand"]); ?></h4>
                 </div>
             </a>
-        <?php } }?>
+        <?php }
+            ?>
+            <script>
+                <?php if ($currentDiscount) { ?>
+
+                clockCountdown('clock<?php echo $currentDiscount['StockItemID'] ?>', '<?php echo $currentDiscount['EndDate'] ?>');
+
+                <?php } ?>
+            </script>
+
+            <?php
+        }?>
 
         <form id="PageSelector">
 		

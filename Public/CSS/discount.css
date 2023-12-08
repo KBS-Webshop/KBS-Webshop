@@ -6,8 +6,6 @@
 
 .half {
     position: absolute;
-    max-width: 50%;
-    width: 50%;
     height: 100%;
     top: 16px;
     display: flex;
@@ -21,6 +19,7 @@
     left: 16px;
     float: left;
     border-radius: 32px;
+    width: 30%;
 }
 
 .left-half h3, .left-half label {
@@ -30,6 +29,7 @@
 .right-half {
     right: 16px;
     float: right;
+    width: 70%;
 }
 
 .error-input {
@@ -37,11 +37,10 @@
 }
 
 .anti-overflow {
-    max-width: 200px;
+    max-width: 500px;
     text-overflow: ellipsis;
 }
 
 .discount-table tr:nth-child(even) {
     background: #c5c5c5;
-
 }

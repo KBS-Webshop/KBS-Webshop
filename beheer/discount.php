@@ -20,7 +20,7 @@ function set_error($message, $identity) {
 
 if (isset($_POST['delete'])) {
     deleteDiscount($_POST['delete'], $databaseConnection);
-    header("Location: /KBS-Webshop/beheer/discount.php");
+    header("Location: /beheer/discount.php");
     die();
 } else if (isset($_POST["stockItemID"]) && isset($_POST["discountPercentage"]) && isset($_POST['startDate']) && isset($_POST["endDate"])) {
     $startDate = strtotime($_POST['startDate']);
@@ -40,7 +40,7 @@ if (isset($_POST['delete'])) {
         } else {
             createDiscount($_POST['stockItemID'], $_POST['discountPercentage'], $_POST['startDate'], $_POST['endDate'], $databaseConnection);
         }
-        header("Location: /KBS-Webshop/beheer/discount.php");
+        header("Location: /beheer/discount.php");
         die();
     }
 }

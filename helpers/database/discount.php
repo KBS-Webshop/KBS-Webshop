@@ -2,18 +2,6 @@
 # bijhorend sql scriptje
 //ALTER TABLE specialdeals DROP CONSTRAINT FK_Sales_SpecialDeals_Application_People;
 
-//DELIMITER //
-//CREATE TRIGGER validate_deal
-//AFTER INSERT ON specialdeals
-//FOR EACH ROW
-//    BEGIN
-//IF NEW.DiscountPercentage > 100 OR NEW.DiscountPercentage < 0 OR NEW.EndDate < NEW.StartDate THEN
-//		SIGNAL SQLSTATE '45000';
-//		DELETE FROM specialdeals WHERE SpecialDealID = NEW.SpecialDealID;
-//	END IF;
-//END; //
-//DELIMITER ;
-
 function getNewID($databaseConnection) {
     removeExpiredDiscounts($databaseConnection);
     $query = "SELECT MAX(SpecialDealID) FROM specialdeals";
@@ -88,15 +76,4 @@ function createDiscount($stockItemID, $discount, $startDate, $endDate, $database
     mysqli_stmt_execute($statement);
 
     return $id;
-}
-
-function getAmountOrderedLast72Hours($id, $databaseConnection)
-{
-    $query = "SELECT SUM(Quantity) FROM orderlines WHERE StockItemID = ? AND (DATEDIFF(NOW(), OrderDate) < 3)";
-    $statement = mysqli_prepare($databaseConnection, $query);
-    mysqli_stmt_bind_param($statement, "i", $id);
-    mysqli_stmt_execute($statement);
-    $result = mysqli_stmt_get_result($statement);
-    $result = mysqli_fetch_assoc($result);
-    return $result["SUM(Quantity)"];
 }

@@ -1,11 +1,31 @@
 <?php
-# alter table specialdeals drop constraint FK_Sales_SpecialDeals_Application_People;
+# bijhorend sql scriptje
+//ALTER TABLE specialdeals DROP CONSTRAINT FK_Sales_SpecialDeals_Application_People;
+
+//DELIMITER //
+//CREATE TRIGGER validate_deal
+//AFTER INSERT ON specialdeals
+//FOR EACH ROW
+//    BEGIN
+//IF NEW.DiscountPercentage > 100 OR NEW.DiscountPercentage < 0 OR NEW.EndDate < NEW.StartDate THEN
+//		SIGNAL SQLSTATE '45000';
+//		DELETE FROM specialdeals WHERE SpecialDealID = NEW.SpecialDealID;
+//	END IF;
+//END; //
+//DELIMITER ;
 
 function removeExpiredDiscounts($databaseConnection)
 {
-//    $query = "DELETE FROM specialdeals WHERE EndDate < NOW()";
-//    $statement = mysqli_prepare($databaseConnection, $query);
-//    mysqli_stmt_execute($statement);
+    $query = "DELETE FROM specialdeals WHERE EndDate < NOW()";
+    $statement = mysqli_prepare($databaseConnection, $query);
+    mysqli_stmt_execute($statement);
+}
+
+function deleteDiscounts($databaseConnection)
+{
+    $query = "DELETE FROM specialdeals";
+    $statement = mysqli_prepare($databaseConnection, $query);
+    mysqli_stmt_execute($statement);
 }
 
 function getNewID($databaseConnection) {

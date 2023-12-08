@@ -33,3 +33,7 @@
     right: 16px;
     float: right;
 }
+
+.error-input {
+    border: 2px solid red;
+}

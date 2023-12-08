@@ -6,32 +6,33 @@ $currentDiscounts = getCurrentDiscounts($databaseConnection);
 
 $errors = array(
         "error" => false,
-        "message" => ""
+        "message" => "",
+        "identity" => ""
 );
 
-function set_error($message) {
+function set_error($message, $identity) {
     global $errors;
     $errors["error"] = true;
     $errors["message"] = $message;
+    $errors["identity"] = $identity;
 }
 
 if(isset($_POST["stockItemID"]) && isset($_POST["discountPercentage"]) && isset($_POST['startDate']) && isset($_POST["endDate"])) {
-    $startDate = Date($_POST['startDate']);
-    $endDate = Date($_POST['endDate']);
+    $startDate = strtotime($_POST['startDate']);
+    $endDate = strtotime($_POST['endDate']);
 
     if ($endDate < $startDate) {
-        set_error("De einddatum moet na de startdatum zijn.");
+        set_error("De einddatum moet na de startdatum zijn.", "date");
     } else if (intval($_POST["discountPercentage"], 10) > 100 || intval($_POST["discountPercentage"], 10) < 0) {
-        set_error("De korting moet tussen de 0 en 100 procent zijn.");
+        set_error("De korting moet tussen de 0 en 100 procent zijn.", "discount");
+    } else {
         if (productHasDiscount($_POST["stockItemID"], $databaseConnection)) {
-            if (!$_POST["discountPercentage"]) {$_POST["discountPercentage"] = '';}
-            if (!$_POST["startDate"]) {$_POST["startDate"] = '';}
-            if (!$_POST["endDate"]) {$_POST["endDate"] = '';}
-
             updateDiscount($_POST['stockItemID'], $databaseConnection, $_POST["discountPercentage"], $_POST['startDate'], $_POST["endDate"]);
         } else {
             createDiscount($_POST['stockItemID'], $_POST['discountPercentage'], $_POST['startDate'], $_POST['endDate'], $databaseConnection);
         }
+        header("Location: /KBS-Webshop/beheer/discount.php");
+        die();
     }
 
 
@@ -46,19 +47,19 @@ if(isset($_POST["stockItemID"]) && isset($_POST["discountPercentage"]) && isset(
         <form class="loyalty-form" method="POST">
             <div>
                 <label for="title">Product ID <span class="required"></span></label>
-                <input type="text" name="stockItemID" id="title" required>
+                <input type="number" name="stockItemID" id="title" required <?php if ($errors['error']) {print( 'value="' . $_POST['stockItemID'] . '"');}?>>
             </div>
             <div>
                 <label for="points">(Nieuwe) korting percentage <span class="required"></span></label>
-                <input type="number" name="discountPercentage" id="discount">
+                <input type="number" name="discountPercentage" id="discount" <?php if ($errors['error'] AND $errors['identity'] != 'discount') {print( 'value="' . $_POST['discountPercentage'] . '"');}?>>
             </div>
             <div>
                 <label for="discount">(Nieuwe) actie van <span class="required"></span></label>
-                <input type="date" name="startDate" id="startDate">
+                <input type="date" name="startDate" id="startDate" <?php if ($errors['error'] AND $errors['identity'] != 'date') {print( 'value="' . $_POST['startDate'] . '"');}?>>
             </div>
             <div>
                 <label for="discount">(Nieuwe) actie tot <span class="required"></span></label>
-                <input type="date" name="endDate" id="endDate">
+                <input type="date" name="endDate" id="endDate" <?php if ($errors['error'] AND $errors['identity'] != 'date') {print( 'value="' . $_POST['endDate'] . '"');}?>>
             </div>
             <br>
             <div>

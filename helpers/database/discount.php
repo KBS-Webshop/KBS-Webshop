@@ -14,20 +14,6 @@
 //END; //
 //DELIMITER ;
 
-function removeExpiredDiscounts($databaseConnection)
-{
-    $query = "DELETE FROM specialdeals WHERE EndDate < NOW()";
-    $statement = mysqli_prepare($databaseConnection, $query);
-    mysqli_stmt_execute($statement);
-}
-
-function deleteDiscounts($databaseConnection)
-{
-    $query = "DELETE FROM specialdeals";
-    $statement = mysqli_prepare($databaseConnection, $query);
-    mysqli_stmt_execute($statement);
-}
-
 function getNewID($databaseConnection) {
     removeExpiredDiscounts($databaseConnection);
     $query = "SELECT MAX(SpecialDealID) FROM specialdeals";
@@ -39,20 +25,9 @@ function getNewID($databaseConnection) {
 function getCurrentDiscounts($databaseConnection)
 {
     removeExpiredDiscounts($databaseConnection);
-    $query = "SELECT * FROM specialdeals";
+    $query = "SELECT SpecialDealID, StockItemID, StockItemName, DiscountPercentage, StartDate, EndDate FROM specialdeals JOIN stockitems USING (StockItemID)";
     $result = mysqli_query($databaseConnection, $query);
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
-}
-
-function getDiscount($id, $databaseConnection)
-{
-    removeExpiredDiscounts($databaseConnection);
-    $query = "SELECT * FROM specialdeals WHERE SpecialDealID = ?";
-    $statement = mysqli_prepare($databaseConnection, $query);
-    mysqli_stmt_bind_param($statement, "i", $id);
-    mysqli_stmt_execute($statement);
-    $result = mysqli_stmt_get_result($statement);
-    return mysqli_fetch_assoc($result);
 }
 
 function productHasDiscount($id, $databaseConnection)
@@ -113,4 +88,15 @@ function createDiscount($stockItemID, $discount, $startDate, $endDate, $database
     mysqli_stmt_execute($statement);
 
     return $id;
+}
+
+function getAmountOrderedLast72Hours($id, $databaseConnection)
+{
+    $query = "SELECT SUM(Quantity) FROM orderlines WHERE StockItemID = ? AND (DATEDIFF(NOW(), OrderDate) < 3)";
+    $statement = mysqli_prepare($databaseConnection, $query);
+    mysqli_stmt_bind_param($statement, "i", $id);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    $result = mysqli_fetch_assoc($result);
+    return $result["SUM(Quantity)"];
 }

@@ -5,6 +5,7 @@ include __DIR__ . "/components/header.php";
 $StockItem = getStockItem($_GET['id'], $databaseConnection);
 $StockItemImage = getStockItemImage($_GET['id'], $databaseConnection);
 $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
+$currentDiscount = getDiscountByStockItemID($_GET['id'], $databaseConnection);
 ?>
 <div id="CenteredContent">
     <?php
@@ -81,6 +82,7 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
             <div id="StockItemHeaderLeft">
                 <div class="CenterPriceLeft">
                     <div class="CenterPriceLeftChild">
+                        <p id="clock"></p>
                         <p class="StockItemPriceText"><b><?php print sprintf("€ %.2f", $StockItem['SellPrice']); ?></b></p>
                         <h6> Inclusief BTW </h6>
                         <form method="post">
@@ -176,6 +178,13 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                 }
             ?>
         </div>
+        <script>
+            <?php if ($currentDiscount AND strtotime($currentDiscount['StartDate']) < time()) { ?>
+
+            clockCountdown('clock', '<?php echo $currentDiscount['EndDate'] ?>');
+
+            <?php } ?>
+        </script>
         <?php
     } else {
         ?><h2 id="ProductNotFound">Het opgevraagde product is niet gevonden.</h2><?php

@@ -43,7 +43,7 @@ if (isset($_SESSION["naam"]) && isset($_SESSION["telefoonnummer"]) && isset($_SE
 }
 ?>
 <h1> orderbevestiging</h1><br>
-<h4><?php print $naam?>, bedankt voor uw bestelling bij NerdyGadgets! Uw bestel nummer is: <?php print $orderID?></h4><br>
+<h4><?php print $naam?>, bedankt vij NerdyGadgets! Uw bestel nummer is: <?php print $orderID?></h4><br>
 <h1>Bestel overzicht</h1>
     <div class="winkelmand-wrapper">
     <ul class="winkelmand">

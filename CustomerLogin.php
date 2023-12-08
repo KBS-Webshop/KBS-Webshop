@@ -22,6 +22,12 @@ include __DIR__ . "/helpers/utils.php";
 
 <div class="informationBox">
     <?php
+    if (!isset($_SESSION["user"]["isLoggedIn"])) {
+        $_SESSION["user"]["isLoggedIn"] = 0;
+    }
+    if (isset($_POST["uitloggen"])) {
+        logoutUser();
+    }
     if (isset($_POST["userEmail"])) {
         $_SESSION["userEmail"] = $_POST["userEmail"];
     }
@@ -58,8 +64,6 @@ include __DIR__ . "/helpers/utils.php";
     <div class="login-input">
         <input type="submit" class="loginSubmit" name="uitloggen" value="uitloggen">
     <?php
-    if (isset($_POST["uitloggen"])) {
-    logoutUser();}
     }
     ?>
 </form>

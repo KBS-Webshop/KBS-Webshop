@@ -33,9 +33,10 @@ include __DIR__ . "/helpers/utils.php";
     }
     if (isset($_POST["password"])) {
         $_SESSION["password"] = $_POST["password"];
+        $hashedPassword = hashPassword($_POST["password"]);
     }
     if (isset($_POST["userEmail"]) && isset($_POST["password"]) && $_SESSION["user"]["isLoggedIn"] == 0) {
-        getCurrentUser($databaseConnection, $_POST["userEmail"], $_POST["password"]);
+        getCurrentUser($databaseConnection, $_POST["userEmail"], $hashedPassword);
     }
     if ($_SESSION["user"]["isLoggedIn"] == 1) {
         print("U bent ingelogd.");
@@ -58,7 +59,7 @@ include __DIR__ . "/helpers/utils.php";
         <input type="submit" class="loginSubmit" name="inloggen" value="inloggen">
     </div>
         <div class="informationBox">
-            <a>Nog geen account? Maak </a><a href="createAccount.php">hier</a><a> een account aan</a>
+            <a>Nog geen account? Maak </a><a href="createAccount.php"> hier </a><a> een account aan</a>
         </div>
     <?php } elseif ($_SESSION["user"]["isLoggedIn"] == 1) { ?>
     <div class="login-input">

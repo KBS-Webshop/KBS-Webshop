@@ -1,0 +1,30 @@
+
+form.loyalty-form {
+    width: 30rem;
+}
+
+form.loyalty-form input[type="checkbox"] {
+    width: auto;
+    height: auto;
+}
+
+table.loyalty-table {
+    width: 66vw;
+}
+
+table.loyalty-table tr{
+    border-bottom: 1px solid #ddd;
+}
+
+table.loyalty-table tr:not(:first-child):hover{
+    background-color: #ddd;
+    cursor: pointer;
+}
+
+.loyalty-wrapper a {
+    color: rgb(110, 110, 110)
+}
+
+.loyalty-wrapper a:hover {
+    color: black
+}

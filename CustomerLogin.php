@@ -36,9 +36,9 @@ include __DIR__ . "/helpers/utils.php";
     }
     if (isset($_POST["userEmail"]) && isset($_POST["password"]) && $_SESSION["user"]["isLoggedIn"] == 0) {
         getCurrentUser($databaseConnection, $_POST["userEmail"], $_POST["password"]);
-        if ($_SESSION["user"]["isLoggedIn"] == 1) {
-            print("U bent ingelogd.");
-        }
+    }
+    if ($_SESSION["user"]["isLoggedIn"] == 1) {
+        print("U bent ingelogd.");
     }
     ?>
 </div>
@@ -94,7 +94,6 @@ print_r($_SESSION["user"]);
 //    print($_SESSION["user"]["PhoneNumber"]);
 //}
 //?>
-    </div>
 <?php
 include __DIR__ . "/components/footer.php"
 ?>

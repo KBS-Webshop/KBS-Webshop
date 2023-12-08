@@ -11,6 +11,8 @@ include "helpers/database/database.php";
 include "helpers/database/loyalty.php";
 include "helpers/database/order.php";
 include "helpers/database/stock.php";
+include "helpers/database/customer.php";
+
 
 $databaseConnection = connectToDatabase();
 ?>
@@ -71,7 +73,7 @@ $databaseConnection = connectToDatabase();
 
             <ul id="ul-class-navigation">
                 <li>
-                    <a href="CustomerLogin.php" class="fa fa-user">Inloggen</a>
+                    <a href="CustomerLogin.php" class="fa fa-user">Account</a>
                 </li>
                 <li>
                     <a href="browse.php" class="HrefDecoration"><i class="fas fa-search search"></i> Zoeken</a>

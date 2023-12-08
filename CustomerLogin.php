@@ -19,74 +19,78 @@ include __DIR__ . "/helpers/utils.php";
         flex-direction: row;
     }
 </style>
-<form method="post" class="loginBox" action="CustomerLogin.php">
+
+<div class="informationBox">
+    <?php
+    if (isset($_POST["userEmail"])) {
+        $_SESSION["userEmail"] = $_POST["userEmail"];
+    }
+    if (isset($_POST["password"])) {
+        $_SESSION["password"] = $_POST["password"];
+    }
+    if (isset($_POST["userEmail"]) && isset($_POST["password"]) && $_SESSION["user"]["isLoggedIn"] == 0) {
+        getCurrentUser($databaseConnection, $_POST["userEmail"], $_POST["password"]);
+        if ($_SESSION["user"]["isLoggedIn"] == 1) {
+            print("U bent ingelogd.");
+        }
+    }
+    ?>
+</div>
+
+<form method="POST" class="loginBox">
+    <?php if ($_SESSION["user"]["isLoggedIn"] == 0) { ?>
     <h2>Inloggen</h2>
     <div class="login-input">
         <label for="email">email</label>
-        <input type="text" class="loginEmail" name="email" required>
+        <input type="text" class="loginEmail" name="userEmail" required>
     </div>
     <div class="login-input">
         <label for="password">wachtwoord</label>
         <input type="password" class="loginPassword" name="password" required>
     </div>
-    <div>
-    <a>Nog geen account? Maak </a><a href="createAccount.php">hier</a><a> een account aan</a>
+    <div class="login-input">
+        <input type="submit" class="loginSubmit" name="inloggen" value="inloggen">
     </div>
-    <h2>Uw informatie</h2>
-    <div class="informationBox">
-        <label>Naam: </label>
+        <div class="informationBox">
+            <a>Nog geen account? Maak </a><a href="createAccount.php">hier</a><a> een account aan</a>
+        </div>
+    <?php } elseif ($_SESSION["user"]["isLoggedIn"] == 1) { ?>
+    <div class="login-input">
+        <input type="submit" class="loginSubmit" name="uitloggen" value="uitloggen">
     <?php
-if (isset($_SESSION["naam"])) {
-    print($_SESSION["naam"]);
-}
-?>
-    </div>
-    <div class="informationBox">
-        <label>email: </label>
-        <?php
-        if (isset($_SESSION["email"])) {
-            print($_SESSION["email"]);
-        }
-        ?>
-    </div>
-    <div class="informationBox">
-        <label>Telefoonnummer: </label>
-    <?php
-if (isset($_SESSION["telefoonnummer"])) {
-    print($_SESSION["telefoonnummer"]);
-}
-?>
-    </div>
-    <div class="informationBox">
-        <label>Adres: </label>
-    <?php
-if (isset($_SESSION["adress"])) {
-    print($_SESSION["adress"]);
-}
-?>
-    </div>
-    <div class="informationBox">
-        <label>Postcode: </label>
-    <?php
-if (isset($_SESSION["postcode"])) {
-    print($_SESSION["postcode"]);
-}
-?>
-    </div>
-    <div class="informationBox">
-        <label>Stad: </label>
-    <?php
-if (isset($_SESSION["stad"])) {
-    print($_SESSION["stad"]);
-}
-
+    if (isset($_POST["uitloggen"])) {
+    logoutUser();}
+    }
     ?>
 </form>
-
-
-
-
-
+<!--<div class="informationBox">-->
+<!--    <h2>Uw informatie</h2>-->
+<!--</div>-->
+<!--    <div class="informationBox">-->
+<!--        <label>Naam: </label>-->
+<!--    --><?php
+//if (isset($_SESSION["user"]["FullName"])) {
+//    print($_SESSION["user"]["FullName"]);
+//}
+//?>
+<!--    </div>-->
+<!--    <div class="informationBox">-->
+<!--        <label>email: </label>-->
+<!--        --><?php
+//        if (isset($_SESSION["user"]["EmailAddress"])) {
+//            print($_SESSION["user"]["EmailAddress"]);
+//        }
+//        ?>
+<!--    </div>-->
+<!--    <div class="informationBox">-->
+<!--        <label>Telefoonnummer: </label>-->
+<!--    --><?php
+print_r($_SESSION["user"]);
+//if (isset($_SESSION["user"]["PhoneNumber"])) {
+//    print($_SESSION["user"]["PhoneNumber"]);
+//}
+//?>
+    </div>
 <?php
 include __DIR__ . "/components/footer.php"
 ?>

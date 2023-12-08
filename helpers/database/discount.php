@@ -1,7 +1,15 @@
 <?php
 # alter table specialdeals drop constraint FK_Sales_SpecialDeals_Application_People;
 
+function removeExpiredDiscounts($databaseConnection)
+{
+//    $query = "DELETE FROM specialdeals WHERE EndDate < NOW()";
+//    $statement = mysqli_prepare($databaseConnection, $query);
+//    mysqli_stmt_execute($statement);
+}
+
 function getNewID($databaseConnection) {
+    removeExpiredDiscounts($databaseConnection);
     $query = "SELECT MAX(SpecialDealID) FROM specialdeals";
     $result = mysqli_query($databaseConnection, $query);
     $result = mysqli_fetch_assoc($result);
@@ -10,6 +18,7 @@ function getNewID($databaseConnection) {
 
 function getCurrentDiscounts($databaseConnection)
 {
+    removeExpiredDiscounts($databaseConnection);
     $query = "SELECT * FROM specialdeals";
     $result = mysqli_query($databaseConnection, $query);
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -17,6 +26,7 @@ function getCurrentDiscounts($databaseConnection)
 
 function getDiscount($id, $databaseConnection)
 {
+    removeExpiredDiscounts($databaseConnection);
     $query = "SELECT * FROM specialdeals WHERE SpecialDealID = ?";
     $statement = mysqli_prepare($databaseConnection, $query);
     mysqli_stmt_bind_param($statement, "i", $id);
@@ -25,15 +35,36 @@ function getDiscount($id, $databaseConnection)
     return mysqli_fetch_assoc($result);
 }
 
-function updateDiscountOrEndDate($id, $databaseConnection, $discount=null, $endDate=null)
+function productHasDiscount($id, $databaseConnection)
 {
-    if (!$discount) {
-        $query = "UPDATE specialdeals SET EndDate = ? WHERE SpecialDealID = ?";
+    removeExpiredDiscounts($databaseConnection);
+    $query = "SELECT * FROM specialdeals WHERE StockItemID = ?";
+    $statement = mysqli_prepare($databaseConnection, $query);
+    mysqli_stmt_bind_param($statement, "i", $id);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    return !!mysqli_fetch_assoc($result);
+}
+
+function updateDiscount($id, $databaseConnection, $discount=null, $startDate=null, $endDate=null)
+{
+    removeExpiredDiscounts($databaseConnection);
+    if ($startDate) {
+        $query = "UPDATE specialdeals SET StartDate = ? WHERE StockItemID = ?";
+        $statement = mysqli_prepare($databaseConnection, $query);
+        mysqli_stmt_bind_param($statement, "si", $startDate, $id);
+        mysqli_stmt_execute($statement);
+    }
+
+    if ($endDate) {
+        $query = "UPDATE specialdeals SET EndDate = ? WHERE StockItemID = ?";
         $statement = mysqli_prepare($databaseConnection, $query);
         mysqli_stmt_bind_param($statement, "si", $endDate, $id);
         mysqli_stmt_execute($statement);
-    } else {
-        $query = "UPDATE specialdeals SET DiscountPercentage = ? WHERE SpecialDealID = ?";
+    }
+
+    if ($discount) {
+        $query = "UPDATE specialdeals SET DiscountPercentage = ? WHERE StockItemID = ?";
         $statement = mysqli_prepare($databaseConnection, $query);
         mysqli_stmt_bind_param($statement, "ii", $discount, $id);
         mysqli_stmt_execute($statement);
@@ -42,6 +73,7 @@ function updateDiscountOrEndDate($id, $databaseConnection, $discount=null, $endD
 
 function deleteDiscount($id, $databaseConnection)
 {
+    removeExpiredDiscounts($databaseConnection);
     $query = "DELETE FROM specialdeals WHERE SpecialDealID = ?";
     $statement = mysqli_prepare($databaseConnection, $query);
     mysqli_stmt_bind_param($statement, "i", $id);
@@ -50,6 +82,7 @@ function deleteDiscount($id, $databaseConnection)
 
 function createDiscount($stockItemID, $discount, $startDate, $endDate, $databaseConnection)
 {
+    removeExpiredDiscounts($databaseConnection);
     $id = getNewID($databaseConnection);
 
     $query = "INSERT INTO specialdeals (SpecialDealID, StockItemID, CustomerID, BuyingGroupID, CustomerCategoryID, StockGroupID, DealDescription, StartDate, EndDate, DiscountAmount, DiscountPercentage, UnitPrice, LastEditedBy, LastEditedWhen) 

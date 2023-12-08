@@ -39,6 +39,7 @@ $databaseConnection = connectToDatabase();
     <link rel="stylesheet" href="../Public/CSS/loyalty.css" type="text/css">
     <link rel="stylesheet" href="../Public/CSS/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="../Public/CSS/typekit.css">
+    <link rel="stylesheet" href="../Public/CSS/discount.css" type="text/css">
 </head>
 
 <body>

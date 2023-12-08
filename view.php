@@ -82,8 +82,17 @@ $currentDiscount = getDiscountByStockItemID($_GET['id'], $databaseConnection);
             <div id="StockItemHeaderLeft">
                 <div class="CenterPriceLeft">
                     <div class="CenterPriceLeftChild">
-                        <p id="clock"></p>
-                        <p class="StockItemPriceText"><b><?php print sprintf("€ %.2f", $StockItem['SellPrice']); ?></b></p>
+                        <?php if ($currentDiscount) { ?><h1><b><?php echo intval(-$currentDiscount['DiscountPercentage'], 10) ?>%</b></h1>
+                            <h4 id="clock" style="font-weight: bold;"></h4>
+                            <h2 class="StockItemPriceText">
+                                    <s class="strikedtext">
+                                        <?php print sprintf("€ %.2f", $StockItem['SellPrice']); ?>
+                                    </s>
+                                    <?php print sprintf("€ %.2f", $StockItem['SellPrice'] * ($currentDiscount['DiscountPercentage'] / 100)) ; ?>
+                            </h2>
+                        <?php } else { ?>
+                            <h2 class="StockItemPriceText"><?php print sprintf("€ %.2f", $StockItem['SellPrice']); ?></h2>
+                        <?php } ?>
                         <h6> Inclusief BTW </h6>
                         <form method="post">
                             <input type="hidden" name="action" value="add">
@@ -152,15 +161,32 @@ $currentDiscount = getDiscountByStockItemID($_GET['id'], $databaseConnection);
                 <div class="ProductsAlsoBoughtGrid">
                     <?php
                         foreach ($AlsoBought as $product) {
+                            $alsoBoughtDiscount = getDiscountByStockItemID($product['StockItemID'], $databaseConnection);
                             ?>
                             <a class="ListItem" href='view.php?id=<?php echo $product['StockItemID']; ?>'>
                                 <?php
                                     if (isset($product["StockItemImage"])) { ?>
                                         <div class="ImgFrame"
-                                            style="background-image: url('<?php print "Public/StockItemIMG/" . $product["StockItemImage"]; ?>'); background-size: contain; background-repeat: no-repeat; background-position: center;"></div>
+                                            style="background-image: url('<?php print "Public/StockItemIMG/" . $product["StockItemImage"]; ?>'); background-size: contain; background-repeat: no-repeat; background-position: center;">
+                                            <?php if ($alsoBoughtDiscount) { ?>
+                                            <div class="small-timer-container">
+                                                <div class="discount-also-bought-text">-<?php echo intval($alsoBoughtDiscount['DiscountPercentage'], 10) ?>%</div>
+                                                <div class="small-timer" id="clock<?php echo $product['StockItemID'] ?>"></div>
+                                            </div>
+                                            <?php } ?>
+                                        </div>
                                 <?php } ?>
                                 <h5><?php echo $product["StockItemName"] ?></h5>
-                                <?php echo sprintf("€ %.2f", $product['SellPrice']) ?></p>
+
+                                <?php if ($alsoBoughtDiscount) { ?>
+                                    <p>
+                                        <s><?php echo sprintf("€ %.2f", $product['SellPrice']) ?></s>
+                                        <?php print sprintf("€ %.2f", $product['SellPrice'] * ($alsoBoughtDiscount['DiscountPercentage'] / 100)) ; ?>
+                                    </p>
+                                <?php } else { ?>
+                                    <p><?php echo sprintf("€ %.2f", $product['SellPrice']) ?></p>
+                                <?php } ?>
+
                                 <form method="post">
                                     <input type="hidden" name="action" value="add">
                                     <input type="hidden" name="StockItemID" value="<?php echo $product['StockItemID']; ?>">
@@ -169,6 +195,13 @@ $currentDiscount = getDiscountByStockItemID($_GET['id'], $databaseConnection);
                                     </button>
                                 </form>
                             </a>
+                            <script>
+                                <?php if ($alsoBoughtDiscount) { ?>
+
+                                clockCountdown('clock<?php echo $product['StockItemID'] ?>', '<?php echo $alsoBoughtDiscount['EndDate'] ?>', false);
+
+                                <?php } ?>
+                            </script>
                             <?php
                         }
                     ?>

@@ -114,7 +114,10 @@ table tr td {
     float: left;
     margin-left: 10px;
     margin-top: 10px;
-    margin-right: 10px
+    margin-right: 10px;
+    border: 2px solid #000;
+    display: flex;
+    justify-content: center;
 }
 .ImgFrame img {
     width: 230px;

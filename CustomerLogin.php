@@ -36,7 +36,7 @@ include __DIR__ . "/helpers/utils.php";
         $hashedPassword = hashPassword($_POST["password"]);
     }
     if (isset($_POST["userEmail"]) && isset($_POST["password"]) && $_SESSION["user"]["isLoggedIn"] == 0) {
-        getCurrentUser($databaseConnection, $_POST["userEmail"], $hashedPassword);
+        getCurrentUser($databaseConnection, $_POST["userEmail"], $_POST["password"]); #$_POST["password"] moet nog veranderd worden naar werkende $hashedPassword
     }
     if ($_SESSION["user"]["isLoggedIn"] == 1) {
         print("U bent ingelogd.");
@@ -64,37 +64,52 @@ include __DIR__ . "/helpers/utils.php";
     <?php } elseif ($_SESSION["user"]["isLoggedIn"] == 1) { ?>
     <div class="login-input">
         <input type="submit" class="loginSubmit" name="uitloggen" value="uitloggen">
+    </div>
+        <div>
+    <?php
+    print "Welkom " . $_SESSION["user"]["FullName"] . "!";
+    ?>
+        </div>
+    <div class="informationBox">
+        <h2>Uw informatie</h2>
+    </div>
+    <div class="informationBox">
+        <label>Naam: </label>
+        <?php
+        if (isset($_SESSION["user"]["FullName"])) {
+            print($_SESSION["user"]["FullName"]);
+        }
+        ?>
+    </div>
+    <div class="informationBox">
+        <label>email: </label>
+        <?php
+        if (isset($_SESSION["user"]["EmailAddress"])) {
+            print($_SESSION["user"]["EmailAddress"]);
+        }
+        ?>
+    </div>
+    <div class="informationBox">
+        <label>Telefoonnummer: </label>
+        <?php
+        if (isset($_SESSION["user"]["PhoneNumber"])) {
+            print($_SESSION["user"]["PhoneNumber"]);
+        }
+        ?>
+    </div>
+    <div class="informationBox">
+        <label>Loyaliteitspunten: </label>
+        <?php
+        if (isset($_SESSION["user"]["loyalty_points"])) {
+            print($_SESSION["user"]["loyalty_points"]);
+        }
+        ?>
+    </div>
+
+        <a href="userInfoAanpassen.php">
+            <h2>aanpassen</h2>
+            </a>
     <?php
     }
-    ?>
-</form>
-<!--<div class="informationBox">-->
-<!--    <h2>Uw informatie</h2>-->
-<!--</div>-->
-<!--    <div class="informationBox">-->
-<!--        <label>Naam: </label>-->
-<!--    --><?php
-//if (isset($_SESSION["user"]["FullName"])) {
-//    print($_SESSION["user"]["FullName"]);
-//}
-//?>
-<!--    </div>-->
-<!--    <div class="informationBox">-->
-<!--        <label>email: </label>-->
-<!--        --><?php
-//        if (isset($_SESSION["user"]["EmailAddress"])) {
-//            print($_SESSION["user"]["EmailAddress"]);
-//        }
-//        ?>
-<!--    </div>-->
-<!--    <div class="informationBox">-->
-<!--        <label>Telefoonnummer: </label>-->
-<!--    --><?php
-print_r($_SESSION["user"]);
-//if (isset($_SESSION["user"]["PhoneNumber"])) {
-//    print($_SESSION["user"]["PhoneNumber"]);
-//}
-//?>
-<?php
 include __DIR__ . "/components/footer.php"
 ?>

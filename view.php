@@ -1,11 +1,14 @@
 <!-- dit bestand bevat alle code voor de pagina die één product laat zien -->
 <?php
 include __DIR__ . "/components/header.php";
+include __DIR__ . "/helpers/database/reviewsDB.php";
 
 $StockItem = getStockItem($_GET['id'], $databaseConnection);
 $StockItemImage = getStockItemImage($_GET['id'], $databaseConnection);
 $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
+
 ?>
+
 <div id="CenteredContent">
     <?php
     if ($StockItem != null) {
@@ -140,11 +143,52 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                     ?>
 
                 </div>
+
+                <div id="StockItemSpecifications">
+                    <div>
+                        <h1>Reviews:</h1>
+                        <form method="post" action="view.php">
+                            <input type="text" name="review" value="Typ hier uw review!">
+                            <input type="hidden" name="StockItemID" value="<?php echo $StockItem['id']; ?>">
+                        </form>
+                    </div>
+                    <div>
+                        <form method="post">
+                            <input type="submit" value="Review toevoegen" name="ReviewToevoegen">
+                            <input type="hidden" name="StockItemID" value="<?php echo $StockItem['id']; ?>">
+                        </form>
+                    </div>
+                </div>
             </div>
 
-            <?php 
+            <?php
+            if(isset($_POST['ReviewToevoegen'])) {
+                $review = $_POST['review'];
+                $date = date('Y-m-d');
+                $itemID = $_POST['StockItemID'];
+                addReview($review, $itemID, '2', $date, $databaseConnection);
+            }
+                    ?>
+            <div>
+                          <?php
+                          $reviews = getAllReviews($StockItem['id'], $databaseConnection);
+                          foreach ($reviews as $review){
+                              ?>
+                        <div>
+                            <?php echo $review?>
+                        </div>
+                        <?php
+                          }
+                          ?>
+                    </div>
+
+
+            <?php
                 if(count($AlsoBought) != 0) {
             ?>
+
+
+
             <div class="ProductAlsoBoughtWrapper">
                 <h3>Vaak samen gekocht</h3>
                 <div class="ProductsAlsoBoughtGrid">
@@ -176,6 +220,10 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                 }
             ?>
         </div>
+
+
+
+
         <?php
     } else {
         ?><h2 id="ProductNotFound">Het opgevraagde product is niet gevonden.</h2><?php

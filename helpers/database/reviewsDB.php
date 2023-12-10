@@ -11,7 +11,7 @@ function addReview($review, $StockItemID, $personID, $publicationDate, $database
 
     mysqli_stmt_bind_param(
         $Statement,
-        "sisi",
+        "siii",
         $review,
         $StockItemID,
         $personID,

@@ -145,29 +145,26 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                 </div>
 
                 <div id="StockItemSpecifications">
-                    <div>
-                        <h1>Reviews:</h1>
-                        <form method="post" action="view.php">
-                            <input type="text" name="review" value="Typ hier uw review!">
-                            <input type="hidden" name="StockItemID" value="<?php echo $StockItem['id']; ?>">
-                        </form>
-                    </div>
-                    <div>
-                        <form method="post">
-                            <input type="submit" value="Review toevoegen" name="ReviewToevoegen">
-                            <input type="hidden" name="StockItemID" value="<?php echo $StockItem['id']; ?>">
-                        </form>
-                    </div>
+                    <form method="post">
+                        <input type="text" name="review" value="Typ hier uw review!">
+                        <input type="hidden" name="StockItemID" value="<?php echo $StockItem['id']; ?>">
+                        <input type="submit" value="Review toevoegen" name="ReviewToevoegen">
+                    </form>
                 </div>
             </div>
 
             <?php
-            if(isset($_POST['ReviewToevoegen'])) {
-                $review = $_POST['review'];
+            if (isset($_POST['ReviewToevoegen'])) {
+                $review = mysqli_real_escape_string($databaseConnection, $_POST['review']);
                 $date = date('Y-m-d');
-                $itemID = $_POST['StockItemID'];
-                addReview($review, $itemID, '2', $date, $databaseConnection);
+                $itemID = mysqli_real_escape_string($databaseConnection, $_POST['StockItemID']);
+                if (addReview($review, $itemID, 2, $date, $databaseConnection)) {
+                    echo "Review toegevoegd!";
+                } else {
+                    echo "Er is een fout opgetreden bij het toevoegen van de review.";
+                }
             }
+            ?>
                     ?>
             <div>
                           <?php
@@ -180,7 +177,7 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                         <?php
                           }
                           ?>
-                    </div>
+            </div>
 
 
             <?php

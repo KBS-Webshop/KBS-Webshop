@@ -3,8 +3,6 @@
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
 
-clearCookie();
-
 $naam=$_SESSION["naam"];
 $telefoonnummer=$_SESSION["telefoonnummer"];
 $adress=$_SESSION["adress"];

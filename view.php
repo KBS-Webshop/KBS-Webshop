@@ -170,7 +170,7 @@ $currentDiscount = getDiscountByStockItemID($_GET['id'], $databaseConnection);
                                             style="background-image: url('<?php print "Public/StockItemIMG/" . $product["StockItemImage"]; ?>'); background-size: contain; background-repeat: no-repeat; background-position: center;">
                                             <?php if ($alsoBoughtDiscount) { ?>
                                             <div class="small-timer-container">
-                                                <div class="discount-also-bought-text">-<?php echo intval($alsoBoughtDiscount['DiscountPercentage'], 10) ?>%</div>
+                                                <div class="discount-also-bought-text">-<?php echo intval($alsoBoughtDiscount['DiscountPercentage'], 10) ?>%&nbsp;</div>
                                                 <div class="small-timer" id="clock<?php echo $product['StockItemID'] ?>"></div>
                                             </div>
                                             <?php } ?>

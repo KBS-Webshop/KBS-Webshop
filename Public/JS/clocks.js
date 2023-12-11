@@ -1,10 +1,10 @@
-function formatTimeStamp(d, h, m, s, text) {
+function formatTimeStamp(d, h, m, s, text=true) {
     return (
         // sorry hiervoor
         (text ? 'Nog ' : '') +
         // als er geen dagen zijn, laat het weg; anders voeg een 0 toe als er maar 1 getal is
-        (d.length === '0' ? ((d.length === 1 ? '0' : '') + d + ":") : '') +
-        (h.length === '0' ? ((h.length === 1 ? '0' : '') + h + ":") : '') +
+        (d !== '0' ? ((d.length === 1 ? '0' : '') + d + ":") : '') +
+        (h !== '0' ? ((h.length === 1 ? '0' : '') + h + ":") : '') +
         // voeg een 0 toe als er maar 1 getal is
         (m.length === 1 ? '0' : '') + m + ":" +
         (s.length === 1 ? '0' : '') + s +

@@ -147,7 +147,6 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                 <div id="StockItemSpecifications">
                     <form method="post">
                         <input type="text" name="review" value="Typ hier uw review!">
-                        <input type="hidden" name="StockItemID" value="<?php echo $StockItem['id']; ?>">
                         <input type="submit" value="Review toevoegen" name="ReviewToevoegen">
                     </form>
                 </div>
@@ -157,25 +156,18 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
             if (isset($_POST['ReviewToevoegen'])) {
                 $review = mysqli_real_escape_string($databaseConnection, $_POST['review']);
                 $date = date('Y-m-d');
-                $itemID = mysqli_real_escape_string($databaseConnection, $_POST['StockItemID']);
-                if (addReview($review, $itemID, 2, $date, $databaseConnection)) {
-                    echo "Review toegevoegd!";
-                } else {
-                    echo "Er is een fout opgetreden bij het toevoegen van de review.";
-                }
+                addReview($review, $StockItem["StockItemID"], 2, $date, $databaseConnection);
+
+//                    echo "Review toegevoegd!";
+//                } else {
+//                    echo "Er is een fout opgetreden bij het toevoegen van de review.";
+//                }
             }
             ?>
-                    ?>
             <div>
                           <?php
-                          $reviews = getAllReviews($StockItem['id'], $databaseConnection);
-                          foreach ($reviews as $review){
-                              ?>
-                        <div>
-                            <?php echo $review?>
-                        </div>
-                        <?php
-                          }
+                          $reviews = getAllReviews($StockItem['StockItemID'], $databaseConnection);
+                          print_r($reviews);
                           ?>
             </div>
 

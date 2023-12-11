@@ -11,7 +11,7 @@ function addReview($review, $StockItemID, $personID, $publicationDate, $database
 
     mysqli_stmt_bind_param(
         $Statement,
-        "siii",
+        "siis",
         $review,
         $StockItemID,
         $personID,
@@ -21,11 +21,11 @@ function addReview($review, $StockItemID, $personID, $publicationDate, $database
 
     mysqli_stmt_execute($Statement);
 
-    if (mysqli_stmt_execute($Statement)) {
-        echo "Review toegevoegd!";
-    } else {
-        echo "Fout bij het toevoegen van review: " . mysqli_error($databaseConnection);
-    }
+//    if () {
+//        echo "Review toegevoegd!";
+//    } else {
+//        echo "Fout bij het toevoegen van review: " . mysqli_error($databaseConnection);
+//    }
 }
 
 function getAllReviews($StockItemID, $databaseConnection)

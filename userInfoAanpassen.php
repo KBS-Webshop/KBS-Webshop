@@ -47,7 +47,8 @@ if (isset($_POST["aanpassingenOpslaan"])) {
     $updated = updateAccount($databaseConnection, $_POST["FullName"], $_POST["PhoneNumber"], $_POST["EmailAddress"], $_SESSION["user"]["PersonID"]);
 if ($updated) {
         print("Account aangepast.");
-        getCurrentUser($databaseConnection, $_SESSION["userEmail"], $_SESSION["password"]);
+        getCurrentUser($databaseConnection, $_POST["EmailAddress"], $_SESSION["password"]);
+        $_SESSION["userEmail"] = $_POST["EmailAddress"];
     } else {
         print("Account aanpassen mislukt.");
     }

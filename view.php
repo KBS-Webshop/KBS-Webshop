@@ -146,9 +146,40 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
 
                 <div id="StockItemSpecifications">
                     <form method="post">
-                        <input type="text" name="review" value="Typ hier uw review!">
+                        <input type="text" name="review" placeholder="Typ hier uw review!">
                         <input type="submit" value="Review toevoegen" name="ReviewToevoegen">
                     </form>
+                </div>
+                <div class="ProductInformation">
+                    <?php
+                    $reviews = getAllReviews($StockItem['StockItemID'], $databaseConnection);
+                    $reviewDates = getReviewDates($StockItem['StockItemID'], $databaseConnection);
+                    $personID = 9;
+                    $names = getReviewPerson($StockItem['StockItemID'], $databaseConnection);
+
+                    foreach ($reviews as $index => $review) {
+                        $name = $names[$index] ?? null;
+                        if ($name) {
+                            ?>
+                            <div id="StockItemSpecifications">
+                                <div class="review-person">
+                                    <?php
+                                    echo ($name['FullName'] . '<br>');
+                                    ?>
+                                </div>
+                                <?php
+                                echo ($review['review']);
+                                ?>
+                                <div class="review-date">
+                                    <?php
+                                    echo ($reviewDates[$index]['publicationDate'])
+                                    ?>
+                                </div>
+                            </div>
+                            <?php
+                        }
+                    }
+                    ?>
                 </div>
             </div>
 
@@ -156,7 +187,7 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
             if (isset($_POST['ReviewToevoegen'])) {
                 $review = mysqli_real_escape_string($databaseConnection, $_POST['review']);
                 $date = date('Y-m-d');
-                addReview($review, $StockItem["StockItemID"], 2, $date, $databaseConnection);
+                addReview($review, $StockItem["StockItemID"], 9, $date, $databaseConnection);
 
 //                    echo "Review toegevoegd!";
 //                } else {
@@ -164,12 +195,6 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
 //                }
             }
             ?>
-            <div>
-                          <?php
-                          $reviews = getAllReviews($StockItem['StockItemID'], $databaseConnection);
-                          print_r($reviews);
-                          ?>
-            </div>
 
 
             <?php

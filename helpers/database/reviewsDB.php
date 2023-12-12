@@ -1,21 +1,20 @@
 <?php
 
-function addReview($review, $StockItemID, $personID, $publicationDate, $databaseConnection)
+function addReview($review, $StockItemID, $personID, $databaseConnection)
 {
     $query = '
-    INSERT INTO reviews (review, StockItemID, personID, PublicationDate)
-    VALUES (?, ?, ?, ?)
+    INSERT INTO reviews (review, StockItemID, personID)
+    VALUES (?, ?, ?)
     ';
 
     $Statement = mysqli_prepare($databaseConnection, $query);
 
     mysqli_stmt_bind_param(
         $Statement,
-        "siis",
+        "sii",
         $review,
         $StockItemID,
-        $personID,
-        $publicationDate
+        $personID
     );
 
 

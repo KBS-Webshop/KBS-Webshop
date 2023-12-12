@@ -154,7 +154,7 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                     <?php
                     $reviews = getAllReviews($StockItem['StockItemID'], $databaseConnection);
                     $reviewDates = getReviewDates($StockItem['StockItemID'], $databaseConnection);
-                    $personID = 9;
+                    $personID = 33;
                     $names = getReviewPerson($StockItem['StockItemID'], $databaseConnection);
 
                     foreach ($reviews as $index => $review) {
@@ -187,7 +187,7 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
             if (isset($_POST['ReviewToevoegen'])) {
                 $review = mysqli_real_escape_string($databaseConnection, $_POST['review']);
                 $date = date('Y-m-d');
-                addReview($review, $StockItem["StockItemID"], 9, $date, $databaseConnection);
+                addReview($review, $StockItem["StockItemID"], 33, $databaseConnection);
             }
             ?>
 

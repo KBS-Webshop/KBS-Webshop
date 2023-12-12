@@ -158,7 +158,7 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                     $names = getReviewPerson($StockItem['StockItemID'], $databaseConnection);
 
                     foreach ($reviews as $index => $review) {
-                        $name = $names[$index] ?? null;
+                        $name = $names[$index];
                         if ($name) {
                             ?>
                             <div id="StockItemSpecifications">

@@ -127,7 +127,7 @@ function getCustomer($dbConnection, $Cname, $phoneNumber, $DeliveryAddress, $Del
 function addCustomer ($dbConnection, $newCustomerID, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $deliveryCityID, $customCategoryID, $salesContactPersonID, $deliveryMethodID, $currentDate, $standardDiscountPercentage, $isStatementSent, $isOnCreditHold, $paymentDays, $websiteURL, $validTo) {
     $Query = "
     INSERT INTO customers (CustomerID, CustomerName, BillToCustomerID, CustomerCategoryID, PrimaryContactPersonID, DeliveryMethodID, DeliveryCityID, PostalCityID, AccountOpenedDate, StandardDiscountPercentage, IsStatementSent, IsOnCreditHold, PaymentDays, PhoneNumber, FaxNumber, WebsiteURL, DeliveryAddressLine1, DeliveryPostalCode, PostalAddressLine1, PostalPostalCode, LastEditedBy, ValidFrom, ValidTo, PersonID)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?)";
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?, ?)";
     $Statement = mysqli_prepare($dbConnection, $Query);
     mysqli_stmt_bind_param($Statement, "ssiiiiiisiiiisssssssissi", $newCustomerID, $Cname, $newCustomerID, $customCategoryID, $salesContactPersonID, $deliveryMethodID, $deliveryCityID, $deliveryCityID, $currentDate, $standardDiscountPercentage, $isStatementSent, $isOnCreditHold, $paymentDays, $phoneNumber, $phoneNumber, $websiteURL, $DeliveryAddress, $DeliveryPostalCode, $DeliveryAddress, $DeliveryPostalCode, $salesContactPersonID, $currentDate, $validTo, $_SESSION["user"]["PersonID"]);
     mysqli_stmt_execute($Statement);

@@ -48,10 +48,9 @@ function logoutUser() {
 }
 
 function hashPassword($password) {
-    $staticSalt = 'Salty';
-    $hashedPassword = password_hash($password . $staticSalt, PASSWORD_BCRYPT);
-    print $hashedPassword;
-    return $hashedPassword;
+    $fixedSalt = 'kbs-webshop-salt';
+    $hashedPassword1 = hash('sha256', $password . $fixedSalt);
+    return $hashedPassword1;
 }
 
 function createAccount ($databaseConnection, $name, $hashedPassword, $phoneNumber, $email){

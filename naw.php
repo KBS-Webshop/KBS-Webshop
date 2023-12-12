@@ -3,6 +3,9 @@ include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
 
 if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
+    if ($_SESSION["userEmail"] !== null && $_SESSION["password"] !== null) {
+        getUserCustomerInfo($databaseConnection);
+    }
 ?>
 <div class="bonnetje-wrapper">
     <?php
@@ -45,7 +48,7 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
         <label for="name">
           Naam <span class="required"></span>
         </label>
-        <input type="text" name="naam" id="naam" required>
+        <input type="text" name="naam" id="naam" value="<?php if(isset($_SESSION["user"]["customer"]["FullName"])) { print($_SESSION["user"]["customer"]["FullName"]); } else { print ""; } ?>" required>
     </div>
 
     <div class="naw-input form-width-2">
@@ -68,13 +71,13 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
                 <label for="name" class="inline-label">
                     Postcode <span class="required"></span>
                 </label>
-            <input type="text" name="postcode" id="postcode" required>
+            <input type="text" name="postcode" id="postcode" value="<?php if(isset($_SESSION["user"]["customer"]["PostalPostalCode"])) { print($_SESSION["user"]["customer"]["PostalPostalCode"]); } else { print ""; } ?>" required>
         </div>
         <div class="naw-input-inner">
             <label for="name" class ="inline-label">
                 Stad <span class="required"></span>
             </label>
-            <input type="text" name="stad" id="stad" required>
+            <input type="text" name="stad" id="stad" value="<?php if(isset($_SESSION["user"]["customer"]["FullName"])) { print($_SESSION["user"]["customer"]["FullName"]); } else { print ""; } ?>" required>
         </div>
         <div class="naw-input-inner">
             <label for="name" class ="inline-label">
@@ -103,7 +106,7 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
             <label for="name" class="required">
                 Telefoonnummer
             </label>
-            <input type="text" name="telefoonnummer" id="telefoonnummer">
+            <input type="text" name="telefoonnummer" id="telefoonnummer" value="<?php if(isset($_SESSION["user"]["customer"]["PhoneNumber"])) { print($_SESSION["user"]["customer"]["PhoneNumber"]); } else { print ""; } ?>" required >
         </div>
     </div>
 
@@ -112,7 +115,7 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
             <label for="name">
                 Email-adres <span class="required"></span>
             </label>
-            <input type="text" name="email" id="email" required>
+            <input type="text" name="email" id="email" value="<?php if(isset($_SESSION["user"]["customer"]["EmailAddress"])) { print($_SESSION["user"]["customer"]["EmailAddress"]); } else { print ""; } ?>" required>
         </div>
     </div>
     <div class="comments">

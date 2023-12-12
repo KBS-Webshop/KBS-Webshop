@@ -50,6 +50,8 @@ if (isset($_POST["password"])) {
 }
         if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["naam"]) && isset($_POST["telefoonnummer"])) {
             $succes = createAccount($databaseConnection, $_POST["naam"], $hashedPassword, $_POST["telefoonnummer"], $_POST["email"]);
+
+            definiteAddCustomer();
             if ($succes) {
                 print("Account aangemaakt.");
             } else {

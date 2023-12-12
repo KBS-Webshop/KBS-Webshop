@@ -35,6 +35,16 @@ function logoutUser() {
     $_SESSION["user"]["PhoneNumber"] = "";
     $_SESSION["user"]["EmailAddress"] = "";
     $_SESSION["user"]["loyalty_points"] = "";
+    $_SESSION["user"]["PersonID"] = "";
+    $_SESSION["user"]["customer"]["CustomerID"] = "";
+    $_SESSION["user"]["customer"]["CustomerName"] = "";
+    $_SESSION["user"]["customer"]["DeliveryCityID"] = "";
+    $_SESSION["user"]["customer"]["PostalCityID"] = "";
+    $_SESSION["user"]["customer"]["PhoneNumber"] = "";
+    $_SESSION["user"]["customer"]["DeliveryAddressLine1"] = "";
+    $_SESSION["user"]["customer"]["DeliveryPostalCode"] = "";
+    $_SESSION["user"]["customer"]["PostalAddressLine1"] = "";
+    $_SESSION["user"]["customer"]["PostalPostalCode"] = "";
 }
 function hashPassword($password) {
     $savePassword = password_hash($password, PASSWORD_BCRYPT);
@@ -58,4 +68,24 @@ function updateAccount ($databaseConnection, $name, $phoneNumber, $email, $perso
     mysqli_stmt_bind_param($statement, "sssssi", $name, $name, $name, $phoneNumber, $email, $personID);
     mysqli_stmt_execute($statement);
     return TRUE;
+}
+function getUserCustomerInfo($databaseConnection)
+{
+    getCurrentUserID($databaseConnection, $_SESSION["userEmail"], $_SESSION["password"]);
+    $query = "SELECT CustomerID, CustomerName, DeliveryCityID, PostalCityID, PhoneNumber, DeliveryAddressLine1, DeliveryPostalCode, PostalAddressLine1, PostalPostalCode
+              FROM customers
+              WHERE PersonID = ?";
+    $statement = mysqli_prepare($databaseConnection, $query);
+    mysqli_stmt_bind_param($statement, "i", $_SESSION["user"]["PersonID"]);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    $user = mysqli_fetch_assoc($result);
+    if ($user != null) {
+        foreach ($user as $key => $value) {
+            $_SESSION["user"]["customer"][$key] = $value;
+        }
+        return TRUE;
+    } else {
+        return FALSE;
+    }
 }

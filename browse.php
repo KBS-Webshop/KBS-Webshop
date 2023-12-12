@@ -243,13 +243,13 @@ if (isset($amount)) {
 
                     <div id="StockItemFrameRight">
                         <div class="CenterPriceLeftChild">
-                            <?php if ($currentDiscount) { ?><h1><b><?php echo intval(-$currentDiscount['DiscountPercentage'], 10) ?>%</b></h1>
+                            <?php if ($currentDiscount) { ?><h1><b>-<?php echo intval($currentDiscount['DiscountPercentage'], 10) ?>%</b></h1>
                                 <h4 id="clock<?php echo $row['StockItemID'] ?>" style="font-weight: bold;"></h4>
                                 <h2 class="StockItemPriceText">
                                     <s class="strikedtext">
                                         <?php print sprintf("€ %.2f", $row['SellPrice']); ?>
                                     </s>
-                                    <?php print sprintf("€ %.2f", $row['SellPrice'] * ($currentDiscount['DiscountPercentage'] / 100)) ; ?>
+                                    <?php print sprintf("€ %.2f", $row['SellPrice'] * (1 - ($currentDiscount['DiscountPercentage'] / 100))) ; ?>
                                 </h2>
                             <?php } else { ?>
                                 <h2 class="StockItemPriceText"><?php print sprintf("€ %.2f", $row['SellPrice']); ?></h2>

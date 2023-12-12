@@ -88,7 +88,7 @@ $currentDiscount = getDiscountByStockItemID($_GET['id'], $databaseConnection);
                                     <s class="strikedtext">
                                         <?php print sprintf("€ %.2f", $StockItem['SellPrice']); ?>
                                     </s>
-                                    <?php print sprintf("€ %.2f", $StockItem['SellPrice'] * ($currentDiscount['DiscountPercentage'] / 100)) ; ?>
+                                    <?php print sprintf("€ %.2f", $StockItem['SellPrice'] * (1 - ($currentDiscount['DiscountPercentage'] / 100))) ; ?>
                             </h2>
                         <?php } else { ?>
                             <h2 class="StockItemPriceText"><?php print sprintf("€ %.2f", $StockItem['SellPrice']); ?></h2>
@@ -181,7 +181,7 @@ $currentDiscount = getDiscountByStockItemID($_GET['id'], $databaseConnection);
                                 <?php if ($alsoBoughtDiscount) { ?>
                                     <p>
                                         <s><?php echo sprintf("€ %.2f", $product['SellPrice']) ?></s>
-                                        <?php print sprintf("€ %.2f", $product['SellPrice'] * ($alsoBoughtDiscount['DiscountPercentage'] / 100)) ; ?>
+                                        <?php print sprintf("€ %.2f", $product['SellPrice'] * (1 - ($alsoBoughtDiscount['DiscountPercentage'] / 100))) ; ?>
                                     </p>
                                 <?php } else { ?>
                                     <p><?php echo sprintf("€ %.2f", $product['SellPrice']) ?></p>

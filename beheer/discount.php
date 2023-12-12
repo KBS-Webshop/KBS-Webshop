@@ -28,12 +28,16 @@ if (isset($_POST['delete'])) {
 
     if (!getStockItem($_POST["stockItemID"], $databaseConnection)) {
         set_error("Het gegeven product bestaat niet.", "product");
+
     } else if (intval($_POST["discountPercentage"], 10) > 100 || intval($_POST["discountPercentage"], 10) < 1) {
         set_error("De korting moet tussen de 1 en 100 procent zijn.", "discount");
+
     } else if ($endDate < $startDate) {
         set_error("De einddatum moet na de startdatum zijn.", "date");
+
     } else if ($endDate < time()) {
         set_error("De einddatum is in het verleden.", "expired");
+
     } else {
         if (productHasDiscount($_POST["stockItemID"], $databaseConnection)) {
             updateDiscount($_POST['stockItemID'], $databaseConnection, $_POST["discountPercentage"], $_POST['startDate'], $_POST["endDate"]);

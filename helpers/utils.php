@@ -96,7 +96,7 @@ function PlaceOrder(
         addOrder($databaseConnection, $customerId, $DeliveryInstructions, $currentDate, $estimatedDeliveryDate, $salesContactPersonID, $isInStock);
         $OrderID = getOrderID($databaseConnection);
 
-        $basket_contents = json_decode($_COOKIE["basket"], true);
+        $basket_contents = json_decode($_SESSION["basket"], true);
 
         foreach ($basket_contents as $item) {
             if (isset($item["amount"])) {

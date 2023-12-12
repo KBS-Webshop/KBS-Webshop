@@ -40,6 +40,7 @@ if (isset($_SESSION["naam"]) && isset($_SESSION["telefoonnummer"]) && isset($_SE
     );
 }
 ?>
+
 <h1> orderbevestiging</h1><br>
 <h4><?php print $naam?>, bedankt voor uw bestelling bij NerdyGadgets! Uw bestel nummer is: <?php print $orderID?></h4><br>
 <h1>Bestel overzicht</h1>
@@ -48,8 +49,8 @@ if (isset($_SESSION["naam"]) && isset($_SESSION["telefoonnummer"]) && isset($_SE
     <div id="ResultsArea" class="Winkelmand">
 <?php
 $totalprice = 0;
-if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
-    $basket_contents = json_decode($_COOKIE["basket"], true);
+if ((isset($_COOKIE["basket"]) AND !cookieEmpty()) OR TRUE) {
+    $basket_contents = json_decode($_SESSION["basket"], true);
     foreach ($basket_contents as $item) {
         $StockItem = getStockItem($item["id"], $databaseConnection);
         $StockItemImage = getStockItemImage($item['id'], $databaseConnection);
@@ -92,8 +93,8 @@ if (isset($StockItemImage[0]["ImagePath"])) { ?>
     adres: <?php print $adress." in ". $stad?><br>
     postcode: <?php print $postcode?><br>
     telefoonnummer: <?php print $telefoonnummer?><br>
-
 </h4>
+
 <?php
 include __DIR__ . "/components/footer.php"
 ?>

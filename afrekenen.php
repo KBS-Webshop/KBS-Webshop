@@ -13,6 +13,7 @@ $_SESSION["postcode"]=$_POST["postcode"];
 $_SESSION["stad"]=$_POST["stad"];
 $_SESSION["bezorgInstructies"] = $_POST["bezorgInstructies"];
 $_SESSION["provincie"] = $_POST["provincie"];
+$_SESSION["basket"] = $_COOKIE["basket"];
 
 foreach ($basket_contents as $item) {
 $StockItem = getStockItem($item["id"], $databaseConnection);

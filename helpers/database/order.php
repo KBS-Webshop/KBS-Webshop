@@ -124,12 +124,12 @@ function getCustomer($dbConnection, $Cname, $phoneNumber, $DeliveryAddress, $Del
     }
 }
 
-function addCustomer ($dbConnection, $newCustomerID, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $deliveryCityID, $customCategoryID, $salesContactPersonID, $deliveryMethodID, $currentDate, $standardDiscountPercentage, $isStatementSent, $isOnCreditHold, $paymentDays, $websiteURL, $validTo) {
+function addCustomer ($dbConnection, $newCustomerID, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $deliveryCityID, $customCategoryID, $salesContactPersonID, $deliveryMethodID, $currentDate, $standardDiscountPercentage, $isStatementSent, $isOnCreditHold, $paymentDays, $websiteURL, $validTo, $PersonID) {
     $Query = "
     INSERT INTO customers (CustomerID, CustomerName, BillToCustomerID, CustomerCategoryID, PrimaryContactPersonID, DeliveryMethodID, DeliveryCityID, PostalCityID, AccountOpenedDate, StandardDiscountPercentage, IsStatementSent, IsOnCreditHold, PaymentDays, PhoneNumber, FaxNumber, WebsiteURL, DeliveryAddressLine1, DeliveryPostalCode, PostalAddressLine1, PostalPostalCode, LastEditedBy, ValidFrom, ValidTo, PersonID)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?, ?)";
     $Statement = mysqli_prepare($dbConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "ssiiiiiisiiiisssssssissi", $newCustomerID, $Cname, $newCustomerID, $customCategoryID, $salesContactPersonID, $deliveryMethodID, $deliveryCityID, $deliveryCityID, $currentDate, $standardDiscountPercentage, $isStatementSent, $isOnCreditHold, $paymentDays, $phoneNumber, $phoneNumber, $websiteURL, $DeliveryAddress, $DeliveryPostalCode, $DeliveryAddress, $DeliveryPostalCode, $salesContactPersonID, $currentDate, $validTo, $_SESSION["user"]["PersonID"]);
+    mysqli_stmt_bind_param($Statement, "ssiiiiiisiiiisssssssissi", $newCustomerID, $Cname, $newCustomerID, $customCategoryID, $salesContactPersonID, $deliveryMethodID, $deliveryCityID, $deliveryCityID, $currentDate, $standardDiscountPercentage, $isStatementSent, $isOnCreditHold, $paymentDays, $phoneNumber, $phoneNumber, $websiteURL, $DeliveryAddress, $DeliveryPostalCode, $DeliveryAddress, $DeliveryPostalCode, $salesContactPersonID, $currentDate, $validTo, $PersonID);
     mysqli_stmt_execute($Statement);
 }
 function getOrderID ($dbConnection) {
@@ -170,7 +170,7 @@ function changevoorraad($dbConnection, $amount, $stockItemID){
     mysqli_stmt_execute($Statement);
 
 }
-function definiteAddCustomer ($databaseConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $cityName, $DeliveryProvince) {
+function definiteAddCustomer ($databaseConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $cityName, $DeliveryProvince, $PersonID) {
     $countryID = 153;
     $newStateProvinceID = getNewStateProvinceID($databaseConnection);
     $StateProvinceID = getStateProvince($databaseConnection, $DeliveryProvince);
@@ -217,6 +217,7 @@ function definiteAddCustomer ($databaseConnection, $Cname, $phoneNumber, $Delive
         $isOnCreditHold,
         $paymentDays,
         $websiteURL,
-        $validTo
+        $validTo,
+        $PersonID
     );
 }

@@ -89,3 +89,18 @@ function getUserCustomerInfo($databaseConnection)
         return FALSE;
     }
 }
+function getNewAccountID($databaseConnection)
+{
+    $query = "SELECT max(PersonID) FROM people";
+    $statement = mysqli_prepare($databaseConnection, $query);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    $user = mysqli_fetch_assoc($result);
+    if ($user != null) {
+        $user = intval($user['max(PersonID)'], 10);
+        $user = $user + 1;
+        return $user;
+    } else {
+        return FALSE;
+    }
+}

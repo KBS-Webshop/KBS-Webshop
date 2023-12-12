@@ -188,11 +188,6 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                 $review = mysqli_real_escape_string($databaseConnection, $_POST['review']);
                 $date = date('Y-m-d');
                 addReview($review, $StockItem["StockItemID"], 9, $date, $databaseConnection);
-
-//                    echo "Review toegevoegd!";
-//                } else {
-//                    echo "Er is een fout opgetreden bij het toevoegen van de review.";
-//                }
             }
             ?>
 

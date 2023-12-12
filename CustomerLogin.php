@@ -34,9 +34,10 @@ include __DIR__ . "/helpers/utils.php";
     if (isset($_POST["password"])) {
         $_SESSION["password"] = $_POST["password"];
         $hashedPassword = hashPassword($_POST["password"]);
+        $_SESSION["hashedPassword"] = $hashedPassword;
     }
     if (isset($_POST["userEmail"]) && isset($_POST["password"]) && $_SESSION["user"]["isLoggedIn"] == 0) {
-        getCurrentUser($databaseConnection, $_POST["userEmail"], $_POST["password"]); #$_POST["password"] moet nog veranderd worden naar werkende $hashedPassword
+        getCurrentUser($databaseConnection, $_POST["userEmail"], $_SESSION["hashedPassword"]); #$_POST["password"] moet nog veranderd worden naar werkende $hashedPassword
     }
     if ($_SESSION["user"]["isLoggedIn"] == 1) {
         print("U bent ingelogd.");

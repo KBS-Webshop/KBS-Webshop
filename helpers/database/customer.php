@@ -46,9 +46,12 @@ function logoutUser() {
     $_SESSION["user"]["customer"]["PostalAddressLine1"] = "";
     $_SESSION["user"]["customer"]["PostalPostalCode"] = "";
 }
+
 function hashPassword($password) {
-    $savePassword = password_hash($password, PASSWORD_BCRYPT);
-    return $savePassword;
+    $staticSalt = 'Salty';
+    $hashedPassword = password_hash($password . $staticSalt, PASSWORD_BCRYPT);
+    print $hashedPassword;
+    return $hashedPassword;
 }
 
 function createAccount ($databaseConnection, $name, $hashedPassword, $phoneNumber, $email){

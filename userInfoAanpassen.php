@@ -43,11 +43,11 @@ include __DIR__ . "/helpers/utils.php";
         </div>
     <?php
 if (isset($_POST["aanpassingenOpslaan"])) {
-    getCurrentUserID($databaseConnection, $_SESSION["userEmail"], $_SESSION["password"]);
+    getCurrentUserID($databaseConnection, $_SESSION["userEmail"], $_SESSION["hashedPassword"]);
     $updated = updateAccount($databaseConnection, $_POST["FullName"], $_POST["PhoneNumber"], $_POST["EmailAddress"], $_SESSION["user"]["PersonID"]);
 if ($updated) {
         print("Account aangepast.");
-        getCurrentUser($databaseConnection, $_POST["EmailAddress"], $_SESSION["password"]);
+        getCurrentUser($databaseConnection, $_POST["EmailAddress"], $_SESSION["hashedPassword"]);
         $_SESSION["userEmail"] = $_POST["EmailAddress"];
     } else {
         print("Account aanpassen mislukt.");

@@ -144,7 +144,12 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                     ?>
 
                 </div>
+                <?php
+                $personID = 9; // hier moet een check komen op wie ingelogd is//
+                $existingPersonIDs = array_column(getPersonIDs($StockItem['StockItemID'], $databaseConnection), 'PersonID');
+                if (!in_array($personID, $existingPersonIDs)) {
 
+                ?>
                 <div id="StockItemSpecifications">
                     <form method="post">
                         <input type="text" name="review" placeholder="Typ hier uw review!" required>
@@ -158,6 +163,12 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                         <input type="submit" value="Review toevoegen" name="ReviewToevoegen">
                     </form>
                 </div>
+                <?php
+                }
+                else{
+                    echo'deze persoon heeft reeds een review geschreven';
+                }
+                ?>
                 <div class="reviews">
                     <?php
                     $reviews = getAllReviews($StockItem['StockItemID'], $databaseConnection);

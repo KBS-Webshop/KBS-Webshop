@@ -93,3 +93,22 @@ function getRatings($StockItemID, $databaseConnection)
 
     return $ratings;
 }
+
+function getPersonIDs($StockItemID, $databaseConnection)
+{
+    $query = '
+    SELECT PersonID
+    FROM reviews
+    WHERE StockItemID = ?
+    ';
+
+    $Statement = mysqli_prepare($databaseConnection, $query);
+    mysqli_stmt_bind_param($Statement, "i", $StockItemID);
+    mysqli_stmt_execute($Statement);
+
+    $result = mysqli_stmt_get_result($Statement);
+    $personIDs = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    return $personIDs;
+}
+

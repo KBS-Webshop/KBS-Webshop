@@ -152,7 +152,7 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                             <?php
                             for($i = 1; $i <= 5; $i++){ ?>
                                 <label><?php echo $i ?></label>
-                                <input type="radio" name="rating" value="<?php echo $i ?>">
+                                <input type="radio" name="rating" value="<?php echo $i ?>" <?php echo ($i === 1) ? 'required' : ''; ?>>
                             <?php } ?>
                         </div>
                         <input type="submit" value="Review toevoegen" name="ReviewToevoegen">

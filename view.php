@@ -162,41 +162,45 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                     <?php
                     $reviews = getAllReviews($StockItem['StockItemID'], $databaseConnection);
                     $reviewDates = getReviewDates($StockItem['StockItemID'], $databaseConnection);
-                    $personID = 33;
                     $names = getReviewPerson($StockItem['StockItemID'], $databaseConnection);
+                    $ratings = getRatings($StockItem['StockItemID'], $databaseConnection);
+                    foreach ($reviews as $review) {
+                        $name = array_shift($names);
+                        $rating = array_shift($ratings);
+                        $date = array_shift($reviewDates);
 
-                    foreach ($reviews as $index => $review) {
-                        $name = $names[$index];
                         if ($name) {
                             ?>
-                            <div id="StockItemSpecifications" >
+                            <div id="StockItemSpecifications">
                                 <div class="review-person">
                                     <?php
                                     echo ($name['FullName'] . '<br>');
+                                    for($i = 0; $i < $rating['rating']; $i++){
+                                        echo '⭐️ ';
+                                    }
                                     ?>
                                 </div>
-                                <?php
-                                echo ($review['review'] . "<br>");
-                                ?>
+                                <div>
+                                    <?php
+                                    echo ($review['review'] . "<br>");
+                                    ?>
+                                </div>
                                 <div class="review-date">
                                     <?php
-                                    echo ($reviewDates[$index]['publicationDate'])
+                                    echo ($date['publicationDate']);
                                     ?>
                                 </div>
                             </div>
                             <?php
                         }
-                    }
-                    ?>
+                    } ?>
                 </div>
             </div>
 
             <?php
             if (isset($_POST['ReviewToevoegen'])) {
                 $review = mysqli_real_escape_string($databaseConnection, $_POST['review']);
-                $rating = $_POST['rating'];
-                echo $rating;
-                addReview($review, $StockItem["StockItemID"], 33, $databaseConnection);
+                addReview($review, $StockItem["StockItemID"], 44, $_POST['rating'],$databaseConnection);
                 ?>
             <meta http-equiv="refresh" content="0">
             <?php

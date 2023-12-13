@@ -1,22 +1,22 @@
 <?php
 
-function addReview($review, $StockItemID, $personID, $databaseConnection)
+function addReview($review, $StockItemID, $personID, $rating, $databaseConnection)
 {
     $query = '
-    INSERT INTO reviews (review, StockItemID, personID)
-    VALUES (?, ?, ?)
+    INSERT INTO reviews (review, StockItemID, personID, rating)
+    VALUES (?, ?, ?, ?)
     ';
 
     $Statement = mysqli_prepare($databaseConnection, $query);
 
     mysqli_stmt_bind_param(
         $Statement,
-        "sii",
+        "siii",
         $review,
         $StockItemID,
-        $personID
+        $personID,
+        $rating
     );
-
 
     mysqli_stmt_execute($Statement);
 }
@@ -74,4 +74,22 @@ function getReviewPerson($StockItemID, $databaseConnection)
     $names = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
     return $names;
+}
+
+function getRatings($StockItemID, $databaseConnection)
+{
+    $query = '
+    SELECT rating
+    FROM reviews
+    WHERE StockItemID = ?
+    ';
+
+    $Statement = mysqli_prepare($databaseConnection, $query);
+    mysqli_stmt_bind_param($Statement, "i", $StockItemID);
+    mysqli_stmt_execute($Statement);
+
+    $result = mysqli_stmt_get_result($Statement);
+    $ratings = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    return $ratings;
 }

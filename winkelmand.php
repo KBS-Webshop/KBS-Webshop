@@ -47,24 +47,14 @@ if (isset($_GET["message"])){
                                 <div class="CenterPriceLeft">
                                     <h1 class="StockItemPriceText">
                                         <?php if ($currentDiscount) { ?>
+                                            <h1><b><?php echo intval(-$currentDiscount['DiscountPercentage'], 10) ?>%</b></h1>
+                                            <h4 id="clock<?php echo $StockItem['StockItemID'] ?>" style="font-weight: bold;"></h4>
                                             <h2 class="StockItemPriceText">
-                                                <s class="strikedtext">
-                                                    <?php echo calculatePriceBTW($StockItem['SellPrice'], $StockItem['TaxRate']) ?>
-                                                </s>
+                                                <s class="strikedtext"><?php echo calculatePriceBTW($StockItem['SellPrice'], $StockItem['TaxRate']); ?></s>
                                                 <?php echo calculateDiscountedPriceBTW($StockItem['SellPrice'], $currentDiscount['DiscountPercentage'], $StockItem['TaxRate']); ?>
                                             </h2>
                                         <?php } else { ?>
                                             <h2 class="StockItemPriceText"><?php echo calculatePriceBTW($StockItem['SellPrice'], $StockItem['TaxRate']); ?></h2>
-                                        <?php } ?>
-
-                                        <?php if ($currentDiscount) { ?>
-                                            <h4 id="clock<?php echo $StockItem['StockItemID'] ?>" style="font-weight: bold;"></h4>
-                                            <p>
-                                                <s><?php echo calculatePriceBTW($StockItem['SellPrice'], $StockItem['TaxRate']); ?></s>
-                                                <?php echo calculateDiscountedPriceBTW($StockItem['SellPrice'], $currentDiscount['DiscountPercentage'], $StockItem['TaxRate']); ?>
-                                            </p>
-                                        <?php } else { ?>
-                                            <p><?php echo calculatePriceBTW($StockItem['SellPrice'], $StockItem['TaxRate']); ?></p>
                                         <?php } ?>
                                     </h1>
                                     <h6> Inclusief BTW </h6>

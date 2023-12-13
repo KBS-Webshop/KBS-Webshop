@@ -117,4 +117,17 @@ function PlaceOrder(
         return $OrderID;
     }
 }
+
+function calculateDiscountedPriceBTW($price, $discountPercentage, $btw)
+{
+    $discountedPrice = $price * (1 - $discountPercentage / 100);
+    $discountedPriceBTW = $discountedPrice * (1 + $btw / 100);
+    return sprintf("€%.2f", $discountedPriceBTW);
+}
+
+function calculatePriceBTW($price, $btw)
+{
+    $priceBTW = $price * (1 + $btw / 100);
+    return sprintf("€%.2f", $priceBTW);
+}
 ?>

@@ -81,9 +81,9 @@ function getStockItemImage($id, $databaseConnection)
 }
 
 function getAlsoBought($id, $databaseConnection) {
-
+    # SELECT o.StockItemID, s.StockItemName, si.ImagePath StockItemImage, (RecommendedRetailPrice*(1+(s.TaxRate/100))) AS SellPrice, COUNT(*) kerenSamengekocht
     $Query = "
-        SELECT o.StockItemID, s.StockItemName, si.ImagePath StockItemImage, (RecommendedRetailPrice*(1+(s.TaxRate/100))) AS SellPrice, COUNT(*) kerenSamengekocht
+        SELECT o.StockItemID, s.StockItemName, si.ImagePath StockItemImage, RecommendedRetailPrice SellPrice, s.TaxRate, COUNT(*) kerenSamengekocht
         FROM orderlines o
         JOIN stockitems s ON o.StockItemID = s.StockItemID
         JOIN stockitemimages si ON si.StockItemID = o.StockItemID

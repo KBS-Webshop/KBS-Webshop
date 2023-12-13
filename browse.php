@@ -1,7 +1,6 @@
 <!-- dit bestand bevat alle code voor het productoverzicht -->
 <?php
 include __DIR__ . "/components/header.php";
-require __DIR__ . "/helpers/utils.php";
 
 $ReturnableResult = null;
 $Sort = "SellPrice";
@@ -100,9 +99,9 @@ if ($CategoryID == "") {
     if ($queryBuildResult != "") {
         $queryBuildResult = "WHERE " . $queryBuildResult;
     }
-
+    # SELECT SI.StockItemID, SI.StockItemName, SI.MarketingComments, TaxRate, RecommendedRetailPrice, ROUND(TaxRate * RecommendedRetailPrice / 100 + RecommendedRetailPrice,2) as SellPrice,
     $Query = "
-                SELECT SI.StockItemID, SI.StockItemName, SI.MarketingComments, TaxRate, RecommendedRetailPrice, ROUND(TaxRate * RecommendedRetailPrice / 100 + RecommendedRetailPrice,2) as SellPrice,
+                SELECT SI.StockItemID, SI.StockItemName, SI.MarketingComments, TaxRate, RecommendedRetailPrice, RecommendedRetailPrice SellPrice,
                 QuantityOnHand,
                 (SELECT ImagePath
                 FROM stockitemimages
@@ -247,12 +246,12 @@ if (isset($amount)) {
                                 <h4 id="clock<?php echo $row['StockItemID'] ?>" style="font-weight: bold;"></h4>
                                 <h2 class="StockItemPriceText">
                                     <s class="strikedtext">
-                                        <?php print sprintf("€ %.2f", $row['SellPrice']); ?>
+                                        <?php echo calculatePriceBTW($row['SellPrice'], $row['TaxRate']); ?>
                                     </s>
-                                    <?php print sprintf("€ %.2f", $row['SellPrice'] * (1 - ($currentDiscount['DiscountPercentage'] / 100))) ; ?>
+                                    <?php echo calculateDiscountedPriceBTW($row['SellPrice'], $currentDiscount['DiscountPercentage'], $row['TaxRate']); ?>
                                 </h2>
                             <?php } else { ?>
-                                <h2 class="StockItemPriceText"><?php print sprintf("€ %.2f", $row['SellPrice']); ?></h2>
+                                <h2 class="StockItemPriceText"><?php echo calculatePriceBTW($row['SellPrice'], $row['TaxRate']); ?></h2>
                             <?php } ?>
                             <h6>Inclusief BTW </h6>
                             <form method="post">

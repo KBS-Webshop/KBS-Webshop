@@ -2,7 +2,7 @@
 include "../components/beheer-header.php";
 include "../helpers/utils.php";
 
-// KORTINGEN EINDIGEN 6 UUR VOOR DE GEGEVEN DATUM
+// KORTINGEN EINDIGEN OP RARE TIJDEN
 $currentDiscounts = getCurrentDiscounts($databaseConnection);
 
 $errors = array(

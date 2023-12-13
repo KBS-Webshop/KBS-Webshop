@@ -48,7 +48,15 @@ if (isset($_GET["message"])){
                             </div>
 
                             <h1 class="StockItemID"> <?php print ("artikelnummer: " . $item["id"]."<br>")?></h1>
-                            <h1 class="StockItemID1"> <?php print($StockItem["StockItemName"]."<br><br>aantal ") ?>
+                            <h1 class="StockItemID1"> <?php print($StockItem["StockItemName"]) ?>
+                                <br><br>
+                                <?php
+                                $amtSoldLast72Hrs = getAmountOrderedLast72Hours($StockItem['StockItemID'], $databaseConnection);
+                                if ($amtSoldLast72Hrs >= 5) { ?>
+                                    <p><b>ERG GEWILD: dit product is afgelopen 72 uur <?php echo $amtSoldLast72Hrs ?> keer verkocht.</b></p>
+                                <?php } ?>
+                                <br>
+                                Aantal
                                 <div class="buttonAlignmentWinkelmand">
                                     <form method="post" class="buttonWinkelmand">
                                         <input type="hidden" name="action" value="decrement">

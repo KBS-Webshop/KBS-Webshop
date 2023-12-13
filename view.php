@@ -96,7 +96,7 @@ $currentDiscount = getDiscountByStockItemID($_GET['id'], $databaseConnection);
                                     <?php echo calculateDiscountedPriceBTW($StockItem['SellPrice'], $currentDiscount['DiscountPercentage'], $StockItem['TaxRate']); ?>
                             </h2>
                         <?php } else { ?>
-                            <h2 class="StockItemPriceText"><?php print sprintf("€ %.2f", $StockItem['SellPrice']); ?></h2>
+                            <h2 class="StockItemPriceText"><?php echo calculatePriceBTW($StockItem['SellPrice'], $StockItem['TaxRate']); ?></h2>
                         <?php } ?>
                         <h6> Inclusief BTW </h6>
                         <form method="post">
@@ -218,14 +218,11 @@ $currentDiscount = getDiscountByStockItemID($_GET['id'], $databaseConnection);
                 }
             ?>
         </div>
+        <?php if ($currentDiscount AND strtotime($currentDiscount['StartDate']) < time()) { ?>
         <script>
-            <?php if ($currentDiscount AND strtotime($currentDiscount['StartDate']) < time()) { ?>
-
             clockCountdown('clock', '<?php echo $currentDiscount['EndDate'] ?>');
-
-            <?php } ?>
         </script>
-        <?php
+        <?php }
     } else {
         ?><h2 id="ProductNotFound">Het opgevraagde product is niet gevonden.</h2><?php
     } ?>

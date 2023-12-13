@@ -1,6 +1,5 @@
 <?php
 include __DIR__ . "/components/header.php";
-include __DIR__ . "/helpers/utils.php";
 ?>
     <h2>Winkelmandje</h2><br>
 <?php
@@ -23,11 +22,14 @@ if (isset($_GET["message"])){
                 if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
                     $basket_contents = json_decode($_COOKIE["basket"], true);
                     foreach ($basket_contents as $item) {
-                         $StockItem = getStockItem($item["id"], $databaseConnection);
+                        $StockItem = getStockItem($item["id"], $databaseConnection);
                         $StockItemImage = getStockItemImage($item['id'], $databaseConnection);
+                        $currentDiscount = getDiscountByStockItemID($item["id"], $databaseConnection);
 
-                        $totalprice += round($item['amount'] * $StockItem['SellPrice'], 2);
-
+                        if ($currentDiscount)
+                            $totalprice += calculateDiscountedPriceBTW($StockItem['SellPrice'], $currentDiscount['DiscountPercentage'], $StockItem['TaxRate'], $item['amount'], true);
+                        else
+                            $totalprice += calculatePriceBTW($StockItem['SellPrice'], $StockItem['TaxRate'], $item['amount'], true);
                         ?>
 
                         <div id="ProductFrame2">
@@ -36,13 +38,35 @@ if (isset($_GET["message"])){
                             <a class="ListItem" href='view.php?id=<?php print $item["id"]; ?>'>
                                 <div class="ImgFrame"
                                      style="background-image: url('<?php print "Public/StockItemIMG/" . $StockItemImage[0]["ImagePath"]; ?>'); background-size: contain; background-repeat: no-repeat; background-position: center;">
+
                                 </div>
                             </a>
                             <?php }
                             ?>
                             <div id="StockItemFrameRight" style="display: flex;flex-direction: column">
                                 <div class="CenterPriceLeft">
-                                    <h1 class="StockItemPriceText"> <?php $price = sprintf("€ %.2f", $StockItem['SellPrice'] * $item["amount"]); $pricecoma= str_replace(".",",",$price);  print $pricecoma;?></h1>
+                                    <h1 class="StockItemPriceText">
+                                        <?php if ($currentDiscount) { ?>
+                                            <h2 class="StockItemPriceText">
+                                                <s class="strikedtext">
+                                                    <?php echo calculatePriceBTW($StockItem['SellPrice'], $StockItem['TaxRate']) ?>
+                                                </s>
+                                                <?php echo calculateDiscountedPriceBTW($StockItem['SellPrice'], $currentDiscount['DiscountPercentage'], $StockItem['TaxRate']); ?>
+                                            </h2>
+                                        <?php } else { ?>
+                                            <h2 class="StockItemPriceText"><?php echo calculatePriceBTW($StockItem['SellPrice'], $StockItem['TaxRate']); ?></h2>
+                                        <?php } ?>
+
+                                        <?php if ($currentDiscount) { ?>
+                                            <h4 id="clock<?php echo $StockItem['StockItemID'] ?>" style="font-weight: bold;"></h4>
+                                            <p>
+                                                <s><?php echo calculatePriceBTW($StockItem['SellPrice'], $StockItem['TaxRate']); ?></s>
+                                                <?php echo calculateDiscountedPriceBTW($StockItem['SellPrice'], $currentDiscount['DiscountPercentage'], $StockItem['TaxRate']); ?>
+                                            </p>
+                                        <?php } else { ?>
+                                            <p><?php echo calculatePriceBTW($StockItem['SellPrice'], $StockItem['TaxRate']); ?></p>
+                                        <?php } ?>
+                                    </h1>
                                     <h6> Inclusief BTW </h6>
                                 </div>
                             </div>
@@ -84,8 +108,11 @@ if (isset($_GET["message"])){
                                 </div>
                             </h1>
                         </div>
-                        
-                        <?php
+                        <?php if ($currentDiscount AND strtotime($currentDiscount['StartDate']) < time()) { ?>
+                            <script>
+                                clockCountdown('clock<?php echo $item['id'] ?>', '<?php echo $currentDiscount['EndDate'] ?>');
+                            </script>
+                        <?php }
                     }
                 }
                 else{
@@ -116,11 +143,17 @@ if (isset($_GET["message"])){
                 <?php
                 foreach ($basket_contents as $item) {
                     $StockItem = getStockItem($item["id"], $databaseConnection);
+                    $currentDiscount = getDiscountByStockItemID($item["id"], $databaseConnection);
                     echo ("<tr> <td>" . $StockItem['StockItemName'] . "</td>");
                     echo ("<td>" . $item['amount'] . "</td>");
-                    echo "<td>".sprintf("€%.2f", $StockItem['SellPrice'] * $item["amount"]);
+                    if ($currentDiscount) {
+                        echo "<td>" . calculateDiscountedPriceBTW($StockItem['SellPrice'], $currentDiscount['DiscountPercentage'], $StockItem['TaxRate'], $item['amount']) . "</td></tr>";
+                    } else {
+                        echo "<td>" . calculatePriceBTW($StockItem['SellPrice'], $StockItem['TaxRate'], $item['amount']) . "</td></tr>";
+
+                    }
                 }
-                echo ("<tr class='receivedTotalPrice'> <td></td> <th>totaalprijs</th>");
+                echo ("<tr class='receivedTotalPrice'> <td></td> <th>Totaalprijs:</th>");
                 echo("<td>$totalprice</td></tr>");
                 echo '</table>';
 

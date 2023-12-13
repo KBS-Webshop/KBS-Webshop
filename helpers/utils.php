@@ -118,16 +118,20 @@ function PlaceOrder(
     }
 }
 
-function calculateDiscountedPriceBTW($price, $discountPercentage, $btw)
+function calculateDiscountedPriceBTW($price, $discountPercentage, $btw, $amount=1, $numeric=false)
 {
-    $discountedPrice = $price * (1 - $discountPercentage / 100);
+    $discountedPrice = ($price * (1 - $discountPercentage / 100)) * $amount;
     $discountedPriceBTW = $discountedPrice * (1 + $btw / 100);
-    return sprintf("€%.2f", $discountedPriceBTW);
+    if ($numeric) return $discountedPriceBTW;
+    $formatted =  sprintf("€%.2f", $discountedPriceBTW);
+    return str_replace('.', ',', $formatted);
 }
 
-function calculatePriceBTW($price, $btw)
+function calculatePriceBTW($price, $btw, $amount=1, $numeric=false)
 {
-    $priceBTW = $price * (1 + $btw / 100);
-    return sprintf("€%.2f", $priceBTW);
+    $priceBTW = ($price * (1 + $btw / 100)) * $amount;
+    if ($numeric) return $priceBTW;
+    $formatted = sprintf("€%.2f", $priceBTW);
+    return str_replace('.', ',', $formatted);
 }
 ?>

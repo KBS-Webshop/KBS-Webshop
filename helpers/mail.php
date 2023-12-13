@@ -1,7 +1,6 @@
 <?php
-
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+
 require 'C:\xampp\htdocs\KBS-Webshop\vendor\phpmailer\phpmailer\src\Exception.php';
 require 'C:\xampp\htdocs\KBS-Webshop\vendor\phpmailer\phpmailer\src\SMTP.php';
 require 'C:\xampp\htdocs\KBS-Webshop\vendor\phpmailer\phpmailer\src\PHPMailer.php';
@@ -14,13 +13,13 @@ function sendEmail($recipient, $subject, $htmlBody, $textBody) {
         $mail->isSMTP(); // Set mailer to use SMTP
         $mail->Host = 'smtp.transip.email'; // Specify main and backup SMTP servers
         $mail->SMTPAuth = true; // Enable SMTP authentication
-        $mail->Username = 'samberkhout@renzeboerman.nl'; // SMTP username
-        $mail->Password = 'EaglesDeventer#1 '; // SMTP password
+        $mail->Username = $_ENV['SMTP_USER']; // SMTP username
+        $mail->Password = $_ENV['SMTP_PASSWORD']; // SMTP password
         $mail->SMTPSecure = 'ssl'; // Enable TLS encryption, `ssl` also accepted
         $mail->Port = 465; // TCP port to connect to
 
         //Recipients
-        $mail->setFrom('samberkhout@renzeboerman.nl', 'Sam_Berkhout');
+        $mail->setFrom($_ENV['SMTP_USER'], 'Nerdygatgats');
         $mail->addAddress($recipient); // Add a recipient
 
         //Content
@@ -36,16 +35,3 @@ function sendEmail($recipient, $subject, $htmlBody, $textBody) {
     }
 }
 
-
-
-$recipient = 'sammie.berkhout2006@gmail.com';
-$subject = 'Subject of your email';
-$htmlBody = 'This is the HTML message body <b>in bold!</b>';
-$textBody = 'This is the plain text version of the email content';
-if (sendEmail($recipient, $subject, $htmlBody, $textBody)) {
-    echo "Email sent successfully";
-} else {
-    print "mislukt";
-}
-
-?>

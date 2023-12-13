@@ -97,5 +97,40 @@ if (isset($StockItemImage[0]["ImagePath"])) { ?>
 
 </h4>
 <?php
+$recipient = 'sammie.berkhout2006@gmail.com';
+$subject = 'Subject of your email';
+$Naam = "sam";
+$customerID1 = getCustomerID($databaseConnection,$orderID);
+$customerID= $customerID1[0]['CustomerID'];
+$gegevens = getUserInfo($databaseConnection, $customerID);
+$customerDetails = $gegevens[0];
+$ordergegevens = getOrder($databaseConnection, $orderID);
+
+$htmlBody = '
+    <html>
+    Beste ' . $Naam . ',
+    <br><br>
+    Bedankt voor je bestelling ' . $orderID . ' bij NerdyGatgets. <br>
+    Alle details van je bestelling vind je hieronder terug. Je ontvangt een e-mail zodra je bestelling onderweg is.
+    <br><br>
+    
+    Customer ID: ' . $customerDetails["CustomerID"] . '<br>
+    Name: ' . $customerDetails["CustomerName"] . '<br>
+    Phone Number: ' . $customerDetails["PhoneNumber"] . '<br>
+    Delivery Address: ' . $customerDetails["DeliveryAddressLine1"] . '<br>
+    Postal Code: ' . $customerDetails["DeliveryPostalCode"] . '<br><br>';
+
+// Concatenating the order details using a foreach loop
+foreach ($ordergegevens as $ordergegeven) {
+    $htmlBody .= '
+    Item Name: ' . $ordergegeven["StockItemName"] . '<br>';
+}
+
+$htmlBody .= '</html>';
+
+$textBody = 'This is the plain text version of the email content';
+
+sendEmail($recipient, $subject, $htmlBody, $textBody);
+
 include __DIR__ . "/components/footer.php"
 ?>

@@ -169,12 +169,14 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                     echo'deze persoon heeft reeds een review geschreven';
                 }
                 ?>
+
                 <div class="reviews">
                     <?php
                     $reviews = getAllReviews($StockItem['StockItemID'], $databaseConnection);
                     $reviewDates = getReviewDates($StockItem['StockItemID'], $databaseConnection);
                     $names = getReviewPerson($StockItem['StockItemID'], $databaseConnection);
                     $ratings = getRatings($StockItem['StockItemID'], $databaseConnection);
+
                     foreach ($reviews as $review) {
                         $name = array_shift($names);
                         $rating = array_shift($ratings);
@@ -197,9 +199,7 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                                     ?>
                                 </div>
                                 <div class="review-date">
-                                    <?php
-                                    echo ($date['publicationDate']);
-                                    ?>
+                                    <?php echo $date['publicationDate'];?>
                                 </div>
                             </div>
                             <?php

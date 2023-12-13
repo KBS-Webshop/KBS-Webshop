@@ -3,6 +3,7 @@
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/database/reviewsDB.php";
 
+
 $StockItem = getStockItem($_GET['id'], $databaseConnection);
 $StockItemImage = getStockItemImage($_GET['id'], $databaseConnection);
 $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
@@ -146,11 +147,18 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
 
                 <div id="StockItemSpecifications">
                     <form method="post">
-                        <input type="text" name="review" placeholder="Typ hier uw review!">
+                        <input type="text" name="review" placeholder="Typ hier uw review!" required>
+                        <div class="review-knoppen">
+                            <?php
+                            for($i = 1; $i <= 5; $i++){ ?>
+                                <label><?php echo $i ?></label>
+                                <input type="radio" name="rating" value="<?php echo $i ?>">
+                            <?php } ?>
+                        </div>
                         <input type="submit" value="Review toevoegen" name="ReviewToevoegen">
                     </form>
                 </div>
-                <div class="ProductInformation">
+                <div class="reviews">
                     <?php
                     $reviews = getAllReviews($StockItem['StockItemID'], $databaseConnection);
                     $reviewDates = getReviewDates($StockItem['StockItemID'], $databaseConnection);
@@ -161,14 +169,14 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                         $name = $names[$index];
                         if ($name) {
                             ?>
-                            <div id="StockItemSpecifications">
+                            <div id="StockItemSpecifications" >
                                 <div class="review-person">
                                     <?php
                                     echo ($name['FullName'] . '<br>');
                                     ?>
                                 </div>
                                 <?php
-                                echo ($review['review']);
+                                echo ($review['review'] . "<br>");
                                 ?>
                                 <div class="review-date">
                                     <?php
@@ -186,8 +194,12 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
             <?php
             if (isset($_POST['ReviewToevoegen'])) {
                 $review = mysqli_real_escape_string($databaseConnection, $_POST['review']);
-                $date = date('Y-m-d');
+                $rating = $_POST['rating'];
+                echo $rating;
                 addReview($review, $StockItem["StockItemID"], 33, $databaseConnection);
+                ?>
+            <meta http-equiv="refresh" content="0">
+            <?php
             }
             ?>
 
@@ -236,6 +248,7 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
         <?php
     } else {
         ?><h2 id="ProductNotFound">Het opgevraagde product is niet gevonden.</h2><?php
-    } ?>
+    }
+    ?>
 </div>
 </div>

@@ -2,24 +2,6 @@
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
 ?>
-<style>
-    .loginBox {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-    }
-
-    .loginBox .login-input {
-        width: 25%;
-    }
-    .informationBox{
-        display: flex;
-        justify-content: center;
-        flex-direction: row;
-    }
-</style>
-
 <div class="informationBox">
     <?php
     if (!isset($_SESSION["user"]["isLoggedIn"])) {
@@ -38,9 +20,7 @@ include __DIR__ . "/helpers/utils.php";
     }
     if (isset($_POST["userEmail"]) && isset($_POST["password"]) && $_SESSION["user"]["isLoggedIn"] == 0) {
         getCurrentUser($databaseConnection, $_POST["userEmail"], $_SESSION["hashedPassword"]); #$_POST["password"] moet nog veranderd worden naar werkende $hashedPassword
-    }
-    if ($_SESSION["user"]["isLoggedIn"] == 1) {
-        print("U bent ingelogd.");
+        getUserCustomerInfo($databaseConnection, $_POST["userEmail"], $_SESSION["hashedPassword"]);
     }
     ?>
 </div>
@@ -62,7 +42,9 @@ include __DIR__ . "/helpers/utils.php";
         <div class="informationBox">
             <a>Nog geen account? Maak </a><a href="createAccount.php"> hier </a><a> een account aan</a>
         </div>
-    <?php } elseif ($_SESSION["user"]["isLoggedIn"] == 1) { ?>
+    <?php } elseif ($_SESSION["user"]["isLoggedIn"] == 1) {
+        print("U bent ingelogd.");
+        ?>
     <div class="login-input">
         <input type="submit" class="loginSubmit" name="uitloggen" value="uitloggen">
     </div>
@@ -110,7 +92,17 @@ include __DIR__ . "/helpers/utils.php";
         <a href="userInfoAanpassen.php">
             <h2>aanpassen</h2>
             </a>
+
     <?php
+        if ($_SESSION["user"]["IsSalesPerson"] == 1) {
+            ?>
+            <div class="informationBox">
+                <a href="beheer/beheer.php">
+                    <h2>beheerpagina</h2>
+                </a>
+            </div>
+            <?php
+        }
     }
 include __DIR__ . "/components/footer.php"
 ?>

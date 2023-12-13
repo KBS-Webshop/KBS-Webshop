@@ -1,0 +1,25 @@
+.loginBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.loginBox .login-input {
+    display: flex;
+    width: 25%;
+    justify-content: center;
+    flex-direction: column;
+}
+.informationBox{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    width: 40%;
+}
+.login-input-create {
+display: flex;
+    width: 25%;
+    justify-content: center;
+    flex-direction: column;
+}

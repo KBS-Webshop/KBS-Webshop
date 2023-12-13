@@ -63,21 +63,20 @@ function getNewCityID ($dbConnection) {
     $R = $R + 1;
     return $R;
 }
-function getCity ($dbConnection, $cityName) {
+function getCity ($dbConnection, $cityID) {
     $Query = "
-    SELECT CityID
+    SELECT Cityname
     FROM cities
-    WHERE CityName = ?";
+    WHERE CityID = ?";
 
     $Statement = mysqli_prepare($dbConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "s", $cityName);
+    mysqli_stmt_bind_param($Statement, "s", $cityID);
     mysqli_stmt_execute($Statement);
     $R = mysqli_stmt_get_result($Statement);
     $R = mysqli_fetch_assoc($R);
-    if ($R == null) {
-        return $R;
+    if ($R != null) {
+        return $R["Cityname"];
     } else {
-        $R = intval($R['CityID'], 10);
         return $R;
     }
 }
@@ -176,7 +175,7 @@ function definiteAddCustomer ($databaseConnection, $Cname, $phoneNumber, $Delive
     $StateProvinceID = getStateProvince($databaseConnection, $DeliveryProvince);
     $stateProvinceCode = abbreviate($DeliveryProvince);
     $newCityID = getNewCityID($databaseConnection);
-    $deliveryCityID = getCity($databaseConnection, $cityName);
+    $deliveryCityID = getcityID($databaseConnection, $cityName);
     $newCustomerID = getNewCustomerID($databaseConnection);
     $customerCategoryID = 8;
     $salesContactPersonID = 3262;
@@ -196,9 +195,10 @@ function definiteAddCustomer ($databaseConnection, $Cname, $phoneNumber, $Delive
     }
     if ($deliveryCityID == null) {
         addCity($databaseConnection, $newCityID, $cityName, $StateProvinceID, $salesContactPersonID, $currentDate, $validTo);
-        $deliveryCityID = getCity($databaseConnection, $cityName);
+        $deliveryCityID = getCityID($databaseConnection, $cityName);
+        $_SESSION["user"]["customer"]["PostalCityID"] = $cityName;
     } else {
-        $deliveryCityID = getCity($databaseConnection, $cityName);
+        $deliveryCityID = getCityID($databaseConnection, $cityName);
     }
     addCustomer(
         $databaseConnection,

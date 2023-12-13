@@ -1,6 +1,6 @@
 <?php
 function getCurrentUser($databaseConnection, $email, $hashedPassword) {
-    $query = "SELECT FullName, PhoneNumber, EmailAddress, loyalty_points FROM people WHERE EmailAddress = ? AND HashedPassword = ?";
+    $query = "SELECT FullName, PhoneNumber, EmailAddress, loyalty_points, IsSalesPerson FROM people WHERE EmailAddress = ? AND HashedPassword = ?";
     $statement = mysqli_prepare($databaseConnection, $query);
     mysqli_stmt_bind_param($statement, "ss", $email, $hashedPassword);
     mysqli_stmt_execute($statement);
@@ -27,6 +27,7 @@ function getCurrentUser($databaseConnection, $email, $hashedPassword) {
      $user = mysqli_fetch_assoc($result);
      if ($user != null) {
          $_SESSION["user"]["PersonID"] = $user["PersonID"];
+         return $user["PersonID"];
      }
  }
 function logoutUser() {
@@ -45,6 +46,7 @@ function logoutUser() {
     $_SESSION["user"]["customer"]["DeliveryPostalCode"] = "";
     $_SESSION["user"]["customer"]["PostalAddressLine1"] = "";
     $_SESSION["user"]["customer"]["PostalPostalCode"] = "";
+    $_SESSION["user"]["customer"]["PersonID"] = "";
 }
 
 function hashPassword($password) {
@@ -57,7 +59,7 @@ function createAccount ($databaseConnection, $name, $hashedPassword, $phoneNumbe
     $query = "INSERT INTO people (FullName, PreferredName, SearchName, IsPermittedToLogon, IsExternalLogonProvider, HashedPassword, IsSystemUser, IsEmployee, IsSalesPerson, PhoneNumber, EmailAddress, LastEditedBy, ValidFrom, ValidTo, loyalty_points)
 VALUES (?,?,?,1,0,?,1,0,0,?,?,3262,CURRENT_TIMESTAMP,'9999-12-31 23:59:59.9999999', 0)";
     $statement = mysqli_prepare($databaseConnection, $query);
-    mysqli_stmt_bind_param($statement, "sssbss", $name, $name, $name, $hashedPassword, $phoneNumber, $email);
+    mysqli_stmt_bind_param($statement, "ssssss", $name, $name, $name, $hashedPassword, $phoneNumber, $email);
     mysqli_stmt_execute($statement);
     return TRUE;
 }
@@ -71,14 +73,29 @@ function updateAccount ($databaseConnection, $name, $phoneNumber, $email, $perso
     mysqli_stmt_execute($statement);
     return TRUE;
 }
-function getUserCustomerInfo($databaseConnection)
+
+function getcityID ($databaseConnection, $cityName)
 {
-    getCurrentUserID($databaseConnection, $_SESSION["userEmail"], $_SESSION["password"]);
+    $query = "SELECT CityID FROM cities WHERE CityName = ?";
+    $statement = mysqli_prepare($databaseConnection, $query);
+    mysqli_stmt_bind_param($statement, "s", $cityName);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    $city = mysqli_fetch_assoc($result);
+    if ($city != null) {
+        return $city["CityID"];
+    } else {
+        return FALSE;
+    }
+}
+function getUserCustomerInfo($databaseConnection, $email, $hashedPassword)
+{
+    $personID = getCurrentUserID($databaseConnection, $email, $hashedPassword);
     $query = "SELECT CustomerID, CustomerName, DeliveryCityID, PostalCityID, PhoneNumber, DeliveryAddressLine1, DeliveryPostalCode, PostalAddressLine1, PostalPostalCode
               FROM customers
               WHERE PersonID = ?";
     $statement = mysqli_prepare($databaseConnection, $query);
-    mysqli_stmt_bind_param($statement, "i", $_SESSION["user"]["PersonID"]);
+    mysqli_stmt_bind_param($statement, "i", $personID);
     mysqli_stmt_execute($statement);
     $result = mysqli_stmt_get_result($statement);
     $user = mysqli_fetch_assoc($result);
@@ -86,6 +103,7 @@ function getUserCustomerInfo($databaseConnection)
         foreach ($user as $key => $value) {
             $_SESSION["user"]["customer"][$key] = $value;
         }
+        $_SESSION["user"]["customer"]["cityName"] = getCity($databaseConnection, $_SESSION["user"]["customer"]["PostalCityID"]);
         return TRUE;
     } else {
         return FALSE;
@@ -105,4 +123,25 @@ function getNewAccountID($databaseConnection)
     } else {
         return FALSE;
     }
+}
+
+function updateCustomer ($databaseConnection, $customerID, $customerName, $cityName, $phoneNumber, $deliveryAddressLine1, $deliveryPostalCode, $postalAddressLine1, $postalPostalCode)
+{
+    if (getCityID($databaseConnection, $cityName) == FALSE) {
+        $newCityID = getNewCityID($databaseConnection);
+        $stateProvinceID = 1;
+        $salesContactPersonID = 3262;
+        $currentDate = date("Y-m-d");
+        $validTo = "9999-12-31 23:59:59.9999999";
+        addCity($databaseConnection, $newCityID, $cityName, $stateProvinceID, $salesContactPersonID, $currentDate, $validTo);
+    }
+    $deliveryCityID = getCityID($databaseConnection, $cityName);
+    $postalCityID = getCityID($databaseConnection, $cityName);
+    $query = "UPDATE customers 
+              SET CustomerName = ?, DeliveryCityID = ?, PostalCityID = ?, PhoneNumber = ?, DeliveryAddressLine1 = ?, DeliveryPostalCode = ?, PostalAddressLine1 = ?, PostalPostalCode = ?
+              WHERE CustomerID = ?";
+    $statement = mysqli_prepare($databaseConnection, $query);
+    mysqli_stmt_bind_param($statement, "siisssssi", $customerName, $deliveryCityID, $postalCityID, $phoneNumber, $deliveryAddressLine1, $deliveryPostalCode, $postalAddressLine1, $postalPostalCode, $customerID);
+    mysqli_stmt_execute($statement);
+    return TRUE;
 }

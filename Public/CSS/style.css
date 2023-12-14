@@ -290,15 +290,6 @@ font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue"
     font-weight: bold;
     margin-left: 7%;
 }
-.HomePageStockItemPicture {
-    background-image: url("../ProductIMGHighRes/580b57fbd9996e24bc43bf55.png");
-    background-size: 100% 100%;
-    width: 477px;
-    height: 477px;
-    background-repeat: no-repeat;
-    margin-left: 55%;
-    margin-top: -30%;
-}
 #Wrap {
     width: 100%;
     height: 600px;

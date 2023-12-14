@@ -11,7 +11,6 @@ include "helpers/database/database.php";
 include "helpers/database/loyalty.php";
 include "helpers/database/order.php";
 include "helpers/database/stock.php";
-include "helpers/utils.php";
 
 $databaseConnection = connectToDatabase();
 ?>

@@ -53,9 +53,14 @@ if ((isset($_COOKIE["basket"]) AND !cookieEmpty()) OR TRUE) {
     $basket_contents = json_decode($_SESSION["basket"], true);
     foreach ($basket_contents as $item) {
         $StockItem = getStockItem($item["id"], $databaseConnection);
+        $currentDiscount = getDiscountByStockItemID($item["id"], $databaseConnection);
         $StockItemImage = getStockItemImage($item['id'], $databaseConnection);
 
-                        $totalprice += round($item['amount'] * $StockItem['SellPrice'], 2);
+        if ($currentDiscount) {
+            $totalprice += calculateDiscountedPriceBTW($StockItem["SellPrice"], $currentDiscount["DiscountPercentage"], $StockItem['TaxRate'], $item["amount"], true);
+        } else {
+            $totalprice += calculatePriceBTW($StockItem["SellPrice"], $StockItem['TaxRate'], $item["amount"], true);
+        }
 
         ?>
     <div id="ProductFrame1">
@@ -70,7 +75,18 @@ if (isset($StockItemImage[0]["ImagePath"])) { ?>
 ?>
     <div id="StockItemFrameRight" style="display: flex;flex-direction: column">
         <div class="CenterPriceLeft">
-            <h1 class="StockItemPriceText"> <?php $price = sprintf("€ %.2f", $StockItem['SellPrice'] * $item["amount"]); $pricecoma= str_replace(".",",",$price);  print $pricecoma;?></h1>
+            <h1 class="StockItemPriceText">
+                <?php if ($currentDiscount) { ?><h1><b>-<?php echo intval($currentDiscount['DiscountPercentage'], 10) ?>%</b></h1>
+                    <h2 class="StockItemPriceText">
+                        <s class="strikedtext">
+                            <?php echo calculatePriceBTW($StockItem['SellPrice'], $StockItem['TaxRate']); ?>
+                        </s>
+                        <?php echo calculateDiscountedPriceBTW($StockItem['SellPrice'], $currentDiscount['DiscountPercentage'], $StockItem['TaxRate']); ?>
+                    </h2>
+                <?php } else { ?>
+                    <h2 class="StockItemPriceText"><?php echo calculatePriceBTW($StockItem['SellPrice'], $StockItem['TaxRate']); ?></h2>
+                <?php } ?>
+            </h1>
             <h6> Inclusief BTW </h6>
         </div>
     </div>
@@ -86,7 +102,7 @@ if (isset($StockItemImage[0]["ImagePath"])) { ?>
 }
 ?>
 <br>
-<h3 class="StockItemPriceTextbevestiging">Totaalprijs: € <?php print str_replace(".",",",$totalprice)?></h3><br>
+<h3 class="StockItemPriceTextbevestiging">Totaalprijs: € <?php print str_replace(".",",", sprintf('%.2f', $totalprice)); ?></h3><br>
     <h3 class="verzendadres">uw Gegevens: </h3>
 <h4 class="verzendgegevens">
     naam: <?php print $naam?><br>

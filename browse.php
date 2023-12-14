@@ -1,6 +1,7 @@
 <!-- dit bestand bevat alle code voor het productoverzicht -->
 <?php
 include __DIR__ . "/components/header.php";
+include __DIR__ . "/helpers/utils.php";
 
 $ReturnableResult = null;
 $Sort = "SellPrice";

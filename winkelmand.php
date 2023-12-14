@@ -1,5 +1,6 @@
 <?php
 include __DIR__ . "/components/header.php";
+include __DIR__ . "/helpers/utils.php";
 ?>
     <h2>Winkelmandje</h2><br>
 <?php

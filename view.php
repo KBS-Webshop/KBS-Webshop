@@ -1,6 +1,7 @@
 <!-- dit bestand bevat alle code voor de pagina die één product laat zien -->
 <?php
 include __DIR__ . "/components/header.php";
+include __DIR__ . "/helpers/utils.php";
 
 $StockItem = getStockItem($_GET['id'], $databaseConnection);
 $StockItemImage = getStockItemImage($_GET['id'], $databaseConnection);

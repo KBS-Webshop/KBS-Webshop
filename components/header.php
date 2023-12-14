@@ -94,3 +94,8 @@ $databaseConnection = connectToDatabase();
     <div class="row" id="Content">
         <div class="col-12">
             <div id="SubContent">
+<!--                --><?php
+//if (isset($_SESSION["user"]["hashedPassword"]) && isset($_SESSION["user"]["EmailAddress"])) {
+//    getUserCustomerInfo($databaseConnection, $_SESSION["user"]["EmailAddress"], $_SESSION["user"]["hashedPassword"]);
+//}
+//?>

@@ -2,6 +2,9 @@
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
 $_SESSION["user"]["customer"]["cityName"] = getCity($databaseConnection, $_SESSION["user"]["customer"]["DeliveryCityID"]);
+$adress = explode(" ", $_SESSION["user"]["customer"]["DeliveryAddressLine1"]);
+$_SESSION["user"]["customer"]["streetName"] = $adress[0];
+$_SESSION["user"]["customer"]["houseNumber"] = $adress[1];
 ?>
 <form method="POST" name="bevestig" class="loginBox" action="userInfoAanpassen.php">
     <div class="informationBox">
@@ -20,8 +23,12 @@ $_SESSION["user"]["customer"]["cityName"] = getCity($databaseConnection, $_SESSI
         <input type="text" class="FullName" name="PhoneNumber" value="<?php if (isset($_POST["PhoneNumber"])){ print($_POST["PhoneNumber"]);} else { print($_SESSION["user"]["PhoneNumber"]);} ?>">
     </div>
     <div class="informationBox">
-        <label>Adres: </label>
-        <input type="text" class="FullName" name="DeliveryAddressLine1" value="<?php if (isset($_POST["DeliveryAddressLine1"])){ print($_POST["DeliveryAddressLine1"]);} else { print($_SESSION["user"]["customer"]["DeliveryAddressLine1"]); } ?>">
+        <label>straatnaam: </label>
+        <input type="text" class="FullName" name="streetName" value="<?php if (isset($_POST["streetName"])){ print($_POST["streetName"]);} else { print($_SESSION["user"]["customer"]["streetName"]); } ?>">
+    </div>
+    <div class="informationBox">
+        <label>huisnummer: </label>
+        <input type="text" class="FullName" name="houseNumber" value="<?php if (isset($_POST["houseNumber"])){ print($_POST["houseNumber"]);} else { print($_SESSION["user"]["customer"]["houseNumber"]); } ?>">
     </div>
     <div class="informationBox">
         <label>Postcode: </label>
@@ -37,6 +44,10 @@ $_SESSION["user"]["customer"]["cityName"] = getCity($databaseConnection, $_SESSI
 </form>
 <div class="loginBox">
     <?php
+    if (isset($_POST["streetName"]) && isset($_POST["houseNumber"])) {
+        $_POST["DeliveryAddressLine1"] = $_POST["streetName"] . " " . $_POST["houseNumber"];
+        $_SESSION["user"]["customer"]["DeliveryAddressLine1"] = $_POST["DeliveryAddressLine1"];
+    }
 if (isset($_POST["aanpassingenOpslaan"])) {
     getCurrentUserID($databaseConnection, $_SESSION["userEmail"], $_SESSION["hashedPassword"]);
     $updated = updateAccount($databaseConnection, $_POST["FullName"], $_POST["PhoneNumber"], $_POST["EmailAddress"], $_SESSION["user"]["PersonID"]);

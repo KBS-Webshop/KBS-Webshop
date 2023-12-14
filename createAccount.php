@@ -26,10 +26,17 @@ include __DIR__ . "/helpers/utils.php";
                 </div>
         <div class="login-input-create">
             <label for="adress" class="inline-label">
-                adress <span class="required"></span>
+                straatnaam <span class="required"></span>
             </label>
-            <input type="text" name="adress" id="adress" required>
+            <input type="text" name="straatnaam" id="straatnaam" required>
         </div>
+    <div class="login-input-create">
+        <label for="adress" class="inline-label">
+            huisnummer <span class="required"></span>
+        </label>
+        <input type="text" name="huisnummer" id="huisnummer" required>
+    </div>
+
     <div class="login-input-create">
         <label for="name" class="inline-label">
             Postcode <span class="required"></span>
@@ -71,10 +78,13 @@ if (isset($_POST["password"])) {
     $hashedPassword = hashPassword($_POST["password"]);
     $_SESSION["hashedPassword"] = $hashedPassword;
 }
+if (isset($_POST["straatnaam"]) && isset($_POST["huisnummer"])) {
+    $_POST["address"] = $_POST["straatnaam"] . " " . $_POST["huisnummer"];
+}
         if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["naam"]) && isset($_POST["telefoonnummer"])) {
             $PersonID = getNewAccountID($databaseConnection);
             $succes = createAccount($databaseConnection, $_POST["naam"], $_SESSION["hashedPassword"], $_POST["telefoonnummer"], $_POST["email"]);
-            definiteAddCustomer($databaseConnection, $_POST["naam"], $_POST["telefoonnummer"], $_POST["adress"], $_POST["postcode"], $_POST["stad"], $_POST["provincie"], $PersonID);
+            definiteAddCustomer($databaseConnection, $_POST["naam"], $_POST["telefoonnummer"], $_POST["address"], $_POST["postcode"], $_POST["stad"], $_POST["provincie"], $PersonID);
             if ($succes) {
                 print("Account aangemaakt.");
             } else {

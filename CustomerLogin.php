@@ -17,6 +17,8 @@ include __DIR__ . "/helpers/utils.php";
         $_SESSION["password"] = $_POST["password"];
         $hashedPassword = hashPassword($_POST["password"]);
         $_SESSION["hashedPassword"] = $hashedPassword;
+        $_SESSION["password"] = "";
+        $_POST["password"] = "";
     }
     if (isset($_POST["userEmail"]) && isset($_POST["password"]) && $_SESSION["user"]["isLoggedIn"] == 0) {
         getCurrentUser($databaseConnection, $_POST["userEmail"], $_SESSION["hashedPassword"]); #$_POST["password"] moet nog veranderd worden naar werkende $hashedPassword
@@ -92,6 +94,9 @@ include __DIR__ . "/helpers/utils.php";
         <a href="userInfoAanpassen.php">
             <h2>aanpassen</h2>
             </a>
+        <a href="previouslyOrdered.php">
+            <h2>eerder gekochte producten</h2>
+        </a>
 
     <?php
         if ($_SESSION["user"]["IsSalesPerson"] == 1) {
@@ -104,5 +109,6 @@ include __DIR__ . "/helpers/utils.php";
             <?php
         }
     }
+    print_r($_SESSION);
 include __DIR__ . "/components/footer.php"
 ?>

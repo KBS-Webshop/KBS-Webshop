@@ -6,8 +6,7 @@ if(isset($_GET["id"])) {
     $loyaltyItem = getLoyaltyDeal($_GET["id"], $databaseConnection);
 }
 
-if(isset($_POST["title"]) && isset($_POST["title"]) && 
-isset($_POST["title"]) && isset($_POST["title"]) && isset($_POST["title"])) {
+if(isset($_POST["title"])) {
     if (isset($_GET["id"])) {
         updateLoyaltyDeal($_GET["id"], $_POST, $databaseConnection);
     } else {

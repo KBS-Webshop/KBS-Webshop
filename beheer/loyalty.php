@@ -7,7 +7,7 @@ $loyaltyItems = getAllLoyaltyDeals($databaseConnection);
 
 <div id="CenteredContent">
     <h3>Loyaliteits kortingen</h3>
-    <a href="/beheer/deal.php" class="button primary btn-small">Maak nieuwe aan</a>
+    <a href="/KBS-webshop/beheer/deal.php" class="button primary btn-small">Maak nieuwe aan</a>
     <table class="loyalty-table">
         <tr>
             <th>Title</th>

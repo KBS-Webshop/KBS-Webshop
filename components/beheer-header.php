@@ -55,13 +55,13 @@ $databaseConnection = connectToDatabase();
             <div class="col-8" id="CategoriesBar">
                 <ul id="ul-class">
                     <li>
-                        <a href="/" class="HrefDecoration">Webshop</a>
+                        <a href="/KBS-webshop" class="HrefDecoration">Webshop</a>
                     </li>
                     <li>
-                        <a href="/beheer/loyalty.php" class="HrefDecoration">Loyalty</a>
+                        <a href="/KBS-webshop/beheer/loyalty.php" class="HrefDecoration">Loyalty</a>
                     </li>
                     <li>
-                        <a href="/beheer/mail_beheer_orderbevestiging.php" class="HrefDecoration">mail</a>
+                        <a href="/KBS-webshop/beheer/mail_aanpas_keuze.php" class="HrefDecoration">mail</a>
                     </li>
                 </ul>
             </div>

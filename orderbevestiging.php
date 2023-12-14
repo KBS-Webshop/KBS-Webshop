@@ -97,7 +97,7 @@ if (isset($StockItemImage[0]["ImagePath"])) { ?>
 
 </h4>
 <?php
-$recipient = 'sammie.berkhout2006@gmail.com';
+$recipient = getEmail($databaseConnection,);
 $subject = 'Subject of your email';
 $Naam = "sam";
 $customerID1 = getCustomerID($databaseConnection,$orderID);

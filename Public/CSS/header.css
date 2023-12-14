@@ -21,3 +21,7 @@ font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue"
     text-decoration: none;
     text-decoration-color: currentcolor;
 }
+.fa-user {
+    font-size: 20px;
+    margin-right: 10px;
+}

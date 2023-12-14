@@ -11,6 +11,7 @@ include "../helpers/database/database.php";
 include "../helpers/database/loyalty.php";
 include "../helpers/database/order.php";
 include "../helpers/database/stock.php";
+include "../helpers/database/customer.php";
 
 $databaseConnection = connectToDatabase();
 ?>
@@ -43,7 +44,7 @@ $databaseConnection = connectToDatabase();
 <body>
     <div class="Background">
         <div class="row" id="Header">
-            <div class="col-2"><a href="./" id="LogoA">
+            <div class="col-2"><a href="beheer.php" id="LogoA">
                     <div id="LogoImage"></div>
                 </a></div>
             <div class="col-8" id="CategoriesBar">

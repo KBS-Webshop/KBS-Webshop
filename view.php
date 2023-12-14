@@ -145,9 +145,10 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
 
                 </div>
                 <?php
-                $personID = 23; // hier moet een check komen op wie ingelogd is//
+                $personID =  $_SESSION['user']['PersonID']; // hier moet een check komen op wie ingelogd is✅//
                 $existingPersonIDs = array_column(getPersonIDs($StockItem['StockItemID'], $databaseConnection), 'PersonID');
-                if (!in_array($personID, $existingPersonIDs)) { //&& de persoon het product heeft gekocht
+                $gekochteItemsPersoon = didUserBuy($personID, $databaseConnection);
+                if (!in_array($personID, $existingPersonIDs) && $_SESSION['user']['isLoggedIn']==1 && in_array($StockItem['StockItemID'], $gekochteItemsPersoon)) { //&& de persoon het product heeft gekocht✅
                 ?>
                 <div id="StockItemSpecifications">
                     <form method="post">

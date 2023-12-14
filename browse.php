@@ -258,7 +258,7 @@ if (isset($amount)) {
                     <h4 class="ItemQuantity"><?php print getVoorraadTekst($row["QuantityOnHand"]); ?></h4>
                     <p>
                         <?php
-                        $average = round(getAverageRating($row['StockItemID'], $databaseConnection), 1);
+                        $average = ceil(getAverageRating($row['StockItemID'], $databaseConnection));
                         for ($i = 1; $i <= $average; $i++){
                             echo "⭐️";
                         }

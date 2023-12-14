@@ -125,7 +125,7 @@ function getPersonIDs($StockItemID, $databaseConnection)
     return $personIDs;
 }
 
-function getReviewByPerson($personID, $stockItemID, $databaseConnection)
+function getReviewByPerson($personID, $StockItemID, $databaseConnection)
 {
     $query = '
         SELECT *
@@ -135,7 +135,7 @@ function getReviewByPerson($personID, $stockItemID, $databaseConnection)
     ';
 
     $statement = mysqli_prepare($databaseConnection, $query);
-    mysqli_stmt_bind_param($statement, "ii", $personID, $stockItemID);
+    mysqli_stmt_bind_param($statement, "ii", $personID, $StockItemID);
     mysqli_stmt_execute($statement);
 
     $result = mysqli_stmt_get_result($statement);
@@ -146,7 +146,7 @@ function getReviewByPerson($personID, $stockItemID, $databaseConnection)
 
 
 
-function getAverageRating($stockItemID, $databaseConnection)
+function getAverageRating($StockItemID, $databaseConnection)
 {
     $query = '
         SELECT AVG(rating) AS averageRating
@@ -155,11 +155,43 @@ function getAverageRating($stockItemID, $databaseConnection)
     ';
 
     $statement = mysqli_prepare($databaseConnection, $query);
-    mysqli_stmt_bind_param($statement, "i", $stockItemID);
+    mysqli_stmt_bind_param($statement, "i", $StockItemID);
     mysqli_stmt_execute($statement);
 
     $result = mysqli_stmt_get_result($statement);
     $row = mysqli_fetch_assoc($result);
 
     return $row['averageRating'];
+}
+
+function didUserBuy($PersonID,$databaseConnection)
+{
+    $query = '
+        SELECT StockItemID
+        FROM orderlines
+        WHERE OrderID IN (
+            SELECT OrderID
+            FROM orders
+            WHERE CustomerID IN(
+                SELECT CustomerID
+                FROM customers
+                WHERE PersonID = ?
+            )
+        )
+    ';
+    $Statement = mysqli_prepare($databaseConnection, $query);
+    mysqli_stmt_bind_param($Statement, "i", $PersonID);
+    mysqli_stmt_execute($Statement);
+
+    $result = mysqli_stmt_get_result($Statement);
+    $personOrders = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    $R = [];
+
+    foreach($personOrders as $order) {
+        array_push($R, $order["StockItemID"]);
+    }
+
+    return $R;
+
 }

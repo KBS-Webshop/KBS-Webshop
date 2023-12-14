@@ -44,3 +44,10 @@
 .discount-table tr:nth-child(even) {
     background: #c5c5c5;
 }
+
+.form-container {
+    position: relative;
+    width: 100%;
+    height: 75vh;
+    margin-left: 16px;
+}

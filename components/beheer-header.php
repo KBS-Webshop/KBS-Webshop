@@ -12,6 +12,7 @@ include "../helpers/database/loyalty.php";
 include "../helpers/database/order.php";
 include "../helpers/database/stock.php";
 include "../helpers/database/discount.php";
+include "../helpers/database/productOnIndex.php";
 
 $databaseConnection = connectToDatabase();
 ?>
@@ -58,6 +59,9 @@ $databaseConnection = connectToDatabase();
                     </li>
                     <li>
                         <a href="/beheer/discount.php" class="HrefDecoration">Discount</a>
+                    </li>
+                    <li>
+                        <a href="/beheer/productOnIndex.php" class="HrefDecoration">Product Spotlight</a>
                     </li>
                 </ul>
             </div>

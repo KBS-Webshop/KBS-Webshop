@@ -1,11 +1,15 @@
 <!-- dit bestand bevat alle code voor de pagina die één product laat zien -->
 <?php
 include __DIR__ . "/components/header.php";
+include __DIR__ . "/helpers/database/reviewsDB.php";
+
 
 $StockItem = getStockItem($_GET['id'], $databaseConnection);
 $StockItemImage = getStockItemImage($_GET['id'], $databaseConnection);
 $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
+
 ?>
+
 <div id="CenteredContent">
     <?php
     if ($StockItem != null) {
@@ -140,11 +144,116 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                     ?>
 
                 </div>
+                <?php
+                $personID = 23; // hier moet een check komen op wie ingelogd is//
+                $existingPersonIDs = array_column(getPersonIDs($StockItem['StockItemID'], $databaseConnection), 'PersonID');
+                if (!in_array($personID, $existingPersonIDs)) { //&& de persoon het product heeft gekocht
+                ?>
+                <div id="StockItemSpecifications">
+                    <form method="post">
+                        <input type="text" name="review" placeholder="Typ hier uw review!" required>
+                        <div class="review-knoppen">
+                            <?php
+                            for($i = 1; $i <= 5; $i++){ ?>
+                                <label><?php echo $i ?></label>
+                                <input type="radio" name="rating" value="<?php echo $i ?>" <?php echo ($i === 1) ? 'required' : ''; ?>>
+                            <?php } ?>
+                        </div>
+                        <input type="submit" value="Review toevoegen" name="ReviewToevoegen">
+                    </form>
+                </div>
+                <?php
+                }
+                else{
+                    $existingReview = getReviewByPerson($personID, $StockItem['StockItemID'], $databaseConnection);
+                    if ($existingReview) {
+                        ?>
+                        <div id="StockItemSpecifications">
+                            <form method="post">
+                                <input type="text" name="aangepasteReview" value="<?php echo $existingReview['review']; ?>" placeholder="Type hier uw aangepaste review!" required>
+                                <div class="review-knoppen">
+                                    <?php
+                                    for ($i = 1; $i <= 5; $i++) { ?>
+                                        <label><?php echo $i ?></label>
+                                        <input type="radio" name="aangepasteRating" value="<?php echo $i ?>" <?php echo ($i == $existingReview['rating']) ? 'checked' : ''; ?>>
+                                    <?php } ?>
+                                </div>
+                                <input type="submit" value="Review aanpassen" name="ReviewAanpassen">
+                            </form>
+                        </div>
+                <?php
+                    }
+                }
+
+
+                ?>
+
+                <div class="reviews">
+                    <?php
+                    $reviews = getAllReviews($StockItem['StockItemID'], $databaseConnection);
+                    $reviewDates = getReviewDates($StockItem['StockItemID'], $databaseConnection);
+                    $names = getReviewPerson($StockItem['StockItemID'], $databaseConnection);
+                    $ratings = getRatings($StockItem['StockItemID'], $databaseConnection);
+
+                    foreach ($reviews as $review) {
+                        $name = array_shift($names);
+                        $rating = array_shift($ratings);
+                        $date = array_shift($reviewDates);
+
+                        if ($name) {
+                            ?>
+                            <div id="StockItemSpecifications">
+                                <div class="review-person">
+                                    <?php
+                                    echo ($name['FullName'] . '<br>');
+                                    for($i = 0; $i < $rating['rating']; $i++){
+                                        echo '⭐️ ';
+                                    }
+                                    ?>
+                                </div>
+                                <div>
+                                    <?php
+                                    echo ($review['review'] . "<br>");
+                                    ?>
+                                </div>
+                                <div class="review-date">
+                                    <?php echo $date['publicationDate'];?>
+                                </div>
+                            </div>
+                            <?php
+                        }
+                    } ?>
+                </div>
             </div>
 
-            <?php 
+            <?php
+            if (isset($_POST['ReviewToevoegen'])) {
+                $review = mysqli_real_escape_string($databaseConnection, $_POST['review']);
+                addReview($review, $StockItem["StockItemID"], $personID, $_POST['rating'],$databaseConnection);
+                ?>
+            <meta http-equiv="refresh" content="0">
+            <?php
+            }
+            ?>
+
+            <?php
+            if (isset($_POST['ReviewAanpassen'])) {
+                $editedRating = $_POST['aangepasteRating'];
+                $editedReview = $_POST['aangepasteReview'];
+                updateReview($editedReview, $editedRating, $personID, $StockItem['StockItemID'],$databaseConnection);
+                ?>
+                <meta http-equiv="refresh" content="0">
+                <?php
+            }
+            ?>
+
+
+            <?php
                 if(count($AlsoBought) != 0) {
             ?>
+
+
+
             <div class="ProductAlsoBoughtWrapper">
                 <h3>Vaak samen gekocht</h3>
                 <div class="ProductsAlsoBoughtGrid">
@@ -176,9 +285,14 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                 }
             ?>
         </div>
+
+
+
+
         <?php
     } else {
         ?><h2 id="ProductNotFound">Het opgevraagde product is niet gevonden.</h2><?php
-    } ?>
+    }
+    ?>
 </div>
 </div>

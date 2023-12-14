@@ -9,17 +9,22 @@ if (hasHighlightedProduct($databaseConnection)) {
     $productID = pickHighlightedProduct($databaseConnection);
 } else {
     $currentDiscounts = getCurrentDiscounts($databaseConnection);
-    $highestDiscount = 0;
-    $highestDiscountID = 0;
 
-    foreach ($currentDiscounts as $discount) {
-        if ($discount['DiscountPercentage'] > $highestDiscount) {
-            $highestDiscount = $discount['DiscountPercentage'];
-            $highestDiscountID = $discount['StockItemID'];
+    if (!$currentDiscounts) {
+        $productID = pickRandomProduct($databaseConnection);
+    } else {
+        $highestDiscount = 0;
+        $highestDiscountID = 0;
+
+        foreach ($currentDiscounts as $discount) {
+            if ($discount['DiscountPercentage'] > $highestDiscount) {
+                $highestDiscount = $discount['DiscountPercentage'];
+                $highestDiscountID = $discount['StockItemID'];
+            }
         }
-    }
 
-    $productID = $highestDiscountID;
+        $productID = $highestDiscountID;
+    }
 }
 
 $StockItem = getStockItem($productID, $databaseConnection);
@@ -32,9 +37,11 @@ $amtSold72Hours = getAmountOrderedLast72Hours($productID, $databaseConnection);
     /* Sorry voor de CSS hier Renze maar dit is voor PHP integratie */
     .HomePageStockItemPicture {
         background-image: url("<?php echo 'Public/StockItemIMG/' . $StockItemImage['ImagePath'] ?>");
-        background-size: 100% 100%;
+        object-fit: contain;
+        background-size: contain;
         width: 477px;
         height: 477px;
+        max-height: 477px;
         background-repeat: no-repeat;
         margin-left: 55%;
         margin-top: -30%;

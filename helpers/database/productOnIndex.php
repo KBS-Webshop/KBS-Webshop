@@ -15,6 +15,14 @@ function pickHighlightedProduct($databaseConnection) {
     return $result['StockItemID'];
 }
 
+function pickRandomProduct($databaseConnection) {
+    $query = "SELECT StockItemID FROM stockitems";
+    $result = mysqli_query($databaseConnection, $query);
+    $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $result = $result[array_rand($result)];
+    return $result['StockItemID'];
+}
+
 function removeSpotlight($id, $databaseConnection) {
     $query = "UPDATE stockitems SET IsHighlighted = 0 WHERE StockItemID = ?";
     $statement = mysqli_prepare($databaseConnection, $query);

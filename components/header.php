@@ -11,6 +11,8 @@ include "helpers/database/database.php";
 include "helpers/database/loyalty.php";
 include "helpers/database/order.php";
 include "helpers/database/stock.php";
+include "helpers/database/customer.php";
+
 
 $databaseConnection = connectToDatabase();
 ?>
@@ -38,6 +40,7 @@ $databaseConnection = connectToDatabase();
     <link rel="stylesheet" href="Public/CSS/loyalty.css" type="text/css">
     <link rel="stylesheet" href="Public/CSS/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="Public/CSS/typekit.css">
+    <link rel="stylesheet" href="Public/CSS/userlogin.css" type="text/css">
 </head>
 
 <body>
@@ -71,6 +74,9 @@ $databaseConnection = connectToDatabase();
 
             <ul id="ul-class-navigation">
                 <li>
+                    <a href="CustomerLogin.php" class="fa fa-user">Account</a>
+                </li>
+                <li>
                     <a href="browse.php" class="HrefDecoration"><i class="fas fa-search search"></i> Zoeken</a>
                 </li>
                 <li>&nbsp;&nbsp;</li>
@@ -86,3 +92,8 @@ $databaseConnection = connectToDatabase();
     <div class="row" id="Content">
         <div class="col-12">
             <div id="SubContent">
+<!--                --><?php
+//if (isset($_SESSION["user"]["hashedPassword"]) && isset($_SESSION["user"]["EmailAddress"])) {
+//    getUserCustomerInfo($databaseConnection, $_SESSION["user"]["EmailAddress"], $_SESSION["user"]["hashedPassword"]);
+//}
+//?>

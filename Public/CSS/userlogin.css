@@ -1,0 +1,39 @@
+.loginBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.loginBox .login-input {
+    display: flex;
+    width: 25%;
+    justify-content: center;
+    flex-direction: column;
+}
+.informationBox{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    width: 40%;
+}
+.login-input-create {
+display: flex;
+    width: 25%;
+    justify-content: center;
+    flex-direction: column;
+}
+.previouslyOrdered{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.previouslyOrderedItem {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+
+    border: 1px solid #ccc; /* Set the border style and color */
+    padding: 10px; /* Add some padding to create space between the content and the border */
+    margin-bottom: 10px; /* Add margin at the bottom to separate each item */
+}

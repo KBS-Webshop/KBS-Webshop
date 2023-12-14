@@ -145,10 +145,9 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
 
                 </div>
                 <?php
-                $personID = 9; // hier moet een check komen op wie ingelogd is//
+                $personID = 23; // hier moet een check komen op wie ingelogd is//
                 $existingPersonIDs = array_column(getPersonIDs($StockItem['StockItemID'], $databaseConnection), 'PersonID');
-                if (!in_array($personID, $existingPersonIDs)) {
-
+                if (!in_array($personID, $existingPersonIDs)) { //&& de persoon het product heeft gekocht
                 ?>
                 <div id="StockItemSpecifications">
                     <form method="post">
@@ -166,8 +165,27 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                 <?php
                 }
                 else{
-                    echo'deze persoon heeft reeds een review geschreven';
+                    $existingReview = getReviewByPerson($personID, $StockItem['StockItemID'], $databaseConnection);
+                    if ($existingReview) {
+                        ?>
+                        <div id="StockItemSpecifications">
+                            <form method="post">
+                                <input type="text" name="aangepasteReview" value="<?php echo $existingReview['review']; ?>" placeholder="Type hier uw aangepaste review!" required>
+                                <div class="review-knoppen">
+                                    <?php
+                                    for ($i = 1; $i <= 5; $i++) { ?>
+                                        <label><?php echo $i ?></label>
+                                        <input type="radio" name="aangepasteRating" value="<?php echo $i ?>" <?php echo ($i == $existingReview['rating']) ? 'checked' : ''; ?>>
+                                    <?php } ?>
+                                </div>
+                                <input type="submit" value="Review aanpassen" name="ReviewAanpassen">
+                            </form>
+                        </div>
+                <?php
+                    }
                 }
+
+
                 ?>
 
                 <div class="reviews">
@@ -211,10 +229,21 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
             <?php
             if (isset($_POST['ReviewToevoegen'])) {
                 $review = mysqli_real_escape_string($databaseConnection, $_POST['review']);
-                addReview($review, $StockItem["StockItemID"], 44, $_POST['rating'],$databaseConnection);
+                addReview($review, $StockItem["StockItemID"], $personID, $_POST['rating'],$databaseConnection);
                 ?>
             <meta http-equiv="refresh" content="0">
             <?php
+            }
+            ?>
+
+            <?php
+            if (isset($_POST['ReviewAanpassen'])) {
+                $editedRating = $_POST['aangepasteRating'];
+                $editedReview = $_POST['aangepasteReview'];
+                updateReview($editedReview, $editedRating, $personID, $StockItem['StockItemID'],$databaseConnection);
+                ?>
+                <meta http-equiv="refresh" content="0">
+                <?php
             }
             ?>
 

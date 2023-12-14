@@ -2,6 +2,7 @@
 <?php
 include __DIR__ . "/components/header.php";
 require __DIR__ . "/helpers/utils.php";
+include __DIR__ . "/helpers/database/reviewsDB.php";
 
 $ReturnableResult = null;
 $Sort = "SellPrice";
@@ -255,6 +256,15 @@ if (isset($amount)) {
                     <p class="StockItemName"><?php print $row["StockItemName"]; ?></p>
                     <p class="StockItemComments"><?php print $row["MarketingComments"]; ?></p>
                     <h4 class="ItemQuantity"><?php print getVoorraadTekst($row["QuantityOnHand"]); ?></h4>
+                    <p>
+                        <?php
+                        $average = round(getAverageRating($row['StockItemID'], $databaseConnection), 1);
+                        for ($i = 1; $i <= $average; $i++){
+                            echo "⭐️";
+                        }
+
+                        ?>
+                    </p>
                 </div>
             </a>
         <?php } }?>

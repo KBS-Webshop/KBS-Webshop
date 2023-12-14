@@ -21,6 +21,19 @@ function addReview($review, $StockItemID, $personID, $rating, $databaseConnectio
     mysqli_stmt_execute($Statement);
 }
 
+function updateReview($editedReview, $editedRating, $PersonID, $StockItemID,$databaseConnection)
+{
+    $query = '
+        UPDATE reviews
+        SET review = ?, rating = ?
+        WHERE PersonID = ? AND StockItemID = ?
+    ';
+
+    $statement = mysqli_prepare($databaseConnection, $query);
+    mysqli_stmt_bind_param($statement, "siii", $editedReview, $editedRating, $PersonID, $StockItemID);
+    mysqli_stmt_execute($statement);
+}
+
 function getAllReviews($StockItemID, $databaseConnection)
 {
     $query = '
@@ -112,3 +125,41 @@ function getPersonIDs($StockItemID, $databaseConnection)
     return $personIDs;
 }
 
+function getReviewByPerson($personID, $stockItemID, $databaseConnection)
+{
+    $query = '
+        SELECT *
+        FROM reviews
+        WHERE PersonID = ? AND StockItemID = ?
+        LIMIT 1
+    ';
+
+    $statement = mysqli_prepare($databaseConnection, $query);
+    mysqli_stmt_bind_param($statement, "ii", $personID, $stockItemID);
+    mysqli_stmt_execute($statement);
+
+    $result = mysqli_stmt_get_result($statement);
+    $existingReview = mysqli_fetch_assoc($result);
+
+    return $existingReview;
+}
+
+
+
+function getAverageRating($stockItemID, $databaseConnection)
+{
+    $query = '
+        SELECT AVG(rating) AS averageRating
+        FROM reviews
+        WHERE StockItemID = ?
+    ';
+
+    $statement = mysqli_prepare($databaseConnection, $query);
+    mysqli_stmt_bind_param($statement, "i", $stockItemID);
+    mysqli_stmt_execute($statement);
+
+    $result = mysqli_stmt_get_result($statement);
+    $row = mysqli_fetch_assoc($result);
+
+    return $row['averageRating'];
+}

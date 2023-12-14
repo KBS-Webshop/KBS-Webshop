@@ -126,6 +126,14 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
             <input type="text" name="email" id="email" value="<?php if(isset($_SESSION["user"]["EmailAddress"])) { print($_SESSION["user"]["EmailAddress"]); } else { print ""; } ?>" required>
         </div>
     </div>
+    <div class="naw-input form-width-5">
+        <div class="naw-input-inner">
+            <label for="name">
+                akkoord met de terms of service <span class="required"></span>
+            </label>
+            <input type="radio" required>
+        </div>
+    </div>
     <div class="comments">
         <div>
             <label for="opmerkingen">Instructies voor de bezorger. (Optioneel)</label>

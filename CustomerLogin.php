@@ -109,6 +109,5 @@ include __DIR__ . "/helpers/utils.php";
             <?php
         }
     }
-    print_r($_SESSION);
 include __DIR__ . "/components/footer.php"
 ?>

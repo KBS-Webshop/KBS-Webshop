@@ -201,3 +201,16 @@ WHERE OrderLineID = ?";
         return FALSE;
     }
 }
+function checkIfAccountExists ($databaseConnection, $email) {
+    $query = "SELECT EmailAddress FROM people WHERE EmailAddress = ?";
+    $statement = mysqli_prepare($databaseConnection, $query);
+    mysqli_stmt_bind_param($statement, "s", $email);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    $user = mysqli_fetch_assoc($result);
+    if ($user == null) {
+        return FALSE;
+    } else {
+        return TRUE;
+    }
+}

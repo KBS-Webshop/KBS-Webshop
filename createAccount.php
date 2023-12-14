@@ -3,7 +3,7 @@ include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
 ?>
     <form method="POST" name="bevestig" class="loginBox" action="createAccount.php">
-        <h2>Inloggen</h2>
+        <h2>Account aanmaken</h2>
         <div class="login-input-create">
             <label for="email">email</label>
             <input type="text" class="loginEmail" name="email" required>
@@ -67,8 +67,13 @@ include __DIR__ . "/helpers/utils.php";
             <option value="Limburg">Brabant</option>
             <option value="Flevoland">Flevoland</option>
         </select>
-        <!-- <input type="text" name="provincie" id="provincie" required> -->
     </div>
+        <div class="login-input-create">
+            <label for="name">
+                akkoord met de terms of service <span class="required"></span>
+            </label>
+            <input type="radio" required>
+        </div>
         <div class="login-input-create">
             <input type="submit" class="loginSubmit" name="inloggen" value="Maak account aan.">
         </div>
@@ -82,13 +87,17 @@ if (isset($_POST["straatnaam"]) && isset($_POST["huisnummer"])) {
     $_POST["address"] = $_POST["straatnaam"] . " " . $_POST["huisnummer"];
 }
         if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["naam"]) && isset($_POST["telefoonnummer"])) {
-            $PersonID = getNewAccountID($databaseConnection);
-            $succes = createAccount($databaseConnection, $_POST["naam"], $_SESSION["hashedPassword"], $_POST["telefoonnummer"], $_POST["email"]);
-            definiteAddCustomer($databaseConnection, $_POST["naam"], $_POST["telefoonnummer"], $_POST["address"], $_POST["postcode"], $_POST["stad"], $_POST["provincie"], $PersonID);
-            if ($succes) {
-                print("Account aangemaakt.");
+            if (checkIfAccountExists($databaseConnection, $_POST["email"])) {
+                print("Account met deze email bestaat al.");
             } else {
-                print("Account aanmaken mislukt.");
+                $PersonID = getNewAccountID($databaseConnection);
+                $succes = createAccount($databaseConnection, $_POST["naam"], $_SESSION["hashedPassword"], $_POST["telefoonnummer"], $_POST["email"]);
+                definiteAddCustomer($databaseConnection, $_POST["naam"], $_POST["telefoonnummer"], $_POST["address"], $_POST["postcode"], $_POST["stad"], $_POST["provincie"], $PersonID);
+                if ($succes) {
+                    print("Account aangemaakt.");
+                } else {
+                    print("Account aanmaken mislukt.");
+                }
             }
         }
 ?>

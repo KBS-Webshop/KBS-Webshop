@@ -31,22 +31,33 @@ function getCurrentUser($databaseConnection, $email, $hashedPassword) {
      }
  }
 function logoutUser() {
+//    $_SESSION["user"]["FullName"] = "";
+//    $_SESSION["user"]["PhoneNumber"] = "";
+//    $_SESSION["user"]["EmailAddress"] = "";
+//    $_SESSION["user"]["loyalty_points"] = "";
+//    $_SESSION["user"]["PersonID"] = "";
+//    $_SESSION["user"]["IsSalesPerson"] = "";
+//    $_SESSION["user"]["customer"]["CustomerID"] = "";
+//    $_SESSION["user"]["customer"]["CustomerName"] = "";
+//    $_SESSION["user"]["customer"]["DeliveryCityID"] = "";
+//    $_SESSION["user"]["customer"]["PostalCityID"] = "";
+//    $_SESSION["user"]["customer"]["PhoneNumber"] = "";
+//    $_SESSION["user"]["customer"]["DeliveryAddressLine1"] = "";
+//    $_SESSION["user"]["customer"]["DeliveryPostalCode"] = "";
+//    $_SESSION["user"]["customer"]["PostalAddressLine1"] = "";
+//    $_SESSION["user"]["customer"]["PostalPostalCode"] = "";
+//    $_SESSION["user"]["customer"]["PersonID"] = "";
+//    $_SESSION["user"]["customer"]["cityName"] = "";
+//    $_SESSION["user"]["customer"]["streetName"] = "";
+//    $_SESSION["user"]["customer"]["houseNumber"] = "";
+//    $_SESSION["user"]["customer"]["DeliveryProvince"] = "";
+//    $_SESSION["user"]["currentOrder"]["Quantity"] = "";
+//    $_SESSION["user"]["currentOrder"]["LastEditedWhen"] = "";
+//    $_SESSION["user"]["currentOrder"]["OrderID"] = "";
+//    $_SESSION["user"]["currentOrder"]["StockItemID"] = "";
+//    $_SESSION["user"]["currentOrder"]["OrderlineID"] = "";
+    session_destroy();
     $_SESSION["user"]["isLoggedIn"] = 0;
-    $_SESSION["user"]["FullName"] = "";
-    $_SESSION["user"]["PhoneNumber"] = "";
-    $_SESSION["user"]["EmailAddress"] = "";
-    $_SESSION["user"]["loyalty_points"] = "";
-    $_SESSION["user"]["PersonID"] = "";
-    $_SESSION["user"]["customer"]["CustomerID"] = "";
-    $_SESSION["user"]["customer"]["CustomerName"] = "";
-    $_SESSION["user"]["customer"]["DeliveryCityID"] = "";
-    $_SESSION["user"]["customer"]["PostalCityID"] = "";
-    $_SESSION["user"]["customer"]["PhoneNumber"] = "";
-    $_SESSION["user"]["customer"]["DeliveryAddressLine1"] = "";
-    $_SESSION["user"]["customer"]["DeliveryPostalCode"] = "";
-    $_SESSION["user"]["customer"]["PostalAddressLine1"] = "";
-    $_SESSION["user"]["customer"]["PostalPostalCode"] = "";
-    $_SESSION["user"]["customer"]["PersonID"] = "";
 }
 
 function hashPassword($password) {
@@ -144,4 +155,49 @@ function updateCustomer ($databaseConnection, $customerID, $customerName, $cityN
     mysqli_stmt_bind_param($statement, "siisssssi", $customerName, $deliveryCityID, $postalCityID, $phoneNumber, $deliveryAddressLine1, $deliveryPostalCode, $postalAddressLine1, $postalPostalCode, $customerID);
     mysqli_stmt_execute($statement);
     return TRUE;
+}
+function getPreviouslyOrderedID($databaseConnection, $customerID) {
+    $query = "SELECT OrderID
+              FROM orders
+              WHERE CustomerID = ?";
+    $statement = mysqli_prepare($databaseConnection, $query);
+    mysqli_stmt_bind_param($statement, "i", $customerID);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    $orderIDs = array();
+    while ($row = mysqli_fetch_assoc($result)) {
+        $orderIDs[] = $row['OrderID'];
+    }
+    return $orderIDs;
+}
+function getPreviousOrderLines ($databaseConnection, $orderID) {
+    $query = "SELECT OrderlineID
+    From orderlines
+WHERE OrderID = ?";
+    $statement = mysqli_prepare($databaseConnection, $query);
+    mysqli_stmt_bind_param($statement, "i", $orderID);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    $orderLines = array();
+    while ($row = mysqli_fetch_assoc($result)) {
+        $orderLines[] = $row;
+    }
+    return $orderLines;
+}
+function getPreviouslyBought ($databaseConnection, $OrderID) {
+    $query = "SELECT OrderlineID, OrderID, StockItemID, Quantity, LastEditedWhen
+    From orderlines
+WHERE OrderLineID = ?";
+    $statement = mysqli_prepare($databaseConnection, $query);
+    mysqli_stmt_bind_param($statement, "i", $OrderID);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    $user = mysqli_fetch_assoc($result);
+    if ($user != null) {
+        foreach ($user as $key => $value) {
+            $_SESSION["user"]["currentOrder"][$key] = $value;
+        }
+    } else {
+        return FALSE;
+    }
 }

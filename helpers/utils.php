@@ -34,8 +34,8 @@ function PlaceOrder(
         $estimatedDeliveryDate = date("Y-m-d", strtotime($currentDate . "+ 1 days"));
         $salesContactPersonID = 3262;
 
-        definiteAddCustomer($databaseConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $cityName, $DeliveryProvince);
         if ($customerId == null) {
+            definiteAddCustomer($databaseConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $cityName, $DeliveryProvince, $customerId);
             $customerId = getCustomer($databaseConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode);
         } else {
             $customerId = getCustomer($databaseConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode);

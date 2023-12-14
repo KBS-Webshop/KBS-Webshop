@@ -5,6 +5,8 @@ include __DIR__ . "/components/header.php";
 $StockItem = getStockItem($_GET['id'], $databaseConnection);
 $StockItemImage = getStockItemImage($_GET['id'], $databaseConnection);
 $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
+
+
 ?>
 <div id="CenteredContent">
     <?php
@@ -77,6 +79,11 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
             <h2 class="StockItemNameViewSize StockItemName">
                 <?php print $StockItem['StockItemName']; ?>
             </h2>
+                <div class="temperature-box">
+                    <?php if ($StockItem["IsChillerStock"]) {
+                        print "Temperatuur in het magazijn: " . actueleTemperatuur($databaseConnection) . " °C";
+                    } ?>
+                </div>
             <div class="QuantityText"><?php print $StockItem['QuantityOnHand']; ?></div>
             <div id="StockItemHeaderLeft">
                 <div class="CenterPriceLeft">

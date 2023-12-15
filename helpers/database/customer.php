@@ -214,3 +214,19 @@ function checkIfAccountExists ($databaseConnection, $email) {
         return TRUE;
     }
 }
+function getStockItemInfo($databaseConnection, $stockItemID) {
+    $query = "SELECT StockItemName, RecommendedRetailPrice FROM stockitems WHERE StockItemID = ?";
+    $statement = mysqli_prepare($databaseConnection, $query);
+    mysqli_stmt_bind_param($statement, "i", $stockItemID);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    $stockItem = mysqli_fetch_assoc($result);
+    if ($stockItem != null) {
+        foreach ($stockItem as $key => $value) {
+            $_SESSION["user"]["currentStockItem"][$key] = $value;
+        }
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+}

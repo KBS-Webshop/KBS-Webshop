@@ -21,11 +21,11 @@ function addReview($review, $StockItemID, $personID, $rating, $databaseConnectio
     mysqli_stmt_execute($Statement);
 }
 
-function updateReview($editedReview, $editedRating, $PersonID, $StockItemID,$databaseConnection)
+function updateReview($editedReview, $editedRating, $PersonID, $StockItemID, $databaseConnection)
 {
     $query = '
-        UPDATE reviews
-        SET review = ?, rating = ?
+        UPDATE Reviews
+        SET review = ?, rating = ?, lastEdited = CURRENT_DATE
         WHERE PersonID = ? AND StockItemID = ?
     ';
 
@@ -194,4 +194,22 @@ function didUserBuy($PersonID,$databaseConnection)
 
     return $R;
 
+}
+
+function getEditedDate($PersonID, $StockItemID, $databaseConnection)
+{
+    $query = '
+    SELECT publicationDate
+    FROM reviews
+    WHERE StockItemID = ?
+    ';
+
+    $Statement = mysqli_prepare($databaseConnection, $query);
+    mysqli_stmt_bind_param($Statement, "i", $StockItemID);
+    mysqli_stmt_execute($Statement);
+
+    $result = mysqli_stmt_get_result($Statement);
+    $publicationdates = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    return $publicationdates;
 }

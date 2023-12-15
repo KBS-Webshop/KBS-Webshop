@@ -130,8 +130,8 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
         <div class="naw-input-inner">
             <label for="name">
                 akkoord met de terms of service <span class="required"></span>
+                <input type="radio" name="options" value="option1" required>
             </label>
-            <input type="radio" required>
         </div>
     </div>
     <div class="comments">

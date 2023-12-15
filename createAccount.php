@@ -68,12 +68,12 @@ include __DIR__ . "/helpers/utils.php";
             <option value="Flevoland">Flevoland</option>
         </select>
     </div>
-        <div class="login-input-create">
-            <label for="name">
-                akkoord met de terms of service <span class="required"></span>
-            </label>
-            <input type="radio" required>
-        </div>
+    <div class="login-input-create">
+        <label for="name">
+            akkoord met de terms of service <span class="required"></span>
+            <input type="radio" name="options" value="option1" required>
+        </label>
+    </div>
         <div class="login-input-create">
             <input type="submit" class="loginSubmit" name="inloggen" value="Maak account aan.">
         </div>

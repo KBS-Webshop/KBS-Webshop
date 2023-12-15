@@ -223,7 +223,7 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                                 <div class="review-date">
                                     <?php
                                     if ($editedDate['lastedited']) {
-                                        echo $editedDate['lastedited'];
+                                        echo ('<i> edited </i> &nbsp  ' . $editedDate['lastedited']);
                                     }
                                     else{
                                         echo $date['publicationDate'];

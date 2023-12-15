@@ -196,11 +196,13 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                     $reviewDates = getReviewDates($StockItem['StockItemID'], $databaseConnection);
                     $names = getReviewPerson($StockItem['StockItemID'], $databaseConnection);
                     $ratings = getRatings($StockItem['StockItemID'], $databaseConnection);
+                    $lastEdited = getEditedDate($StockItem['StockItemID'], $databaseConnection);
 
                     foreach ($reviews as $review) {
                         $name = array_shift($names);
                         $rating = array_shift($ratings);
                         $date = array_shift($reviewDates);
+                        $editedDate = array_shift($lastEdited);
 
                         if ($name) {
                             ?>
@@ -219,7 +221,15 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                                     ?>
                                 </div>
                                 <div class="review-date">
-                                    <?php echo $date['publicationDate'];?>
+                                    <?php
+                                    if ($editedDate['lastedited']) {
+                                        echo $editedDate['lastedited'];
+                                    }
+                                    else{
+                                        echo $date['publicationDate'];
+                                    }
+
+                                    ?>
                                 </div>
                             </div>
                             <?php

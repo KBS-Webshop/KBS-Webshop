@@ -196,10 +196,10 @@ function didUserBuy($PersonID,$databaseConnection)
 
 }
 
-function getEditedDate($PersonID, $StockItemID, $databaseConnection)
+function getEditedDate($StockItemID, $databaseConnection)
 {
     $query = '
-    SELECT publicationDate
+    SELECT lastedited
     FROM reviews
     WHERE StockItemID = ?
     ';
@@ -209,7 +209,7 @@ function getEditedDate($PersonID, $StockItemID, $databaseConnection)
     mysqli_stmt_execute($Statement);
 
     $result = mysqli_stmt_get_result($Statement);
-    $publicationdates = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $lastEdited = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-    return $publicationdates;
+    return $lastEdited;
 }

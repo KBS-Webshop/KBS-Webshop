@@ -126,7 +126,7 @@ table tr td {
     margin-left: 10px;
     margin-top: 10px;
     margin-right: 10px;
-    border: 2px solid #000;
+    /*border: 2px solid #000;*/
     display: flex;
     justify-content: center;
 }

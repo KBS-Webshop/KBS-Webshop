@@ -145,47 +145,57 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
 
                 </div>
                 <?php
-                if (isset($_SESSION['user'])){
+                if (isset($_SESSION['user']))
+                {
                     $personID =  $_SESSION['user']['PersonID']; // hier moet een check komen op wie ingelogd is✅//
                     $existingPersonIDs = array_column(getPersonIDs($StockItem['StockItemID'], $databaseConnection), 'PersonID');
                     $gekochteItemsPersoon = didUserBuy($personID, $databaseConnection);
-                if (!in_array($personID, $existingPersonIDs) && $_SESSION['user']['isLoggedIn']==1 && in_array($StockItem['StockItemID'], $gekochteItemsPersoon)) { //&& de persoon het product heeft gekocht✅
-                ?>
-                <div id="StockItemSpecifications">
-                    <form method="post">
-                        <input type="text" name="review" placeholder="Typ hier uw review!" required>
-                        <div class="review-knoppen">
-                            <?php
-                            for($i = 1; $i <= 5; $i++){ ?>
-                                <label><?php echo $i ?></label>
-                                <input type="radio" name="rating" value="<?php echo $i ?>" <?php echo ($i === 1) ? 'required' : ''; ?>>
-                            <?php } ?>
-                        </div>
-                        <input type="submit" value="Review toevoegen" name="ReviewToevoegen">
-                    </form>
-                </div>
-                <?php
-                }
-                else{
-                    $existingReview = getReviewByPerson($personID, $StockItem['StockItemID'], $databaseConnection);
-                    if ($existingReview) {
+                    if (!in_array($personID, $existingPersonIDs)
+                        && $_SESSION['user']['isLoggedIn']==1
+                        && in_array($StockItem['StockItemID'], $gekochteItemsPersoon))
+                    { //&& de persoon het product heeft gekocht✅
                         ?>
                         <div id="StockItemSpecifications">
                             <form method="post">
-                                <input type="text" name="aangepasteReview" value="<?php echo $existingReview['review']; ?>" placeholder="Type hier uw aangepaste review!" required>
+                                <input type="text" name="review" placeholder="Typ hier uw review! (max 800 leestekens)" maxlength="800" required>
                                 <div class="review-knoppen">
                                     <?php
-                                    for ($i = 1; $i <= 5; $i++) { ?>
+                                    for($i = 1; $i <= 5; $i++){ ?>
                                         <label><?php echo $i ?></label>
-                                        <input type="radio" name="aangepasteRating" value="<?php echo $i ?>" <?php echo ($i == $existingReview['rating']) ? 'checked' : ''; ?>>
+                                        <input type="radio" name="rating" value="<?php echo $i ?>" <?php echo ($i === 1) ? 'required' : ''; ?>>
                                     <?php } ?>
                                 </div>
-                                <input type="submit" value="Review aanpassen" name="ReviewAanpassen">
+                                <input type="submit" value="Review toevoegen" name="ReviewToevoegen">
                             </form>
                         </div>
-                <?php
+                        <?php
                     }
-                }}
+                    else
+                    {
+                        $existingReview = getReviewByPerson($personID, $StockItem['StockItemID'], $databaseConnection);
+                        if ($existingReview)
+                        {
+                            ?>
+                            <div id="StockItemSpecifications">
+                                <form method="post">
+                                    <input type="text" name="aangepasteReview"
+                                           value="<?php echo $existingReview['review']; ?>"
+                                           placeholder="Type hier uw aangepaste review! (max 800 leestekens)"
+                                           maxlength="800" required>
+                                    <div class="review-knoppen">
+                                        <?php
+                                        for ($i = 1; $i <= 5; $i++) { ?>
+                                            <label><?php echo $i ?></label>
+                                            <input type="radio" name="aangepasteRating"
+                                                   value="<?php echo $i ?>" <?php echo ($i == $existingReview['rating']) ? 'checked' : ''; ?>>
+                                        <?php } ?>
+                                    </div>
+                                    <input type="submit" value="Review aanpassen" name="ReviewAanpassen">
+                                </form>
+                            </div>
+                        <?php }
+                    }
+                }
 
 
                 ?>
@@ -308,3 +318,49 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
     ?>
 </div>
 </div>
+<?php
+//$conn = connectToDatabase();
+//
+//// Loop to generate and execute INSERT statements
+//for ($i = 0; $i < 50; $i++) {
+//    $personID = rand(2, 43);
+//    $stockItemID = rand(1, 135);
+//    $review = '';
+//    $randNum = rand(1, 5);
+//
+//    switch ($randNum) {
+//        case 1:
+//            $review = 'Terrible purchase. Regret buying it.';
+//            break;
+//        case 2:
+//            $review = 'Not satisfied. Poor quality and performance.';
+//            break;
+//        case 3:
+//            $review = 'Average product. Does the job but nothing special.';
+//            break;
+//        case 4:
+//            $review = 'Great purchase! Fantastic features and design.';
+//            break;
+//        case 5:
+//            $review = 'Outstanding product. Exceeded my expectations!';
+//            break;
+//    }
+//
+//    $publicationDate = date('Y-m-d', strtotime('-' . rand(1, 365) . ' days'));
+//    $rating = rand(1, 5);
+//
+//    $sql = "INSERT INTO nerdygadgets.Reviews (PersonID, StockItemID, review, publicationDate, rating)
+//            VALUES ('$personID', '$stockItemID', '$review', '$publicationDate', '$rating')";
+//
+//    if ($conn->query($sql) === TRUE) {
+//        echo "Record inserted successfully.<br>";
+//    } else {
+//        echo "Error inserting record: " . $conn->error . "<br>";
+//    }
+//}
+//
+//// Close connection
+//$conn->close();
+//?>
+
+

@@ -201,50 +201,37 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                 ?>
 
                 <div class="reviews">
-                    <?php
+                <?php
                     $reviews = getAllReviews($StockItem['StockItemID'], $databaseConnection);
-                    $reviewDates = getReviewDates($StockItem['StockItemID'], $databaseConnection);
-                    $names = getReviewPerson($StockItem['StockItemID'], $databaseConnection);
-                    $ratings = getRatings($StockItem['StockItemID'], $databaseConnection);
-                    $lastEdited = getEditedDate($StockItem['StockItemID'], $databaseConnection);
-
                     foreach ($reviews as $review) {
-                        $name = array_shift($names);
-                        $rating = array_shift($ratings);
-                        $date = array_shift($reviewDates);
-                        $editedDate = array_shift($lastEdited);
-
-                        if ($name) {
-                            ?>
-                            <div id="StockItemSpecifications">
-                                <div class="review-person">
-                                    <?php
-                                    echo ($name['FullName'] . '<br>');
-                                    for($i = 0; $i < $rating['rating']; $i++){
-                                        echo '⭐️ ';
-                                    }
-                                    ?>
-                                </div>
-                                <div>
-                                    <?php
-                                    echo ($review['review'] . "<br>");
-                                    ?>
-                                </div>
-                                <div class="review-date">
-                                    <?php
-                                    if ($editedDate['lastedited']) {
-                                        echo ('<i> edited </i> &nbsp  ' . $editedDate['lastedited']);
-                                    }
-                                    else{
-                                        echo $date['publicationDate'];
-                                    }
-
-                                    ?>
-                                </div>
+                        ?>
+                        <div id="StockItemSpecifications">
+                            <div class="review-person">
+                                <?php
+                                echo ($review['FullName'] . '<br>');
+                                for ($i = 0; $i < $review['rating']; $i++) {
+                                    echo '⭐️ ';
+                                }
+                                ?>
                             </div>
-                            <?php
-                        }
-                    } ?>
+                            <div>
+                                <?php
+                                echo ($review['review'] . "<br>");
+                                ?>
+                            </div>
+                            <div class="review-date">
+                                <?php
+                                if ($review['lastedited']) {
+                                    echo ('<i> edited </i> &nbsp  ' . $review['lastedited']);
+                                } else {
+                                    echo $review['publicationDate'];
+                                }
+                                ?>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                    ?>
                 </div>
             </div>
 

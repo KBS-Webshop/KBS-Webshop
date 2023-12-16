@@ -34,19 +34,18 @@ function updateReview($editedReview, $editedRating, $PersonID, $StockItemID, $da
     mysqli_stmt_execute($statement);
 }
 
-function getAllReviews($StockItemID, $databaseConnection)
+function getAllReviews($StockItemID, $orderBy, $databaseConnection)
 {
-    $query = '
-    SELECT r.*, p.FullName, lastedited
-    FROM reviews r
-    JOIN people p ON r.PersonID = p.PersonID
-    LEFT JOIN (
-        SELECT StockItemID
-        FROM reviews
-        GROUP BY StockItemID
-    ) o ON r.StockItemID = o.StockItemID
-    WHERE r.StockItemID = ?
-    ';
+    $query = 'SELECT r.*, p.FullName, lastedited, publicationDate 
+              FROM reviews r 
+              JOIN people p ON r.PersonID = p.PersonID
+              LEFT JOIN (
+                SELECT StockItemID
+                FROM reviews
+                GROUP BY StockItemID
+                ) o ON r.StockItemID = o.StockItemID
+              WHERE r.StockItemID = ? 
+              ORDER BY ' . $orderBy;
 
     $Statement = mysqli_prepare($databaseConnection, $query);
     mysqli_stmt_bind_param($Statement, "i", $StockItemID);

@@ -199,41 +199,64 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
 
 
                 ?>
-
-                <div class="reviews">
-                <?php
-                    $reviews = getAllReviews($StockItem['StockItemID'], $databaseConnection);
-                    foreach ($reviews as $review) {
-                        ?>
-                        <div id="StockItemSpecifications">
-                            <div class="review-person">
-                                <?php
-                                echo ($review['FullName'] . '<br>');
-                                for ($i = 0; $i < $review['rating']; $i++) {
-                                    echo '⭐️ ';
-                                }
-                                ?>
-                            </div>
-                            <div>
-                                <?php
-                                echo ($review['review'] . "<br>");
-                                ?>
-                            </div>
-                            <div class="review-date">
-                                <?php
-                                if ($review['lastedited']) {
-                                    echo ('<i> edited </i> &nbsp  ' . $review['lastedited']);
-                                } else {
-                                    echo $review['publicationDate'];
-                                }
-                                ?>
-                            </div>
+                    <div class="reviews">
+                        <div class="order-by">
+                            <form method="post">
+                                <label for="sortOrder">Sort by:</label>
+                                <select name="sortOrder" id="sortOrder">
+                                    <option value="rating ASC">Rating (Ascending)</option>
+                                    <option value="rating DESC">Rating (Descending)</option>
+                                    <option value="publicationDate ASC">Review Date (Ascending)</option>
+                                    <option value="publicationDate DESC">Review Date (Descending)</option>
+                                </select>
+                                <input type="submit" value="Sort Reviews">
+                            </form>
                         </div>
+
                         <?php
-                    }
-                    ?>
-                </div>
-            </div>
+                        if (isset($_POST['sortOrder']))
+                        {
+                            $sortOrder = $_POST['sortOrder'];
+                        }
+                        else
+                        {
+                            $sortOrder = 'rating DESC';
+                        }
+                        $reviews = getAllReviews($StockItem['StockItemID'], $sortOrder, $databaseConnection);
+
+                        foreach ($reviews as $review) {
+                                ?>
+                            <div id="StockItemSpecifications">
+                                <div class="review-person">
+                                    <?php
+                                    echo ($review['FullName'] . '<br>');
+                                    for ($i = 0; $i < $review['rating']; $i++) {
+                                        echo '⭐️ ';
+                                    }
+                                    ?>
+                                </div>
+                                <div>
+                                    <?php
+                                    echo ($review['review'] . "<br>");
+                                    ?>
+                                </div>
+                                <div class="review-date">
+                                    <?php
+                                    if ($review['lastedited'])
+                                    {
+                                        echo ('<i> edited </i> &nbsp  ' . $review['lastedited']);
+                                    }
+                                    else
+                                    {
+                                        echo $review['publicationDate'];
+                                    }
+                                        ?>
+                                </div>
+                            </div>
+                            <?php
+                        }
+                        ?>
+                    </div>
 
             <?php
             if (isset($_POST['ReviewToevoegen'])) {

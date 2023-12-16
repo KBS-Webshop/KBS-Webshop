@@ -85,3 +85,8 @@
     justify-content: space-around;
     min-width: 18%;
 }
+
+.order-by
+{
+    width: 45%;
+}

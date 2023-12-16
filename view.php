@@ -199,7 +199,7 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
 
                 $sortOrder = $sortOrder = 'rating DESC';
                 if (getAllReviews($StockItem['StockItemID'], $sortOrder, $databaseConnection)){
-                ?>
+                    ?>
                     <div class="reviews">
                         <div class="order-by">
                             <form method="post">
@@ -242,7 +242,7 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                                     <?php
                                     if ($review['lastedited'])
                                     {
-                                        echo ('<i> edited </i> &nbsp  ' . $review['lastedited']);
+                                        echo ('<i> edited </i> &nbsp  ' . $review['lastedited']); //edited tag als er een wijziging is geweest
                                     }
                                     else
                                     {
@@ -255,10 +255,11 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                         }
                         ?>
                     </div>
+            </div>
 
             <?php
             if (isset($_POST['ReviewToevoegen'])) {
-                $review = mysqli_real_escape_string($databaseConnection, $_POST['review']);
+                $review = $_POST['review'];
                 addReview($review, $StockItem["StockItemID"], $personID, $_POST['rating'],$databaseConnection);
                 ?>
             <meta http-equiv="refresh" content="0">
@@ -281,10 +282,7 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
             <?php
                 if(count($AlsoBought) != 0) {
             ?>
-
-
-
-            <div class="ProductAlsoBoughtWrapper">
+                    <div class="ProductAlsoBoughtWrapper">
                 <h3>Vaak samen gekocht</h3>
                 <div class="ProductsAlsoBoughtGrid">
                     <?php

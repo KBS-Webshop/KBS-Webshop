@@ -197,7 +197,8 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                     }
                 }
 
-
+                $sortOrder = $sortOrder = 'rating DESC';
+                if (getAllReviews($StockItem['StockItemID'], $sortOrder, $databaseConnection)){
                 ?>
                     <div class="reviews">
                         <div class="order-by">
@@ -214,13 +215,10 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                         </div>
 
                         <?php
+                        }
                         if (isset($_POST['sortOrder']))
                         {
                             $sortOrder = $_POST['sortOrder'];
-                        }
-                        else
-                        {
-                            $sortOrder = 'rating DESC';
                         }
                         $reviews = getAllReviews($StockItem['StockItemID'], $sortOrder, $databaseConnection);
 

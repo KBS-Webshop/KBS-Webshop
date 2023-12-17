@@ -23,23 +23,48 @@ display: flex;
     justify-content: center;
     flex-direction: column;
 }
-.previouslyOrdered{
+.previouslyOrdered {
     display: flex;
-    justify-content: center;
     flex-direction: column;
+    align-items: center;
 }
+
 .previouslyOrderedItem {
     display: flex;
-    justify-content: center;
-    flex-direction: row;
-
-    border: 1px solid #ccc; /* Set the border style and color */
-    padding: 10px; /* Add some padding to create space between the content and the border */
-    margin-bottom: 10px; /* Add margin at the bottom to separate each item */
-}
-.previouslyOrderedItemFrame
-{
-    display: flex;
-    justify-content: center;
     flex-direction: column;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.ImgFrame {
+    width: 100%;
+    height: 150px;
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 10px;
+}
+
+.details {
+    text-align: center;
+}
+@media only screen and (min-width: 600px) {
+    .previouslyOrderedItem {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .ImgFrame {
+        width: 30%;
+        height: auto;
+        margin-bottom: 0;
+        background-size: contain;
+        background-position: center;
+    }
+
+    .details {
+        width: 65%;
+    }
 }

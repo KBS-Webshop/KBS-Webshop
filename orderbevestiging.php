@@ -38,7 +38,8 @@ if (isset($_SESSION["naam"]) && isset($_SESSION["telefoonnummer"]) && isset($_SE
         $amountOfProductsInOrder,
         $quantityOnHand,
         $DeliveryProvince,
-        $cityName
+        $cityName,
+        $_SESSION["price"]
     );
 }
 ?>
@@ -56,7 +57,7 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
         $StockItem = getStockItem($item["id"], $databaseConnection);
         $StockItemImage = getStockItemImage($item['id'], $databaseConnection);
 
-                        $totalprice += round($item['amount'] * $StockItem['SellPrice'], 2);
+        $totalprice += round($item['amount'] * $StockItem['SellPrice'], 2);
 
         ?>
     <div id="ProductFrame1">
@@ -87,7 +88,8 @@ if (isset($StockItemImage[0]["ImagePath"])) { ?>
 }
 ?>
 <br>
-<h3 class="StockItemPriceTextbevestiging">Totaalprijs: € <?php print str_replace(".",",",$totalprice)?></h3><br>
+<h3 class="StockItemPriceTextbevestiging">Korting: <?php print(formatPrice(calculateDiscount($totalprice, getLoyaltyDeal(getDealInCart(), $databaseConnection)["discount"]))) ?></h3>
+<h3 class="StockItemPriceTextbevestiging">Totaalprijs: <?php print formatPrice(calculatePriceWithDeals($totalprice, $databaseConnection))?></h3><br>
     <h3 class="verzendadres">uw Gegevens: </h3>
 <h4 class="verzendgegevens">
     naam: <?php print $naam?><br>

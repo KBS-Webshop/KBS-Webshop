@@ -153,12 +153,13 @@ function addOrder ($dbConnection, $CustomerId, $DeliveryInstructions, $currentDa
     mysqli_stmt_execute($Statement);
 }
 
-function addOrderline($dbConnection, $OrderID, $stockItemID, $StockItem, $amountOfProductsInOrder, $salesContactPersonID, $currentDate) {
+function addOrderline($dbConnection, $OrderID, $stockItemID, $StockItem, $amountOfProductsInOrder, $salesContactPersonID, $currentDate, $discount) {
+    $price = sprintf("%.2f", $StockItem["UnitPrice"] / 100 * (100 - $discount));
     $Query = "
     INSERT INTO orderlines (OrderID, StockItemID, Description, PackageTypeID, Quantity, UnitPrice, TaxRate, PickedQuantity, LastEditedBy, LastEditedWhen)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $Statement = mysqli_prepare($dbConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "iisiidddis", $OrderID, $stockItemID, $StockItem["MarketingComments"], $StockItem["UnitPackageID"], $amountOfProductsInOrder, $StockItem["UnitPrice"], $StockItem["TaxRate"], $amountOfProductsInOrder, $salesContactPersonID, $currentDate);
+    mysqli_stmt_bind_param($Statement, "iisiidddis", $OrderID, $stockItemID, $StockItem["MarketingComments"], $StockItem["UnitPackageID"], $amountOfProductsInOrder, $price, $StockItem["TaxRate"], $amountOfProductsInOrder, $salesContactPersonID, $currentDate);
     mysqli_stmt_execute($Statement);
 }
 function changevoorraad($dbConnection, $amount, $stockItemID){

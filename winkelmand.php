@@ -2,7 +2,10 @@
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
 ?>
-    <h2>Winkelmandje</h2><br>
+<p class="alert alert-primary m-3">
+    Je hebt <?php print getPoints(1, $databaseConnection) ?> punten gespaart. <a href="loyalty-list.php">Kijk hier wat voor acties je hiermee kan vrijspelen.</a>
+</p>
+<h2>Winkelmandje</h2>
 <?php
 if(isset($_POST["mislukt"])){
     print ("<h3 style='color: red'>Betaling mislukt, probeer het opnieuw.</h3>");
@@ -11,10 +14,7 @@ if (isset($_GET["message"])){
     print ("<h3 style='color: red'>".$_SESSION["itemNietOpVoorraad"]." is niet meer op voorraad (nog maar ".$_SESSION["QuantityOnHand"]." op voorraad).</h3>");
 }
 
-    ?>
-
-
-
+?>
     <div class="winkelmand-wrapper">
         <ul class="winkelmand">
             <div id="ResultsArea" class="Winkelmand">
@@ -84,10 +84,10 @@ if (isset($_GET["message"])){
                     echo "Winkelmandje is leeg.";
                 }
                 if($totalprice > 0){
-                    $totalprice = str_replace('.', ',', sprintf("€%.2f", $totalprice));
+                    $totalpriceFormatted = formatPrice($totalprice);
                     ?>
                 <div>
-                    <h1 class="StockItemPriceTextcart">Totaal prijs: <?php echo $totalprice ?> </h1>
+                    <h1 class="StockItemPriceTextcart">Totaal prijs: <?php echo $totalpriceFormatted ?> </h1>
                 </div>
                 <?php } ?>
             </div>
@@ -97,9 +97,8 @@ if (isset($_GET["message"])){
             ?>
         <div class="bonnetje-wrapper">
             <?php
-
-                $basket_contents = json_decode($_COOKIE["basket"], true);
-                ?>
+            $basket_contents = json_decode($_COOKIE["basket"], true);
+            ?>
             <table>
                 <th>Product</th>
                 <th>Aantal</th>
@@ -112,11 +111,30 @@ if (isset($_GET["message"])){
                     echo ("<td>" . $item['amount'] . "</td>");
                     echo "<td>".sprintf("€%.2f", $StockItem['SellPrice'] * $item["amount"]);
                 }
-                echo ("<tr class='receivedTotalPrice'> <td></td> <th>totaalprijs</th>");
-                echo("<td>$totalprice</td></tr>");
-                echo '</table>';
-
                 ?>
+
+                <tr class='receivedTotalPrice'>
+                    <td></td>
+                    <th>Punten</th>
+                    <td><?php print calculateLoyaltyPoints($totalprice, $databaseConnection) ?></td>
+                </tr>
+                <tr class='receivedTotalPrice'>
+                    <td></td>
+                    <th>Prijs</th>
+                    <td><?php print $totalpriceFormatted ?></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <th>Korting</th>
+                    <td><?php print "-" . formatPrice( calculateDiscount($totalprice, getLoyaltyDeal(getDealInCart(), $databaseConnection)["discount"]) ) ?></td>
+                </tr>
+                <tr class='receivedTotalPrice'>
+                    <td></td>
+                    <th>totaalprijs</th>
+                    <td><?php print formatPrice(calculatePriceWithDeals($totalprice, $databaseConnection)); ?></td>
+                </tr>
+            </table>
+
 
                 <form action="naw.php">
                     <input type="submit" value="Afrekenen">

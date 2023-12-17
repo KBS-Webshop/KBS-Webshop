@@ -6,13 +6,13 @@ if(isset($_GET["id"])) {
     $loyaltyItem = getLoyaltyDeal($_GET["id"], $databaseConnection);
 }
 
-if(isset($_POST["title"]) && isset($_POST["title"]) && 
-isset($_POST["title"]) && isset($_POST["title"]) && isset($_POST["title"])) {
+if(isset($_POST["title"])) {
     if (isset($_GET["id"])) {
         updateLoyaltyDeal($_GET["id"], $_POST, $databaseConnection);
     } else {
         createLoyaltyDeal($_POST, $databaseConnection);
     }
+    header("Location: loyalty.php");
 }
 ?>
 
@@ -44,7 +44,7 @@ isset($_POST["title"]) && isset($_POST["title"]) && isset($_POST["title"])) {
             <input type="submit" value="Verstuur" class="button primary">
         </div>
     </form>
-    <a href="/beheer/loyalty.php"><i class="fa fa-arrow-left"></i> Ga terug</a>
+    <a href="loyalty.php"><i class="fa fa-arrow-left"></i> Ga terug</a>
 </div>
 <?php
 include "../components/footer.php"

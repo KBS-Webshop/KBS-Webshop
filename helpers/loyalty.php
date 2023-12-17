@@ -7,8 +7,15 @@ function calculateLoyaltyPoints($price, $databaseConnection) {
 function calculateAndAddPoints($price, $personId, $databaseConnection) {
     $points = calculateLoyaltyPoints($price, $databaseConnection);
     $currentPoints = getPoints($personId, $databaseConnection);
-    setPoints(1, ($points + $currentPoints), $databaseConnection);
+    setPoints($personId, ($points + $currentPoints), $databaseConnection);
 }
+
+function calculateAndRemovePoints($price, $personId, $databaseConnection) {
+    $points = getLoyaltyDeal(getDealInCart(), $databaseConnection)["points"];
+    $currentPoints = getPoints($personId, $databaseConnection);
+    setPoints($personId, ($currentPoints - $points), $databaseConnection);
+}
+
 
 function addDealToCart($id) {
     setcookie("deals", $id, 2147483647);
@@ -28,7 +35,11 @@ function removeDealFromCart() {
 
 function calculatePriceWithDeals($price, $databaseConnection) {
     $deal = getLoyaltyDeal(getDealInCart(), $databaseConnection);
-    return calculateDiscount($price, 100 - $deal["discount"]);
+    if ($deal != null) {
+        return calculateDiscount($price, 100 - $deal["discount"]);
+    } else {
+        return $price;
+    }
 }
 
 function calculateDiscount($price, $discount) {

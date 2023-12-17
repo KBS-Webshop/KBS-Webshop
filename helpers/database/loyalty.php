@@ -16,21 +16,22 @@ function getAllLoyaltyDeals($databaseConnection) {
 }
 
 function getLoyaltyDeal($id, $databaseConnection) {
-    
-    $Query = "
-        SELECT * FROM loyalty_deals
-        WHERE id = ?
-    ";
+    if ($id != null) {
+        $Query = "
+            SELECT * FROM loyalty_deals
+            WHERE id = ?
+        ";
 
-    $Statement = mysqli_prepare($databaseConnection, $Query);
+        $Statement = mysqli_prepare($databaseConnection, $Query);
 
-    mysqli_stmt_bind_param($Statement, "i", $id);
+        mysqli_stmt_bind_param($Statement, "i", $id);
 
-    mysqli_stmt_execute($Statement);
-    $R = mysqli_stmt_get_result($Statement);
-    $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
+        mysqli_stmt_execute($Statement);
+        $R = mysqli_stmt_get_result($Statement);
+        $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
 
-    return $R[0];
+        return $R[0];
+    }
 }
 
 function updateLoyaltyConfiguration($points, $price, $databaseConnection) {
@@ -117,7 +118,6 @@ function createLoyaltyDeal($values, $databaseConnection) {
 }
 
 function setPoints($personId, $points, $databaseConnection) {
-    print($points);
     $Query = "
         UPDATE people
         SET loyalty_points = ?

@@ -113,11 +113,7 @@ if (isset($_GET["message"])){
                 }
                 ?>
 
-                <tr class='receivedTotalPrice'>
-                    <td></td>
-                    <th>Punten</th>
-                    <td><?php print calculateLoyaltyPoints($totalprice, $databaseConnection) ?></td>
-                </tr>
+                <?php if (getDealInCart() != null) { ?>
                 <tr class='receivedTotalPrice'>
                     <td></td>
                     <th>Prijs</th>
@@ -128,7 +124,13 @@ if (isset($_GET["message"])){
                     <th>Korting</th>
                     <td><?php print "-" . formatPrice( calculateDiscount($totalprice, getLoyaltyDeal(getDealInCart(), $databaseConnection)["discount"]) ) ?></td>
                 </tr>
+                <?php } ?>
                 <tr class='receivedTotalPrice'>
+                    <td></td>
+                    <th>Punten</th>
+                    <td><?php print calculateLoyaltyPoints(calculatePriceWithDeals($totalprice, $databaseConnection), $databaseConnection) ?></td>
+                </tr>
+                <tr>
                     <td></td>
                     <th>totaalprijs</th>
                     <td><?php print formatPrice(calculatePriceWithDeals($totalprice, $databaseConnection)); ?></td>

@@ -19,6 +19,7 @@ $currentPoints = getPoints(1, $databaseConnection);
 
     <div class="container">
     <p class="alert alert-primary">Let op: er kan maar 1 deal tegelijk actief zijn!</p>
+    <h3>Punten: <?php print $currentPoints ?></h3>
     <?php foreach($loyaltyDeals as $deal) { ?>
         <div class="row">
             <div class="card col my-3" style="width: 18rem;">

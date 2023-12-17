@@ -25,11 +25,7 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
                 }
                 ?>
 
-                <tr class='receivedTotalPrice'>
-                    <td></td>
-                    <th>Punten</th>
-                    <td><?php print calculateLoyaltyPoints($totalprice, $databaseConnection) ?></td>
-                </tr>
+                <?php if (getDealInCart() != null) { ?>
                 <tr class='receivedTotalPrice'>
                     <td></td>
                     <th>Prijs</th>
@@ -40,7 +36,13 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
                     <th>Korting</th>
                     <td><?php print "-" . formatPrice($totalprice / 100 * getLoyaltyDeal(getDealInCart(), $databaseConnection)["discount"]) ?></td>
                 </tr>
+                <?php } ?>
                 <tr class='receivedTotalPrice'>
+                    <td></td>
+                    <th>Punten</th>
+                    <td><?php print calculateLoyaltyPoints(calculatePriceWithDeals($totalprice, $databaseConnection), $databaseConnection) ?></td>
+                </tr>
+                <tr>
                     <td></td>
                     <th>totaalprijs</th>
                     <td><?php print formatPrice(calculatePriceWithDeals($totalprice, $databaseConnection)); ?></td>

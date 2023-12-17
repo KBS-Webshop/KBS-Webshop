@@ -101,7 +101,9 @@ function PlaceOrder(
         addOrder($databaseConnection, $customerId, $DeliveryInstructions, $currentDate, $estimatedDeliveryDate, $salesContactPersonID, $isInStock);
         $OrderID = getOrderID($databaseConnection);
 
+        calculateAndRemovePoints($price, 1, $databaseConnection);
         calculateAndAddPoints((float) $price, 1, $databaseConnection);
+        removeDealFromCart();
 
         $basket_contents = json_decode($_COOKIE["basket"], true);
 

@@ -48,3 +48,23 @@ function validateInput() {
 
     return true;
 }
+function checkPasswordStrength(password) {
+    // Define the criteria
+    var minLength = 8;
+    var hasUpperCase = /[A-Z]/.test(password);
+    var hasLowerCase = /[a-z]/.test(password);
+    var hasDigit = /\d/.test(password);
+
+    // Check if the password meets the criteria
+    if (password.length < minLength) {
+        return false;
+    } else if (!hasUpperCase) {
+        return false;
+    } else if (!hasLowerCase) {
+        return false;
+    } else if (!hasDigit) {
+        return false;
+    } else {
+        return true;
+    }
+}

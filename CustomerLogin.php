@@ -4,6 +4,9 @@ include __DIR__ . "/helpers/utils.php";
 ?>
 <div class="informationBox">
     <?php
+    if (!isset($_POST["inloggen"])) {
+        $_POST["inloggen"] = "";
+    }
     if (!isset($_SESSION["user"]["isLoggedIn"])) {
         $_SESSION["user"]["isLoggedIn"] = 0;
     }
@@ -108,6 +111,9 @@ include __DIR__ . "/helpers/utils.php";
             </div>
             <?php
         }
+    }
+    if ($_POST["inloggen"] == "inloggen" && $_SESSION["user"]["isLoggedIn"] == 0) {
+        print("Inloggen mislukt, email en wachtwoord komen niet overeen.");
     }
 include __DIR__ . "/components/footer.php"
 ?>

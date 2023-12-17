@@ -79,14 +79,18 @@ include __DIR__ . "/helpers/utils.php";
         </div>
         <?php
 if (isset($_POST["password"])) {
-    $_SESSION["password"] = $_POST["password"];
-    $hashedPassword = hashPassword($_POST["password"]);
-    $_SESSION["hashedPassword"] = $hashedPassword;
+    if (checkPasswordStrength($_POST["password"])) {
+        $_SESSION["password"] = $_POST["password"];
+        $hashedPassword = hashPassword($_POST["password"]);
+        $_SESSION["hashedPassword"] = $hashedPassword;
+    } else {
+        print("Wachtwoord moet minimaal 8 tekens lang zijn en minimaal 1 hoofdletter, 1 kleine letter en 1 cijfer bevatten.");
+    }
 }
 if (isset($_POST["straatnaam"]) && isset($_POST["huisnummer"])) {
     $_POST["address"] = $_POST["straatnaam"] . " " . $_POST["huisnummer"];
 }
-        if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["naam"]) && isset($_POST["telefoonnummer"])) {
+        if (isset($_POST["email"]) && isset($_SESSION["hashedPassword"]) && isset($_POST["naam"]) && isset($_POST["telefoonnummer"]) && isset($_POST["address"]) && isset($_POST["postcode"]) && isset($_POST["stad"]) && isset($_POST["provincie"])) {
             if (checkIfAccountExists($databaseConnection, $_POST["email"])) {
                 print("Account met deze email bestaat al.");
             } else {

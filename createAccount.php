@@ -79,13 +79,9 @@ include __DIR__ . "/helpers/utils.php";
         </div>
         <?php
 if (isset($_POST["password"])) {
-    if (checkPasswordStrength($_POST["password"])) {
         $_SESSION["password"] = $_POST["password"];
         $hashedPassword = hashPassword($_POST["password"]);
         $_SESSION["hashedPassword"] = $hashedPassword;
-    } else {
-        print("Wachtwoord moet minimaal 8 tekens lang zijn en minimaal 1 hoofdletter, 1 kleine letter en 1 cijfer bevatten.");
-    }
 }
 if (isset($_POST["straatnaam"]) && isset($_POST["huisnummer"])) {
     $_POST["address"] = $_POST["straatnaam"] . " " . $_POST["huisnummer"];

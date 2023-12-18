@@ -94,10 +94,10 @@ include __DIR__ . "/helpers/utils.php";
         ?>
     </div>
 
-        <a href="userInfoAanpassen.php">
+        <a class="button primary" href="userInfoAanpassen.php">
             <h2>aanpassen</h2>
             </a>
-        <a href="previouslyOrdered.php">
+        <a class="button primary" href="previouslyOrdered.php">
             <h2>eerder gekochte producten</h2>
         </a>
 
@@ -105,7 +105,11 @@ include __DIR__ . "/helpers/utils.php";
         if ($_SESSION["user"]["IsSalesPerson"] == 1) {
             ?>
             <div class="informationBox">
-                <a href="beheer/beheer.php">
+<<<<<<< HEAD
+                <a class="button primary" href="beheer/beheer.php">
+=======
+                <a href="/beheer">
+>>>>>>> 7466feef9c5168ab03cdfef7e86f084c4e1db6a7
                     <h2>beheerpagina</h2>
                 </a>
             </div>

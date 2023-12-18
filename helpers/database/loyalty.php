@@ -31,6 +31,8 @@ function getLoyaltyDeal($id, $databaseConnection) {
         $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
 
         return $R[0];
+    } else {
+        return null;
     }
 }
 

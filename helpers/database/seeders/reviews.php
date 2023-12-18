@@ -1,12 +1,27 @@
 <?php
-include __DIR__ . "/components/header.php";
-include __DIR__ . "/helpers/database/reviewsDB.php";
-include __DIR__ . "/Applications/XAMPP/xamppfiles/htdocs/nerdygit/helpers/database/database.php";
+
+require '../../../vendor/autoload.php';
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '../../../../');
+$dotenv->load();
+
+function connectToDatabase()
+{
+    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+    try {
+        $connection = mysqli_connect($_ENV["MYSQL_HOST"], $_ENV["MYSQL_USER"], $_ENV["MYSQL_PASSWORD"], $_ENV["MYSQL_DATABASE"]);
+        mysqli_set_charset($connection, 'latin1');
+        return $connection;
+    } catch (mysqli_sql_exception $e) {
+        die("Connection failed: " . $e->getMessage());
+    }
+}
 
 $conn = connectToDatabase();
 
-for ($i = 0; $i < 50; $i++) {
-    $personID = rand(2, 43);
+for ($i = 2000; $i <= 2400; $i++) {
+    $personID = $i;
     $stockItemID = rand(1, 135);
     $review = '';
     $randNum = rand(1, 5);
@@ -35,11 +50,9 @@ for ($i = 0; $i < 50; $i++) {
     $sql = "INSERT INTO nerdygadgets.Reviews (PersonID, StockItemID, review, publicationDate, rating)
             VALUES ('$personID', '$stockItemID', '$review', '$publicationDate', '$rating')";
 
-    if ($conn->query($sql) === TRUE) {
-        echo "Record inserted successfully.<br>";
-    } else {
-        echo "Error inserting record: " . $conn->error . "<br>";
-    }
+    // Execute the query
+    mysqli_query($conn, $sql);
 }
 
 $conn->close();
+?>

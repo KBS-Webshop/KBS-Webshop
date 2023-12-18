@@ -6,6 +6,11 @@ if(isset($_GET["id"])) {
     $loyaltyItem = getLoyaltyDeal($_GET["id"], $databaseConnection);
 }
 
+if (isset($_POST["delete"])) {
+    deleteLoyaltyDeal($_GET["id"], $databaseConnection);
+    header("Location: loyalty.php");
+}
+
 if(isset($_POST["title"])) {
     if (isset($_GET["id"])) {
         updateLoyaltyDeal($_GET["id"], $_POST, $databaseConnection);
@@ -43,6 +48,10 @@ if(isset($_POST["title"])) {
         <div>
             <input type="submit" value="Verstuur" class="button primary">
         </div>
+    </form>
+    <form method="POST">
+        <input type="hidden" name="delete" value="delete">
+        <input type="submit" value="Delete" class="button danger">
     </form>
     <a href="loyalty.php"><i class="fa fa-arrow-left"></i> Ga terug</a>
 </div>

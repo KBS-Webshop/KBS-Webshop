@@ -95,6 +95,22 @@ function updateLoyaltyDeal($id, $values, $databaseConnection) {
 
 }
 
+function deleteLoyaltyDeal($id, $databaseConnection) {
+    $Query = "
+        DELETE FROM loyalty_deals
+        WHERE id = ?
+    ";
+
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+
+    mysqli_stmt_bind_param(
+        $Statement, 
+        "i",
+        $id
+    );
+    mysqli_stmt_execute($Statement);
+}
+
 function createLoyaltyDeal($values, $databaseConnection) {
     if (!isSet($values["free_shipping"])) {
         $values["free_shipping"] = 0;

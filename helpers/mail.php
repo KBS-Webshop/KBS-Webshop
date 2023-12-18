@@ -1,9 +1,7 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
-//require __DIR__ . '/../vendor/phpmailer/phpmailer/src/Exception.php';
-//require __DIR__ . '/../vendor/phpmailer/phpmailer/src/SMTP.php';
-//require __DIR__ . '/../vendor/phpmailer/phpmailer/src/PHPMailer.php';
 
 function sendEmail($recipient, $subject, $htmlBody, $textBody,$logoPath) {
     $mail = new PHPMailer(true); // Passing true enables exceptions

@@ -10,7 +10,8 @@ $_SESSION["user"]["NAW"]["CityName"] = $_POST["stad"];
 $_SESSION["user"]["NAW"]["DeliveryAddressLine1"] = $_POST["adress"] . " " . $_POST["huisnummer"];
 $_SESSION["user"]["NAW"]["DeliveryPostalCode"] = $_POST["postcode"];
 $_SESSION["user"]["NAW"]["PhoneNumber"] = $_POST["telefoonnummer"];
-
+$_SESSION["user"]["NAW"]["DeliveryInstructions"] = $_POST["bezorgInstructies"];
+$_SESSION["user"]["NAW"]["DeliveryProvince"] = $_POST["provincie"];
 
 foreach ($basket_contents as $item) {
 $StockItem = getStockItem($item["id"], $databaseConnection);

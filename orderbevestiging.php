@@ -97,5 +97,65 @@ if (isset($StockItemImage[0]["ImagePath"])) { ?>
 
 </h4>
 <?php
+$personID= $_SESSION['user']['PersonID'];
+$recipient =$_SESSION["userEmail"];
+$subject = 'Orderbevestiging';
+$subject1 = 'reclame';
+$Naam = $_SESSION["user"]["FullName"];
+$customerID1 = getCustomerIDbypersonID($databaseConnection,$personID);
+$customerID= $customerID1[0]['CustomerID'];
+$gegevens = getUserInfo($databaseConnection, $personID);
+$customerDetails = $gegevens[0];
+$ordergegevens = getOrder($databaseConnection, $orderID);
+$bezorgAdres=$customerDetails['DeliveryAddressLine1'];
+$linkUserInfo='<a href="http://localhost/KBS-webshop/userInfoAanpassen.php" style="max-width: 10rem; border-radius: 10px; border: none; text-decoration: none; display: inline-block; text-align: center; padding: 0.5rem; background-color: #0000a4; color: white; font-size: 14px;">pas gebruikersinfo aan</a>';
+$logo= "<div style='background-color: #f5f5f5; padding: 20px;'>
+        
+        <a href='http://localhost/KBS-webshop/'><img src='cid:logo' alt='Logo' width='300' height='300'></a>
+    </div>
+";
+
+
+$editorContent1 = getEmailTemplate($databaseConnection,'orderbevesteging');
+$editorContent2=getEmailTemplate($databaseConnection,'reclame');
+$editorContent = $editorContent1[0]['content'];
+$editorContent = str_replace('$(naam)', $naam, $editorContent);
+$editorContent = str_replace('$(customerID)', $customerID, $editorContent);
+$editorContent = str_replace('$(telefoonnummer)', $telefoonnummer, $editorContent);
+$editorContent = str_replace('$(bezorg-adres)', $bezorgAdres, $editorContent);
+$editorContent = str_replace('$(postcode)', $postcode, $editorContent);
+$editorContent = str_replace('$(linkUserInfo)', $linkUserInfo, $editorContent);
+$editorContent = str_replace('$(logo)', $logo, $editorContent);
+$editorContent3 = $editorContent2[0]['content'];
+
+$editorContent3 = str_replace('$(naam)', $naam, $editorContent3);
+$editorContent3 = str_replace('$(customerID)', $customerID, $editorContent3);
+$editorContent3 = str_replace('$(telefoonnummer)', $telefoonnummer, $editorContent3);
+$editorContent3 = str_replace('$(bezorg-adres)', $bezorgAdres, $editorContent3);
+$editorContent3 = str_replace('$(postcode)', $postcode, $editorContent3);
+$editorContent3 = str_replace('$(linkUserInfo)', $linkUserInfo, $editorContent3);
+$editorContent3 = str_replace('$(logo)', $logo, $editorContent3);
+print $editorContent3;
+$productenText = '';
+foreach ($ordergegevens as $ordergegeven) {
+    $productenText .= 'Item Name: ' . $ordergegeven["StockItemName"].' aantal: '. $ordergegeven['Quantity'] . '<br>';
+}
+$alsobought1= getAlsoBought($ordergegevens[0]['StockItemID'],$databaseConnection);
+$productText = '';
+
+foreach ($alsobought1 as $item) {
+    $productText .= 'Item Name: ' . $item['StockItemName'] . '<br>';
+}
+
+$editorContent = str_replace('$(producten)', $productenText, $editorContent);
+$editorContent = str_replace('$(alsobought)', $productText, $editorContent);
+$editorContent3 = str_replace('$(producten)', $productenText, $editorContent3);
+$editorContent3 = str_replace('$(alsobought)', $productText, $editorContent3);
+
+$textBody = 'orderbevestiging';
+$textBody1='reclame';
+
+sendEmail($recipient, $subject, $editorContent, $textBody,'C:\xampp\htdocs\KBS-Webshop\Public\ProductIMGHighRes\NerdyGadgetsLogo.png'   );
+sendEmail($recipient,$subject1,$editorContent3,$textBody1,'C:\xampp\htdocs\KBS-Webshop\Public\ProductIMGHighRes\NerdyGadgetsLogo.png');
 include __DIR__ . "/components/footer.php"
 ?>

@@ -11,10 +11,15 @@ include "../helpers/database/database.php";
 include "../helpers/database/loyalty.php";
 include "../helpers/database/order.php";
 include "../helpers/database/stock.php";
+include "../helpers/database/mail_database.php";
+include "../helpers/mail.php";
+
+
 include "../helpers/database/customer.php";
 
 $databaseConnection = connectToDatabase();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,6 +40,7 @@ $databaseConnection = connectToDatabase();
     <link rel="stylesheet" href="../Public/CSS/orderbevestiging.css" type="text/css">
     <link rel="stylesheet" href="../Public/CSS/winkelmand.css" type="text/css">
     <link rel="stylesheet" href="../Public/CSS/naw.css" type="text/css">
+    <link rel="stylesheet" href="../Public/CSS/mail_beheer.css" type="text/css">
     <link rel="stylesheet" href="../Public/CSS/view.css" type="text/css">
     <link rel="stylesheet" href="../Public/CSS/loyalty.css" type="text/css">
     <link rel="stylesheet" href="../Public/CSS/bootstrap.min.css" type="text/css">
@@ -50,10 +56,13 @@ $databaseConnection = connectToDatabase();
             <div class="col-8" id="CategoriesBar">
                 <ul id="ul-class">
                     <li>
-                        <a href="/" class="HrefDecoration">Webshop</a>
+                        <a href="/KBS-webshop" class="HrefDecoration">Webshop</a>
                     </li>
                     <li>
-                        <a href="/beheer/loyalty.php" class="HrefDecoration">Loyalty</a>
+                        <a href="/KBS-webshop/beheer/loyalty.php" class="HrefDecoration">Loyalty</a>
+                    </li>
+                    <li>
+                        <a href="/KBS-webshop/beheer/mail_aanpas_keuze.php" class="HrefDecoration">mail</a>
                     </li>
                 </ul>
             </div>

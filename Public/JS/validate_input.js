@@ -6,6 +6,7 @@ if (location.pathname.includes('/naw.php')) {
     });
 }
 
+
 const emailPattern = /^[a-zA-Z0-9!#$%&'*+-/=?^_`{|}~.]+@[a-zA-Z0-9!#$%&'*+-/=?^_`{|}~.]+\.[a-zA-Z0-9!#$%&'*+-/=?^_`{|}~.]+$/;
 const telefoonPattern = /^(?:(?:\+|00(\s|\s?\-\s?)?)31(?:\s|\s?\-\s?)?(?:\(0\)[\-\s]?)?|0)[1-9](?:(?:\s|\s?\-\s?)?[0-9])(?:(?:\s|\s?-\s?)?[0-9])(?:(?:\s|\s?-\s?)?[0-9])\s?[0-9]\s?[0-9]\s?[0-9]\s?[0-9]\s?[0-9]$/;
 const postcodePattern = /^[0-9]{4}\s*[a-zA-Z]{2}$/;
@@ -50,21 +51,11 @@ function validateInput() {
 }
 function checkPasswordStrength(password) {
     // Define the criteria
-    var minLength = 8;
-    var hasUpperCase = /[A-Z]/.test(password);
-    var hasLowerCase = /[a-z]/.test(password);
-    var hasDigit = /\d/.test(password);
+    const minLength = 8;
+    const meetsRequirements = /[A-Za-z\d]/.test(password);
 
     // Check if the password meets the criteria
     if (password.length < minLength) {
         return false;
-    } else if (!hasUpperCase) {
-        return false;
-    } else if (!hasLowerCase) {
-        return false;
-    } else if (!hasDigit) {
-        return false;
-    } else {
-        return true;
-    }
+    } else return meetsRequirements;
 }

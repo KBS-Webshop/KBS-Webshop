@@ -31,31 +31,6 @@ function getCurrentUser($databaseConnection, $email, $hashedPassword) {
      }
  }
 function logoutUser() {
-//    $_SESSION["user"]["FullName"] = "";
-//    $_SESSION["user"]["PhoneNumber"] = "";
-//    $_SESSION["user"]["EmailAddress"] = "";
-//    $_SESSION["user"]["loyalty_points"] = "";
-//    $_SESSION["user"]["PersonID"] = "";
-//    $_SESSION["user"]["IsSalesPerson"] = "";
-//    $_SESSION["user"]["customer"]["CustomerID"] = "";
-//    $_SESSION["user"]["customer"]["CustomerName"] = "";
-//    $_SESSION["user"]["customer"]["DeliveryCityID"] = "";
-//    $_SESSION["user"]["customer"]["PostalCityID"] = "";
-//    $_SESSION["user"]["customer"]["PhoneNumber"] = "";
-//    $_SESSION["user"]["customer"]["DeliveryAddressLine1"] = "";
-//    $_SESSION["user"]["customer"]["DeliveryPostalCode"] = "";
-//    $_SESSION["user"]["customer"]["PostalAddressLine1"] = "";
-//    $_SESSION["user"]["customer"]["PostalPostalCode"] = "";
-//    $_SESSION["user"]["customer"]["PersonID"] = "";
-//    $_SESSION["user"]["customer"]["cityName"] = "";
-//    $_SESSION["user"]["customer"]["streetName"] = "";
-//    $_SESSION["user"]["customer"]["houseNumber"] = "";
-//    $_SESSION["user"]["customer"]["DeliveryProvince"] = "";
-//    $_SESSION["user"]["currentOrder"]["Quantity"] = "";
-//    $_SESSION["user"]["currentOrder"]["LastEditedWhen"] = "";
-//    $_SESSION["user"]["currentOrder"]["OrderID"] = "";
-//    $_SESSION["user"]["currentOrder"]["StockItemID"] = "";
-//    $_SESSION["user"]["currentOrder"]["OrderlineID"] = "";
     session_destroy();
     $_SESSION["user"]["isLoggedIn"] = 0;
 }

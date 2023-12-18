@@ -1,5 +1,4 @@
 <?php
-// Include necessary files
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
 ?>

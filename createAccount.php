@@ -79,7 +79,6 @@ include __DIR__ . "/helpers/utils.php";
         </div>
         <?php
 if (isset($_POST["password"])) {
-        $_SESSION["password"] = $_POST["password"];
         $hashedPassword = hashPassword($_POST["password"]);
         $_SESSION["hashedPassword"] = $hashedPassword;
 }
@@ -101,6 +100,11 @@ if (isset($_POST["straatnaam"]) && isset($_POST["huisnummer"])) {
             }
         }
 ?>
+        <script>
+                document.addEventListener('submit', (e) => {
+                if (!checkPasswordStrength(<?php print ($_POST["password"]); ?>)) e.preventDefault();
+                });
+        </script>
 <?php
 include __DIR__ . "/components/footer.php"
 ?>

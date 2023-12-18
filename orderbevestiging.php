@@ -135,7 +135,6 @@ $editorContent3 = str_replace('$(bezorg-adres)', $bezorgAdres, $editorContent3);
 $editorContent3 = str_replace('$(postcode)', $postcode, $editorContent3);
 $editorContent3 = str_replace('$(linkUserInfo)', $linkUserInfo, $editorContent3);
 $editorContent3 = str_replace('$(logo)', $logo, $editorContent3);
-print $editorContent3;
 $productenText = '';
 foreach ($ordergegevens as $ordergegeven) {
     $productenText .= 'Item Name: ' . $ordergegeven["StockItemName"].' aantal: '. $ordergegeven['Quantity'] . '<br>';

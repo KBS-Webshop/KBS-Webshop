@@ -113,7 +113,7 @@ include __DIR__ . "/helpers/utils.php";
         }
     }
     if ($_POST["inloggen"] == "inloggen" && $_SESSION["user"]["isLoggedIn"] == 0) {
-        print("Inloggen mislukt, email en wachtwoord komen niet overeen.");
+        print("Inloggen mislukt, email of wachtwoord is onjuist.");
     }
 include __DIR__ . "/components/footer.php"
 ?>

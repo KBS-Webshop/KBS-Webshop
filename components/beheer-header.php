@@ -18,6 +18,10 @@ include "../helpers/mail.php";
 include "../helpers/database/customer.php";
 
 $databaseConnection = connectToDatabase();
+if ($_SESSION["user"]["isLoggedIn"] == 0 || $_SESSION["user"]["IsSalesPerson"] == 0) {
+    header("Location: ../customerLogin.php");
+    die();
+}
 ?>
 
 <!DOCTYPE html>

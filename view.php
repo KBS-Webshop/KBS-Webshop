@@ -150,6 +150,7 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                     $personID =  $_SESSION['user']['PersonID']; // hier moet een check komen op wie ingelogd is✅//
                     $existingPersonIDs = array_column(getPersonIDs($StockItem['StockItemID'], $databaseConnection), 'PersonID');
                     $gekochteItemsPersoon = didUserBuy($personID, $databaseConnection);
+                    print_r( $gekochteItemsPersoon);
                     if (!in_array($personID, $existingPersonIDs)
                         && $_SESSION['user']['isLoggedIn'] == 1
                         && in_array($StockItem['StockItemID'], $gekochteItemsPersoon))

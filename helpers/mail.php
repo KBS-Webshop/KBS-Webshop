@@ -5,7 +5,7 @@ require 'C:\xampp\htdocs\KBS-Webshop\vendor\phpmailer\phpmailer\src\Exception.ph
 require 'C:\xampp\htdocs\KBS-Webshop\vendor\phpmailer\phpmailer\src\SMTP.php';
 require 'C:\xampp\htdocs\KBS-Webshop\vendor\phpmailer\phpmailer\src\PHPMailer.php';
 
-function sendEmail($recipient, $subject, $htmlBody, $textBody) {
+function sendEmail($recipient, $subject, $htmlBody, $textBody,$logoPath) {
     $mail = new PHPMailer(true); // Passing true enables exceptions
 
     try {
@@ -22,6 +22,10 @@ function sendEmail($recipient, $subject, $htmlBody, $textBody) {
         $mail->setFrom($_ENV['SMTP_USER'], 'Nerdygatgats');
         $mail->addAddress($recipient); // Add a recipient
 
+        $mail->AddEmbeddedImage($logoPath, 'logo', 'logo.png', 'base64', 'image/png');
+
+
+
         //Content
         $mail->isHTML(true); // Set email format to HTML
         $mail->Subject = $subject;
@@ -34,4 +38,5 @@ function sendEmail($recipient, $subject, $htmlBody, $textBody) {
         return 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
     }
 }
+
 

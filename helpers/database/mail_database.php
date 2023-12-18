@@ -1,15 +1,15 @@
 <?php
-function getUserInfo($databaseConnection, $customerID) {
+function getUserInfo($databaseConnection, $personID) {
 
     $Query = "
         SELECT CustomerID, CustomerName, PhoneNumber, DeliveryAddressLine1, DeliveryPostalCode
         FROM customers
-        WHERE CustomerID = ?
+        WHERE personID = ?
     ";
 
     $Statement = mysqli_prepare($databaseConnection, $Query);
 
-    mysqli_stmt_bind_param($Statement, "i", $customerID);
+    mysqli_stmt_bind_param($Statement, "i", $personID);
 
     mysqli_stmt_execute($Statement);
     $R = mysqli_stmt_get_result($Statement);
@@ -17,8 +17,6 @@ function getUserInfo($databaseConnection, $customerID) {
 
     return $R;
 }
-
-
 function getorder($databaseConnection, $OrderID)
 {
 
@@ -58,7 +56,7 @@ where personID= ?
 
     return $R;
 }
-function getCustomerID($databaseConnection, $orderID)
+function getCustomerIDbyorderID($databaseConnection, $orderID)
 {
     $Query = "
         SELECT CustomerID
@@ -76,7 +74,43 @@ function getCustomerID($databaseConnection, $orderID)
 
     return $customerData;
 }
-function getEmailTemplate($databaseConnection, $ID)
+function getCustomerIDbypersonID($databaseConnection, $personID)
+{
+    $Query = "
+        SELECT CustomerID
+        FROM customers
+        WHERE personID = ?
+    ";
+
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+
+    mysqli_stmt_bind_param($Statement, "i", $personID);
+
+    mysqli_stmt_execute($Statement);
+    $R = mysqli_stmt_get_result($Statement);
+    $customerData = mysqli_fetch_all($R, MYSQLI_ASSOC);
+
+    return $customerData;
+}
+function getEmailTemplate($databaseConnection, $titel)
+{
+    $query = "
+        SELECT ID, content, titel, description
+        FROM Emailtemplate
+        WHERE titel= ?
+    ";
+
+    $statement = mysqli_prepare($databaseConnection, $query);
+
+    mysqli_stmt_bind_param($statement, "s", $titel);
+
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    $templateData = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    return $templateData;
+}
+function getEmailTemplateID($databaseConnection, $ID)
 {
     $query = "
         SELECT ID, content, titel, description
@@ -86,7 +120,7 @@ function getEmailTemplate($databaseConnection, $ID)
 
     $statement = mysqli_prepare($databaseConnection, $query);
 
-    mysqli_stmt_bind_param($statement, "i", $ID);
+    mysqli_stmt_bind_param($statement, "s", $ID);
 
     mysqli_stmt_execute($statement);
     $result = mysqli_stmt_get_result($statement);
@@ -113,7 +147,7 @@ function getEmailTemplates($databaseConnection)
 function insertContent($databaseConnection, $content)
 {
     $query = "
-        INSERT INTO editor (content, created) VALUES (?, NOW())
+        INSERT INTO email_template_archive (content, created) VALUES (?, NOW())
     ";
 
     $statement = mysqli_prepare($databaseConnection, $query);

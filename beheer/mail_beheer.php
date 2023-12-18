@@ -3,7 +3,7 @@ include "../components/beheer-header.php";
 include "../helpers/utils.php";
 if(isset($_GET["id"])) {
     // Haal het sjabloon op met het ID uit de GET-parameter
-    $templateData = getEmailTemplate($databaseConnection, $_GET['id']);
+    $templateData = getEmailTemplateID($databaseConnection, $_GET['id']);
 
     // Controleer of het sjabloon bestaat
     if ($templateData) {
@@ -69,7 +69,7 @@ if(isset($_GET["id"])) {
 
 </form>
 mogelijke veriabele om de gebruiken in de tekst (moet exact kloppen):<br>
-$(naam), $(customerID), $(telefoonnummer), $(bezorg-adres), $(postcode), $(producten), $(alsobought)
+$(naam), $(customerID), $(telefoonnummer), $(bezorg-adres), $(postcode), $(producten), $(alsobought), $(linkUserInfo), $(logo)
 </body>
 </html>
 <?php

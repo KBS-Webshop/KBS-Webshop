@@ -25,7 +25,6 @@ $_SESSION['next']=$next;
         }
         ?>
 
-        <!-- Laat de tabel zien -->
         <table>
             <tr>
                 <th>Title</th>

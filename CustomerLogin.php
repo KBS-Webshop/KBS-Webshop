@@ -105,7 +105,7 @@ include __DIR__ . "/helpers/utils.php";
         if ($_SESSION["user"]["IsSalesPerson"] == 1) {
             ?>
             <div class="informationBox">
-                <a href="beheer/beheer.php">
+                <a href="/beheer">
                     <h2>beheerpagina</h2>
                 </a>
             </div>

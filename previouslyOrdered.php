@@ -22,7 +22,7 @@ if ($previousOrders != null) {
                 $StockItemImage = getStockItemImage($_SESSION["user"]["currentOrder"]["StockItemID"], $databaseConnection);
                 ?>
                 <div class="previouslyOrderedItem">
-                    <div class="ImgFrame" style="background-image: url('<?php print "Public/StockItemIMG/" . $StockItemImage[0]["ImagePath"]; ?>');"></div>
+                    <div class="ImgFrame1" style="background-image: url('<?php print "Public/StockItemIMG/" . $StockItemImage[0]["ImagePath"]; ?>');"></div>
                     <div class="details">
                         <h2> Naam: <?php print ($_SESSION["user"]["currentStockItem"]["StockItemName"]); ?> </h2>
                         <p> Quantity: <?php print ($_SESSION["user"]["currentOrder"]["Quantity"]); ?> </p>

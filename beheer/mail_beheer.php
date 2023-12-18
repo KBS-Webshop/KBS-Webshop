@@ -65,7 +65,7 @@ if(isset($_GET["id"])) {
         <?php print $template ?>
     </textarea>
 
-    <input type="submit" name="submit" value="pas format aan">
+    <input type="submit" name="submit" value="pas format aan" class="button1 primary ">
 
 </form>
 mogelijke veriabele om de gebruiken in de tekst (moet exact kloppen):<br>

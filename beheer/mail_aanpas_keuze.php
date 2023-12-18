@@ -11,9 +11,7 @@ $_SESSION['next']=$next;
     <h3>Email Templates</h3>
     <a href="/KBS-webshop/beheer/mail_beheer.php?id=<?php echo $next; ?>" class="button primary btn-small">Maak nieuwe aan</a>
     <table class="loyalty-table">
-        <tr>
-            <th>Title</th>
-        </tr>
+
         <?php
         $templates = getEmailTemplates($databaseConnection);
 

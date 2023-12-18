@@ -38,7 +38,18 @@ form .naw-input.form-width-5 .naw-input-inner, form .naw-input.form-width-5 .naw
     border: none;
 }
 
+
 .button.primary {
+    background-color: #0000a4;
+    color: white;
+}
+.button1 {
+    border-radius: 10px;
+    border: none;
+}
+
+
+.button1.primary {
     background-color: #0000a4;
     color: white;
 }

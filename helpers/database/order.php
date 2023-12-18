@@ -220,4 +220,5 @@ function definiteAddCustomer ($databaseConnection, $Cname, $phoneNumber, $Delive
         $validTo,
         $PersonID
     );
+    return TRUE;
 }

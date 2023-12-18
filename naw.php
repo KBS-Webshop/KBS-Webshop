@@ -1,7 +1,14 @@
 <?php
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
-
+$_SESSION["user"]["customer"]["CustomerName"] = "";
+$_SESSION["user"]["customer"]["DeliveryAddressLine1"] = null;
+$_SESSION["user"]["customer"]["PhoneNumber"] = "";
+$_SESSION["user"]["customer"]["EmailAddress"] = "";
+$_SESSION["user"]["customer"]["cityName"] = "";
+$_SESSION["user"]["customer"]["straatnaam"] = "";
+$_SESSION["user"]["customer"]["huisnummer"] = "";
+$_SESSION["user"]["customer"]["PostalPostalCode"] = "";
 if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
     if (isset($_SESSION["userEmail"]) && isset($_SESSION["password"])) {
         if ($_SESSION["userEmail"] !== null && $_SESSION["password"] !== null) {
@@ -53,9 +60,11 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
     </div>
     <?php
     if (isset($_SESSION["user"]["customer"]["DeliveryAddressLine1"])) {
-        $adress = explode(" ", $_SESSION["user"]["customer"]["DeliveryAddressLine1"]);
-        $_SESSION["user"]["customer"]["straatnaam"] = $adress[0];
-        $_SESSION["user"]["customer"]["huisnummer"] = $adress[1];
+        if ($_SESSION["user"]["customer"]["DeliveryAddressLine1"] != null) {
+            $adress = explode(" ", $_SESSION["user"]["customer"]["DeliveryAddressLine1"]);
+            $_SESSION["user"]["customer"]["straatnaam"] = $adress[0];
+            $_SESSION["user"]["customer"]["huisnummer"] = $adress[1];
+        }
     }
     ?>
 

@@ -8,9 +8,9 @@ $dotenv->load();
 include "../helpers/database/database.php";
 include "../helpers/database/temprature.php";
 
-$temp = $_POST['temperature'];;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $temp = $_POST['waarde'];
     $databaseConnection = connectToDatabase();
     moveTemp($databaseConnection);
     addTemp($temp, $databaseConnection);

@@ -61,3 +61,8 @@ function actueleTemperatuur($databaseConnection) {
 
 
 
+
+
+
+
+

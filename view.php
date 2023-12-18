@@ -185,6 +185,22 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                     }
                 }
 
+                $sortOrder = 'rating DESC'; //pagina laadt default met orderby rating desc
+                if (getAllReviews($StockItem['StockItemID'], $sortOrder, $databaseConnection)){
+                    ?>
+                    <div class="reviews">
+                        <div class="order-by">
+                            <form method="post">
+                                <label for="sortOrder">Sort by:</label>
+                                <select name="sortOrder" id="sortOrder">
+                                    <option value="rating ASC">Rating (Ascending)</option>
+                                    <option value="rating DESC">Rating (Descending)</option>
+                                    <option value="publicationDate ASC">Review Date (Ascending)</option>
+                                    <option value="publicationDate DESC">Review Date (Descending)</option>
+                                </select>
+                                <input type="submit" value="Sort Reviews">
+                            </form>
+                        </div>
 
                 ?>
 
@@ -228,10 +244,10 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
 
             <?php
             if (isset($_POST['ReviewToevoegen'])) {
-                $review = mysqli_real_escape_string($databaseConnection, $_POST['review']);
-                addReview($review, $StockItem["StockItemID"], $personID, $_POST['rating'],$databaseConnection);
+                $review = $_POST['review'];
+                addReview($review, $StockItem["StockItemID"], $personID, $_POST['rating'], $databaseConnection);
                 ?>
-            <meta http-equiv="refresh" content="0">
+            <meta http-equiv="refresh" content="0"> <!--header refresh werkte niet dus deze online gevonden -->
             <?php
             }
             ?>
@@ -240,7 +256,7 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
             if (isset($_POST['ReviewAanpassen'])) {
                 $editedRating = $_POST['aangepasteRating'];
                 $editedReview = $_POST['aangepasteReview'];
-                updateReview($editedReview, $editedRating, $personID, $StockItem['StockItemID'],$databaseConnection);
+                updateReview($editedReview, $editedRating, $personID, $StockItem['StockItemID'], $databaseConnection);
                 ?>
                 <meta http-equiv="refresh" content="0">
                 <?php

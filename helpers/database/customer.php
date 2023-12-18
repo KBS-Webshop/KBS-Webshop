@@ -42,10 +42,11 @@ function hashPassword($password) {
 }
 
 function createAccount ($databaseConnection, $name, $hashedPassword, $phoneNumber, $email){
+    $currentDate = date("Y-m-d");
     $query = "INSERT INTO people (FullName, PreferredName, SearchName, IsPermittedToLogon, IsExternalLogonProvider, HashedPassword, IsSystemUser, IsEmployee, IsSalesPerson, PhoneNumber, EmailAddress, LastEditedBy, ValidFrom, ValidTo, loyalty_points)
-VALUES (?,?,?,1,0,?,1,0,0,?,?,3262,CURRENT_TIMESTAMP,'9999-12-31 23:59:59.9999999', 0)";
+VALUES (?,?,?,1,0,?,1,0,0,?,?,3262,?,'9999-12-31 23:59:59.9999999', 0)";
     $statement = mysqli_prepare($databaseConnection, $query);
-    mysqli_stmt_bind_param($statement, "ssssss", $name, $name, $name, $hashedPassword, $phoneNumber, $email);
+    mysqli_stmt_bind_param($statement, "sssssss", $name, $name, $name, $hashedPassword, $phoneNumber, $email, $currentDate);
     mysqli_stmt_execute($statement);
     return TRUE;
 }

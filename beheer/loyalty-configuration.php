@@ -5,6 +5,7 @@ include "../helpers/utils.php";
 
 if (isset($_POST["points"]) && isset($_POST["price"])) {
     updateLoyaltyConfiguration($_POST["points"], $_POST["price"], $databaseConnection);
+    header("Location: loyalty.php");
 }
 
 $configuration = getLoyaltyConfiguration($databaseConnection);

@@ -90,10 +90,15 @@ if (isset($_POST["straatnaam"]) && isset($_POST["huisnummer"])) {
                 print("Account met deze email bestaat al.");
             } else {
                 $PersonID = getNewAccountID($databaseConnection);
-                $succes = createAccount($databaseConnection, $_POST["naam"], $_SESSION["hashedPassword"], $_POST["telefoonnummer"], $_POST["email"]);
-                definiteAddCustomer($databaseConnection, $_POST["naam"], $_POST["telefoonnummer"], $_POST["address"], $_POST["postcode"], $_POST["stad"], $_POST["provincie"], $PersonID);
+                $accountCreated = createAccount($databaseConnection, $_POST["naam"], $_SESSION["hashedPassword"], $_POST["telefoonnummer"], $_POST["email"]);
+                $customerAdded = definiteAddCustomer($databaseConnection, $_POST["naam"], $_POST["telefoonnummer"], $_POST["address"], $_POST["postcode"], $_POST["stad"], $_POST["provincie"], $PersonID);
+                $succes = FALSE;
+                if ($accountCreated && $customerAdded) {
+                    $succes = TRUE;
+                }
                 if ($succes) {
-                    print("Account aangemaakt.");
+                    header("Location: CustomerLogin.php");
+                    die();
                 } else {
                     print("Account aanmaken mislukt.");
                 }

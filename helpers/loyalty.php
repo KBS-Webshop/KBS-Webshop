@@ -11,7 +11,12 @@ function calculateAndAddPoints($price, $personId, $databaseConnection) {
 }
 
 function calculateAndRemovePoints($price, $personId, $databaseConnection) {
-    $points = getLoyaltyDeal(getDealInCart(), $databaseConnection)["points"] || 0;
+    $deal = getLoyaltyDeal(getDealInCart(), $databaseConnection);
+    if ($deal == null) {
+        $points = 0;
+    } else {
+        $points = $deal["points"];
+    }
     $currentPoints = getPoints($personId, $databaseConnection);
     setPoints($personId, ($currentPoints - $points), $databaseConnection);
 }

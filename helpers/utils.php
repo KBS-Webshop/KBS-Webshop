@@ -121,7 +121,13 @@ function PlaceOrder(
             $stockItemID = $item["id"];
             $StockItem = getStockItem($stockItemID, $databaseConnection);
             changevoorraad($databaseConnection, $amountOfProductsInOrder, $stockItemID);
-            addOrderline($databaseConnection, $OrderID, $stockItemID, $StockItem, $amountOfProductsInOrder, $salesContactPersonID, $currentDate, getLoyaltyDeal(getDealInCart(), $databaseConnection)["discount"]);
+            $deal = getLoyaltyDeal(getDealInCart(), $databaseConnection);
+            if ($deal != null) {
+                $discount = $deal["discount"];
+            } else {
+                $discount = 0;
+            }
+            addOrderline($databaseConnection, $OrderID, $stockItemID, $StockItem, $amountOfProductsInOrder, $salesContactPersonID, $currentDate, $discount);
         }
         return $OrderID;
     }

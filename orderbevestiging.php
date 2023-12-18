@@ -88,9 +88,11 @@ if (isset($StockItemImage[0]["ImagePath"])) { ?>
 }
 ?>
 <br>
+<?php if(getDealInCart() != null) { ?>
 <h3 class="StockItemPriceTextbevestiging">Korting: <?php print(formatPrice(calculateDiscount($totalprice, getLoyaltyDeal(getDealInCart(), $databaseConnection)["discount"]))) ?></h3>
+<?php } ?>
 <h3 class="StockItemPriceTextbevestiging">Totaalprijs: <?php print formatPrice(calculatePriceWithDeals($totalprice, $databaseConnection))?></h3><br>
-    <h3 class="verzendadres">uw Gegevens: </h3>
+<h3 class="verzendadres">uw Gegevens: </h3>
 <h4 class="verzendgegevens">
     naam: <?php print $naam?><br>
     adres: <?php print $adress." in ". $stad?><br>

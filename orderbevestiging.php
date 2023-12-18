@@ -155,8 +155,8 @@ if ($_SESSION["user"]["isLoggedIn"]) {
     $textBody = 'orderbevestiging';
     $textBody1 = 'reclame';
 
-    sendEmail($recipient, $subject, $editorContent, $textBody, __DIR__ . '\..\Public\ProductIMGHighRes\NerdyGadgetsLogo.png');
-    sendEmail($recipient, $subject1, $editorContent3, $textBody1, __DIR__ . '\..\Public\ProductIMGHighRes\NerdyGadgetsLogo.png');
+    sendEmail($recipient, $subject, $editorContent, $textBody, __DIR__ . '\Public\ProductIMGHighRes\NerdyGadgetsLogo.png');
+    sendEmail($recipient, $subject1, $editorContent3, $textBody1, __DIR__ . '\Public\ProductIMGHighRes\NerdyGadgetsLogo.png');
 }
 include __DIR__ . "/components/footer.php"
 ?>

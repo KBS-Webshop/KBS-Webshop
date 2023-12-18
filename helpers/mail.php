@@ -1,9 +1,7 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
-require 'C:\xampp\htdocs\KBS-Webshop\vendor\phpmailer\phpmailer\src\Exception.php';
-require 'C:\xampp\htdocs\KBS-Webshop\vendor\phpmailer\phpmailer\src\SMTP.php';
-require 'C:\xampp\htdocs\KBS-Webshop\vendor\phpmailer\phpmailer\src\PHPMailer.php';
 
 function sendEmail($recipient, $subject, $htmlBody, $textBody,$logoPath) {
     $mail = new PHPMailer(true); // Passing true enables exceptions

@@ -21,6 +21,10 @@ foreach ($basket_contents as $item) {
         $_SESSION["QuantityOnHand"]= (intval(preg_replace('/[^0-9]+/', '', $StockItem["QuantityOnHand"])));
     }
 }
+$_SESSION["order"]["placeOrder"] = TRUE;
+if (isset($_POST["gelukt"])){
+    print ("Bestelling word geplaatst.");
+}
 ?>
 
 <html>
@@ -32,9 +36,5 @@ foreach ($basket_contents as $item) {
 </form>
 </html>
 <?php
-$_SESSION["order"]["placeOrder"] = TRUE;
-if (isset($_POST["gelukt"])){
-    print ("Bestelling word geplaatst.");
-}
 include __DIR__ . "/components/footer.php"
 ?>

@@ -5,7 +5,13 @@ if (location.pathname.includes('/naw.php')) {
         if (!validateInput()) e.preventDefault();
     });
 }
-
+// als je op createAccount.php zit
+if (location.pathname.includes('/createAccount.php')) {
+    document.addEventListener('submit', (e) => {
+        // als de input niet klopt, stop de submit
+        if (!validateInput()) e.preventDefault();
+    });
+}
 
 const emailPattern = /^[a-zA-Z0-9!#$%&'*+-/=?^_`{|}~.]+@[a-zA-Z0-9!#$%&'*+-/=?^_`{|}~.]+\.[a-zA-Z0-9!#$%&'*+-/=?^_`{|}~.]+$/;
 const telefoonPattern = /^(?:(?:\+|00(\s|\s?\-\s?)?)31(?:\s|\s?\-\s?)?(?:\(0\)[\-\s]?)?|0)[1-9](?:(?:\s|\s?\-\s?)?[0-9])(?:(?:\s|\s?-\s?)?[0-9])(?:(?:\s|\s?-\s?)?[0-9])\s?[0-9]\s?[0-9]\s?[0-9]\s?[0-9]\s?[0-9]$/;

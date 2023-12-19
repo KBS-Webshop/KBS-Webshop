@@ -5,12 +5,22 @@ include __DIR__ . "/helpers/utils.php";
     <form method="POST" name="bevestig" class="loginBox" action="createAccount.php">
         <h2>Account aanmaken</h2>
         <div class="login-input-create">
-            <label for="email">email</label>
-            <input type="text" class="loginEmail" name="email" required>
+            <label for="email">
+                email <span class="required"></span>
+            </label>
+            <input type="text" class="loginEmail" name="email" id="email" required>
         </div>
         <div class="login-input-create">
-            <label for="password">wachtwoord</label>
+            <label for="password">
+                wachtwoord <span class="required"></span>
+            </label>
             <input type="password" class="loginPassword" name="password" required>
+        </div>
+        <div class="login-input-create">
+            <label for="password">
+                wachtwoord herhalen <span class="required"></span>
+            </label>
+            <input type="password" class="loginPasswordConfirm" name="passwordConfirm" required>
         </div>
             <div class="login-input-create">
                 <label for="name">
@@ -78,16 +88,20 @@ include __DIR__ . "/helpers/utils.php";
             <input type="submit" class="loginSubmit" name="inloggen" value="Maak account aan.">
         </div>
         <?php
-if (isset($_POST["password"])) {
-        $hashedPassword = hashPassword($_POST["password"]);
-        $_SESSION["hashedPassword"] = $hashedPassword;
-}
 if (isset($_POST["straatnaam"]) && isset($_POST["huisnummer"])) {
     $_POST["address"] = $_POST["straatnaam"] . " " . $_POST["huisnummer"];
 }
-        if (isset($_POST["email"]) && isset($_SESSION["hashedPassword"]) && isset($_POST["naam"]) && isset($_POST["telefoonnummer"]) && isset($_POST["address"]) && isset($_POST["postcode"]) && isset($_POST["stad"]) && isset($_POST["provincie"])) {
-            if (checkIfAccountExists($databaseConnection, $_POST["email"])) {
-                print("Account met deze email bestaat al.");
+if (isset($_POST["password"]) && isset($_POST["passwordConfirm"])) {
+    if ($_POST["password"] != $_POST["passwordConfirm"]) {
+        print("Wachtwoorden komen niet overeen.");
+    } elseif (isset($_POST["password"])) {
+    $hashedPassword = hashPassword($_POST["password"]);
+    $_SESSION["hashedPassword"] = $hashedPassword;
+}
+}
+if (isset($_POST["email"]) && isset($_SESSION["hashedPassword"]) && isset($_POST["naam"]) && isset($_POST["telefoonnummer"]) && isset($_POST["address"]) && isset($_POST["postcode"]) && isset($_POST["stad"]) && isset($_POST["provincie"])) {
+    if (checkIfAccountExists($databaseConnection, $_POST["email"])) {
+        print("Account met deze email bestaat al.");
             } else {
                 $PersonID = getNewAccountID($databaseConnection);
                 $accountCreated = createAccount($databaseConnection, $_POST["naam"], $_SESSION["hashedPassword"], $_POST["telefoonnummer"], $_POST["email"]);

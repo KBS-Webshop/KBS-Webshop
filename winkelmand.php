@@ -132,21 +132,32 @@ if (isset($_GET["message"])){
                 <th>Prijs</th>
 
                 <?php
+                $totalprice_discount = 0;
+                $totalprice_normal = 0;
+
                 foreach ($basket_contents as $item) {
                     $StockItem = getStockItem($item["id"], $databaseConnection);
                     $currentDiscount = getDiscountByStockItemID($item["id"], $databaseConnection);
                     echo ("<tr> <td>" . $StockItem['StockItemName'] . "</td>");
                     echo ("<td>" . $item['amount'] . "</td>");
+
                     if ($currentDiscount) {
                         echo "<td>" . calculateDiscountedPriceBTW($StockItem['SellPrice'], $currentDiscount['DiscountPercentage'], $StockItem['TaxRate'], $item['amount']) . "</td></tr>";
+                        $totalprice_discount += calculateDiscountedPriceBTW($StockItem['SellPrice'], $currentDiscount['DiscountPercentage'], $StockItem['TaxRate'], $item['amount'], true);
                     } else {
                         echo "<td>" . calculatePriceBTW($StockItem['SellPrice'], $StockItem['TaxRate'], $item['amount']) . "</td></tr>";
-
+                        $totalprice_discount += calculatePriceBTW($StockItem['SellPrice'], $StockItem['TaxRate'], $item['amount'], true);
                     }
+                    $totalprice_normal += calculatePriceBTW($StockItem['SellPrice'], $StockItem['TaxRate'], $item['amount'], true);
                 }
                 echo ("<tr class='receivedTotalPrice'> <td></td> <th>Totaalprijs:</th>");
                 echo("<td>$totalprice</td></tr>");
+                if ($totalprice_discount < $totalprice_normal) {
+                    $priceDifference = $totalprice_normal - $totalprice_discount;
+                    echo '<tr>Je bespaart ' . str_replace('.', ',', sprintf("€%.2f", $priceDifference)) . ' door de korting!</tr>';
+                }
                 echo '</table>';
+
 
                 ?>
 

@@ -43,13 +43,21 @@ form .naw-input.form-width-5 .naw-input-inner, form .naw-input.form-width-5 .naw
     color: white;
 }
 
+.button.secondary {
+
+    background-color: #5d5d5d;
+    color: white;
+}
+
+.button.danger {
+    background-color: #a40021;
+    color: white;
+}
+
 .button.btn-small {
     padding: .5rem;
 }
 
-.button.secondary {
-
-}
 
 .naw-form {
     max-width: 60%;

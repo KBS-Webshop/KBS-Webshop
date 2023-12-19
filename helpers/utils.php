@@ -8,10 +8,15 @@ function getVoorraadTekst($actueleVoorraad)
         return "Voorraad: $actueleVoorraad";
     }
 }
-function berekenVerkoopPrijs($adviesPrijs, $btw)
-{
+
+function berekenVerkoopPrijs($adviesPrijs, $btw) {
     return $btw * $adviesPrijs / 100 + $adviesPrijs;
 }
+
+function formatPrice($price) {
+    return str_replace('.', ',', sprintf("€%.2f", $price));
+}
+
 function PlaceOrder(
     $databaseConnection,
     $Cname,
@@ -23,9 +28,9 @@ function PlaceOrder(
     $amountOfProductsInOrder,
     $quantityOnHand,
     $DeliveryProvince,
-    $cityName
-)
-{
+    $cityName,
+    $price
+) {
     $orderstatus = "Wordt verwerkt";
 
     if ($betaald == true) {
@@ -96,6 +101,10 @@ function PlaceOrder(
         addOrder($databaseConnection, $customerId, $DeliveryInstructions, $currentDate, $estimatedDeliveryDate, $salesContactPersonID, $isInStock);
         $OrderID = getOrderID($databaseConnection);
 
+        calculateAndRemovePoints($price, 1, $databaseConnection);
+        calculateAndAddPoints((float) $price, 1, $databaseConnection);
+        removeDealFromCart();
+
         $basket_contents = json_decode($_COOKIE["basket"], true);
 
         foreach ($basket_contents as $item) {
@@ -112,7 +121,13 @@ function PlaceOrder(
             $stockItemID = $item["id"];
             $StockItem = getStockItem($stockItemID, $databaseConnection);
             changevoorraad($databaseConnection, $amountOfProductsInOrder, $stockItemID);
-            addOrderline($databaseConnection, $OrderID, $stockItemID, $StockItem, $amountOfProductsInOrder, $salesContactPersonID, $currentDate);
+            $deal = getLoyaltyDeal(getDealInCart(), $databaseConnection);
+            if ($deal != null) {
+                $discount = $deal["discount"];
+            } else {
+                $discount = 0;
+            }
+            addOrderline($databaseConnection, $OrderID, $stockItemID, $StockItem, $amountOfProductsInOrder, $salesContactPersonID, $currentDate, $discount);
         }
         return $OrderID;
     }

@@ -9,28 +9,45 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
 
     $basket_contents = json_decode($_COOKIE["basket"], true);
     ?>
-    <table>
-        <th>Product</th>
-        <th>Aantal</th>
-        <th>Prijs</th>
+            <table>
+                <th>Product</th>
+                <th>Aantal</th>
+                <th>Prijs</th>
 
-        <?php
-        $totalprice=0;
-        foreach ($basket_contents as $item) {
-            $StockItem = getStockItem($item["id"], $databaseConnection);
-            $totalprice += round($item['amount'] * $StockItem['SellPrice'], 2);
-            echo ("<tr> <td>" . $StockItem['StockItemName'] . "</td>");
-            echo ("<td>" . $item['amount'] . "</td>");
-            echo "<td>".str_replace(".",",",sprintf("€%.2f", $StockItem['SellPrice'] * $item["amount"]));
+                <?php
+                $totalprice=0;
+                foreach ($basket_contents as $item) {
+                    $StockItem = getStockItem($item["id"], $databaseConnection);
+                    $totalprice += round($item['amount'] * $StockItem['SellPrice'], 2);
+                    echo ("<tr> <td>" . $StockItem['StockItemName'] . "</td>");
+                    echo ("<td>" . $item['amount'] . "</td>");
+                    echo "<td>".sprintf("€%.2f", $StockItem['SellPrice'] * $item["amount"]);
+                }
+                ?>
 
-        }
-        $totalprice = sprintf("€%.2f", $totalprice);
-        echo ("<tr class='receivedTotalPrice'> <td></td> <th>totaalprijs</th>");
-        $totalprice1=str_replace(".",",",$totalprice);
-        echo("<td>$totalprice1</td></tr>");
-        echo '</table>';
-
-        ?>
+                <?php if (getDealInCart() != null) { ?>
+                <tr class='receivedTotalPrice'>
+                    <td></td>
+                    <th>Prijs</th>
+                    <td><?php print formatPrice($totalprice) ?></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <th>Korting</th>
+                    <td><?php print "-" . formatPrice($totalprice / 100 * getLoyaltyDeal(getDealInCart(), $databaseConnection)["discount"]) ?></td>
+                </tr>
+                <?php } ?>
+                <tr class='receivedTotalPrice'>
+                    <td></td>
+                    <th>Punten</th>
+                    <td><?php print calculateLoyaltyPoints(calculatePriceWithDeals($totalprice, $databaseConnection), $databaseConnection) ?></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <th>totaalprijs</th>
+                    <td><?php print formatPrice(calculatePriceWithDeals($totalprice, $databaseConnection)); ?></td>
+                </tr>
+            </table>
 
         <?php } ?>
 </div>
@@ -125,6 +142,7 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
     </div>
 
     <div class="naw-submit-wrapper">
+        <input type="hidden" name="price" id="price" value="<?php print str_replace("€", "", $totalprice) ?>">
         <input type="submit" name="bevestig" value="Afrekenen" class="button primary">
     </div>
 </form>

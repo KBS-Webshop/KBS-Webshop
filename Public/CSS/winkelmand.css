@@ -80,6 +80,7 @@ button.add-to-cart-button {
 }
 
 .bonnetje-wrapper{
+    overflow: scroll;
     background-color: #EDEDED;
     height: 600px;
     width: 25%;

@@ -68,3 +68,6 @@ display: flex;
         width: 65%;
     }
 }
+.userButton {
+     max-width: none !important;
+}

@@ -3,8 +3,6 @@
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
 
-clearCookie();
-
 $naam=$_SESSION["naam"];
 $telefoonnummer=$_SESSION["telefoonnummer"];
 $adress=$_SESSION["adress"];
@@ -43,6 +41,7 @@ if (isset($_SESSION["naam"]) && isset($_SESSION["telefoonnummer"]) && isset($_SE
     );
 }
 ?>
+
 <h1> orderbevestiging</h1><br>
 <h4><?php print $naam?>, bedankt voor uw bestelling bij NerdyGadgets! Uw bestel nummer is: <?php print $orderID?></h4><br>
 <h1>Bestel overzicht</h1>
@@ -51,13 +50,18 @@ if (isset($_SESSION["naam"]) && isset($_SESSION["telefoonnummer"]) && isset($_SE
     <div id="ResultsArea" class="Winkelmand">
 <?php
 $totalprice = 0;
-if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
-    $basket_contents = json_decode($_COOKIE["basket"], true);
+if ((isset($_COOKIE["basket"]) AND !cookieEmpty()) OR TRUE) {
+    $basket_contents = json_decode($_SESSION["basket"], true);
     foreach ($basket_contents as $item) {
         $StockItem = getStockItem($item["id"], $databaseConnection);
+        $currentDiscount = getDiscountByStockItemID($item["id"], $databaseConnection);
         $StockItemImage = getStockItemImage($item['id'], $databaseConnection);
 
-        $totalprice += round($item['amount'] * $StockItem['SellPrice'], 2);
+        if ($currentDiscount) {
+            $totalprice += calculateDiscountedPriceBTW($StockItem["SellPrice"], $currentDiscount["DiscountPercentage"], $StockItem['TaxRate'], $item["amount"], true);
+        } else {
+            $totalprice += calculatePriceBTW($StockItem["SellPrice"], $StockItem['TaxRate'], $item["amount"], true);
+        }
 
         ?>
     <div id="ProductFrame1">
@@ -72,7 +76,18 @@ if (isset($StockItemImage[0]["ImagePath"])) { ?>
 ?>
     <div id="StockItemFrameRight" style="display: flex;flex-direction: column">
         <div class="CenterPriceLeft">
-            <h1 class="StockItemPriceText"> <?php $price = sprintf("€ %.2f", $StockItem['SellPrice'] * $item["amount"]); $pricecoma= str_replace(".",",",$price);  print $pricecoma;?></h1>
+            <h1 class="StockItemPriceText">
+                <?php if ($currentDiscount) { ?><h1><b>-<?php echo intval($currentDiscount['DiscountPercentage'], 10) ?>%</b></h1>
+                    <h2 class="StockItemPriceText">
+                        <s class="strikedtext">
+                            <?php echo calculatePriceBTW($StockItem['SellPrice'], $StockItem['TaxRate']); ?>
+                        </s>
+                        <?php echo calculateDiscountedPriceBTW($StockItem['SellPrice'], $currentDiscount['DiscountPercentage'], $StockItem['TaxRate']); ?>
+                    </h2>
+                <?php } else { ?>
+                    <h2 class="StockItemPriceText"><?php echo calculatePriceBTW($StockItem['SellPrice'], $StockItem['TaxRate']); ?></h2>
+                <?php } ?>
+            </h1>
             <h6> Inclusief BTW </h6>
         </div>
     </div>
@@ -98,8 +113,8 @@ if (isset($StockItemImage[0]["ImagePath"])) { ?>
     adres: <?php print $adress." in ". $stad?><br>
     postcode: <?php print $postcode?><br>
     telefoonnummer: <?php print $telefoonnummer?><br>
-
 </h4>
+
 <?php
 include __DIR__ . "/components/footer.php"
 ?>

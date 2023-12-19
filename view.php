@@ -1,10 +1,12 @@
 <!-- dit bestand bevat alle code voor de pagina die één product laat zien -->
 <?php
 include __DIR__ . "/components/header.php";
+include __DIR__ . "/helpers/utils.php";
 
 $StockItem = getStockItem($_GET['id'], $databaseConnection);
 $StockItemImage = getStockItemImage($_GET['id'], $databaseConnection);
 $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
+$currentDiscount = getDiscountByStockItemID($_GET['id'], $databaseConnection);
 ?>
 <div id="CenteredContent">
     <?php
@@ -77,11 +79,26 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
             <h2 class="StockItemNameViewSize StockItemName">
                 <?php print $StockItem['StockItemName']; ?>
             </h2>
+            <?php
+            $amtSoldLast72Hrs = getAmountOrderedLast72Hours($StockItem['StockItemID'], $databaseConnection);
+            if ($amtSoldLast72Hrs >= 5) { ?>
+                <p><b>ERG GEWILD: dit product is afgelopen 72 uur <?php echo $amtSoldLast72Hrs ?> keer verkocht.</b></p>
+            <?php } ?>
             <div class="QuantityText"><?php print $StockItem['QuantityOnHand']; ?></div>
             <div id="StockItemHeaderLeft">
                 <div class="CenterPriceLeft">
                     <div class="CenterPriceLeftChild">
-                        <p class="StockItemPriceText"><b><?php print sprintf("€ %.2f", $StockItem['SellPrice']); ?></b></p>
+                        <?php if ($currentDiscount) { ?><h1><b><?php echo intval(-$currentDiscount['DiscountPercentage'], 10) ?>%</b></h1>
+                            <h4 id="clock" style="font-weight: bold;"></h4>
+                            <h2 class="StockItemPriceText">
+                                    <s class="strikedtext">
+                                        <?php echo calculatePriceBTW($StockItem['SellPrice'], $StockItem['TaxRate']) ?>
+                                    </s>
+                                    <?php echo calculateDiscountedPriceBTW($StockItem['SellPrice'], $currentDiscount['DiscountPercentage'], $StockItem['TaxRate']); ?>
+                            </h2>
+                        <?php } else { ?>
+                            <h2 class="StockItemPriceText"><?php echo calculatePriceBTW($StockItem['SellPrice'], $StockItem['TaxRate']); ?></h2>
+                        <?php } ?>
                         <h6> Inclusief BTW </h6>
                         <form method="post">
                             <input type="hidden" name="action" value="add">
@@ -150,15 +167,34 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                 <div class="ProductsAlsoBoughtGrid">
                     <?php
                         foreach ($AlsoBought as $product) {
+                            $alsoBoughtDiscount = getDiscountByStockItemID($product['StockItemID'], $databaseConnection);
+                            $amtSoldLast72Hrs = getAmountOrderedLast72Hours($product['StockItemID'], $databaseConnection);
                             ?>
                             <a class="ListItem" href='view.php?id=<?php echo $product['StockItemID']; ?>'>
                                 <?php
                                     if (isset($product["StockItemImage"])) { ?>
                                         <div class="ImgFrame"
-                                            style="background-image: url('<?php print "Public/StockItemIMG/" . $product["StockItemImage"]; ?>'); background-size: contain; background-repeat: no-repeat; background-position: center;"></div>
+                                            style="background-image: url('<?php print "Public/StockItemIMG/" . $product["StockItemImage"]; ?>'); background-size: contain; background-repeat: no-repeat; background-position: center;">
+                                            <?php if ($alsoBoughtDiscount) { ?>
+                                            <div class="small-timer-container">
+                                                <div class="discount-also-bought-text">-<?php echo intval($alsoBoughtDiscount['DiscountPercentage'], 10) ?>%&nbsp;</div>
+                                                <?php if ($amtSoldLast72Hrs >= 5) { ?><div class="flame-small"></div><?php } ?>
+                                                <div class="small-timer" id="clock<?php echo $product['StockItemID'] ?>"></div>
+                                            </div>
+                                            <?php } ?>
+                                        </div>
                                 <?php } ?>
                                 <h5><?php echo $product["StockItemName"] ?></h5>
-                                <?php echo sprintf("€ %.2f", $product['SellPrice']) ?></p>
+
+                                <?php if ($alsoBoughtDiscount) { ?>
+                                    <p>
+                                        <s><?php echo calculatePriceBTW($product['SellPrice'], $product['TaxRate']); ?></s>
+                                        <?php echo calculateDiscountedPriceBTW($product['SellPrice'], $alsoBoughtDiscount['DiscountPercentage'], $product['TaxRate']); ?>
+                                    </p>
+                                <?php } else { ?>
+                                    <p><?php echo calculatePriceBTW($product['SellPrice'], $product['TaxRate']); ?></p>
+                                <?php } ?>
+
                                 <form method="post">
                                     <input type="hidden" name="action" value="add">
                                     <input type="hidden" name="StockItemID" value="<?php echo $product['StockItemID']; ?>">
@@ -167,6 +203,13 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                                     </button>
                                 </form>
                             </a>
+                            <script>
+                                <?php if ($alsoBoughtDiscount) { ?>
+
+                                clockCountdown('clock<?php echo $product['StockItemID'] ?>', '<?php echo $alsoBoughtDiscount['EndDate'] ?>', false);
+
+                                <?php } ?>
+                            </script>
                             <?php
                         }
                     ?>
@@ -176,7 +219,11 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
                 }
             ?>
         </div>
-        <?php
+        <?php if ($currentDiscount AND strtotime($currentDiscount['StartDate']) < time()) { ?>
+        <script>
+            clockCountdown('clock', '<?php echo $currentDiscount['EndDate'] ?>');
+        </script>
+        <?php }
     } else {
         ?><h2 id="ProductNotFound">Het opgevraagde product is niet gevonden.</h2><?php
     } ?>

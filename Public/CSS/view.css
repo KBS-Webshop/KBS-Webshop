@@ -46,7 +46,6 @@
     max-width: 75%;
 }
 
-
 .ProductInformationWrapper {
     display: flex;
     flex-direction: row;
@@ -55,4 +54,34 @@
 .ProductInformation {
     display: flex;
     flex-direction: column;
+}
+
+.strikedtext {
+    font-size: 1rem;
+}
+
+.strikedtext-2 {
+    font-size: 1.5rem;
+}
+
+.small-timer-container {
+    width: auto;
+    background: #000;
+    color: #fff;
+    padding: 5px;
+    font-size: 1.2rem;
+    border-radius: 0 0 32px 32px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    max-height: 44px;
+}
+
+.discount-also-bought-text {
+    margin-left: 20px;
+}
+
+.small-timer {
+    margin-right: 20px;
+    text-align: right;
 }

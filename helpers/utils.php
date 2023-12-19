@@ -104,8 +104,10 @@ function PlaceOrder(
         calculateAndRemovePoints($price, 1, $databaseConnection);
         calculateAndAddPoints((float) $price, 1, $databaseConnection);
         removeDealFromCart();
-
-        $basket_contents = json_decode($_COOKIE["basket"], true);
+        
+        // basket vanuit cookie zorgt voor headers already sent
+        // $basket_contents = json_decode($_COOKIE["basket"], true);
+        $basket_contents = json_decode($_SESSION["basket"], true);
 
         foreach ($basket_contents as $item) {
             if (isset($item["amount"])) {
@@ -131,5 +133,22 @@ function PlaceOrder(
         }
         return $OrderID;
     }
+}
+
+function calculateDiscountedPriceBTW($price, $discountPercentage, $btw, $amount=1, $numeric=false)
+{
+    $discountedPrice = ($price * (1 - $discountPercentage / 100)) * $amount;
+    $discountedPriceBTW = $discountedPrice * (1 + $btw / 100);
+    if ($numeric) return $discountedPriceBTW;
+    $formatted =  sprintf("€%.2f", $discountedPriceBTW);
+    return str_replace('.', ',', $formatted);
+}
+
+function calculatePriceBTW($price, $btw, $amount=1, $numeric=false)
+{
+    $priceBTW = ($price * (1 + $btw / 100)) * $amount;
+    if ($numeric) return $priceBTW;
+    $formatted = sprintf("€%.2f", $priceBTW);
+    return str_replace('.', ',', $formatted);
 }
 ?>

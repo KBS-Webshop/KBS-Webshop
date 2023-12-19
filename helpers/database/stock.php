@@ -37,9 +37,13 @@ function getStockItem($id, $databaseConnection)
 {
     $Result = null;
 
+//    SELECT SI.StockItemID,
+//            (RecommendedRetailPrice*(1+(TaxRate/100))) AS SellPrice,
+
     $Query = " 
            SELECT SI.StockItemID, 
-            (RecommendedRetailPrice*(1+(TaxRate/100))) AS SellPrice, 
+            RecommendedRetailPrice SellPrice, 
+            SI.TaxRate,
             StockItemName,
             CONCAT('Voorraad: ',QuantityOnHand)AS QuantityOnHand,
             SearchDetails, 
@@ -81,9 +85,9 @@ function getStockItemImage($id, $databaseConnection)
 }
 
 function getAlsoBought($id, $databaseConnection) {
-
+    # SELECT o.StockItemID, s.StockItemName, si.ImagePath StockItemImage, (RecommendedRetailPrice*(1+(s.TaxRate/100))) AS SellPrice, COUNT(*) kerenSamengekocht
     $Query = "
-        SELECT o.StockItemID, s.StockItemName, si.ImagePath StockItemImage, (RecommendedRetailPrice*(1+(s.TaxRate/100))) AS SellPrice, COUNT(*) kerenSamengekocht
+        SELECT o.StockItemID, s.StockItemName, si.ImagePath StockItemImage, RecommendedRetailPrice SellPrice, s.TaxRate, COUNT(*) kerenSamengekocht
         FROM orderlines o
         JOIN stockitems s ON o.StockItemID = s.StockItemID
         JOIN stockitemimages si ON si.StockItemID = o.StockItemID
@@ -107,4 +111,34 @@ function getAlsoBought($id, $databaseConnection) {
     $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
 
     return $R;
+}
+
+function removeExpiredDiscounts($databaseConnection)
+{
+    $query = "DELETE FROM specialdeals WHERE EndDate < NOW()";
+    $statement = mysqli_prepare($databaseConnection, $query);
+    mysqli_stmt_execute($statement);
+}
+
+
+function getDiscountByStockItemID($id, $databaseConnection)
+{
+    removeExpiredDiscounts($databaseConnection);
+    $query = "SELECT * FROM specialdeals WHERE StockItemID = ?";
+    $statement = mysqli_prepare($databaseConnection, $query);
+    mysqli_stmt_bind_param($statement, "i", $id);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    return mysqli_fetch_assoc($result);
+}
+
+function getAmountOrderedLast72Hours($id, $databaseConnection)
+{
+    $query = "SELECT SUM(Quantity) FROM orderlines WHERE StockItemID = ? AND (DATEDIFF(NOW(), LastEditedWhen) < 3)";
+    $statement = mysqli_prepare($databaseConnection, $query);
+    mysqli_stmt_bind_param($statement, "i", $id);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    $result = mysqli_fetch_assoc($result);
+    return $result["SUM(Quantity)"];
 }

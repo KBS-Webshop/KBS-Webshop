@@ -12,6 +12,8 @@ include "../helpers/database/loyalty.php";
 include "../helpers/database/order.php";
 include "../helpers/database/stock.php";
 include "../helpers/loyalty.php";
+include "../helpers/database/discount.php";
+include "../helpers/database/productOnIndex.php";
 
 $databaseConnection = connectToDatabase();
 ?>
@@ -39,6 +41,7 @@ $databaseConnection = connectToDatabase();
     <link rel="stylesheet" href="../Public/CSS/loyalty.css" type="text/css">
     <link rel="stylesheet" href="../Public/CSS/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="../Public/CSS/typekit.css">
+    <link rel="stylesheet" href="../Public/CSS/discount.css" type="text/css">
 </head>
 
 <body>
@@ -54,6 +57,12 @@ $databaseConnection = connectToDatabase();
                     </li>
                     <li>
                         <a href="/beheer/loyalty.php" class="HrefDecoration">Loyalty</a>
+                    </li>
+                    <li>
+                        <a href="/beheer/discount.php" class="HrefDecoration">Discount</a>
+                    </li>
+                    <li>
+                        <a href="/beheer/productOnIndex.php" class="HrefDecoration">Product Spotlight</a>
                     </li>
                 </ul>
             </div>

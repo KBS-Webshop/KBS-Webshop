@@ -16,6 +16,8 @@ if (isset($_POST['action'])) {
         case 'change_amt':
             changeAmount($_POST['StockItemID'], $_POST['amount']);
             break;
+        case 'clear_cookie':
+            clearCookie();
     }
 
     $requestPath = $_SERVER['REQUEST_URI'];

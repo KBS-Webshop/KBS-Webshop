@@ -14,6 +14,7 @@ $_SESSION["stad"]=$_POST["stad"];
 $_SESSION["bezorgInstructies"] = $_POST["bezorgInstructies"];
 $_SESSION["provincie"] = $_POST["provincie"];
 $_SESSION["price"] = $_POST["price"];
+$_SESSION["basket"] = $_COOKIE["basket"];
 
 
 foreach ($basket_contents as $item) {
@@ -31,6 +32,7 @@ foreach ($basket_contents as $item) {
     <input type="submit" name="mislukt" value="betaling annuleren">
 </form>
 <form method="post" name="gelukt" action="orderbevestiging.php">
+    <input type="hidden" name="action" value="clear_cookie">
     <input type="submit" name="gelukt" value="betaling geslaagd ">
 </form>
 </html>

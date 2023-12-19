@@ -1,0 +1,53 @@
+.discount-container {
+    position: relative;
+    width: 100%;
+    height: 75vh;
+}
+
+.half {
+    position: absolute;
+    height: 100%;
+    top: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.left-half {
+    background: #2c3e50;
+    left: 16px;
+    float: left;
+    border-radius: 32px;
+    width: 30%;
+}
+
+.left-half h3, .left-half label {
+    color: #fff;
+}
+
+.right-half {
+    right: 16px;
+    float: right;
+    width: 70%;
+}
+
+.error-input {
+    border: 2px solid red;
+}
+
+.anti-overflow {
+    max-width: 500px;
+    text-overflow: ellipsis;
+}
+
+.discount-table tr:nth-child(even) {
+    background: #c5c5c5;
+}
+
+.form-container {
+    position: relative;
+    width: 100%;
+    height: 75vh;
+    margin-left: 16px;
+}

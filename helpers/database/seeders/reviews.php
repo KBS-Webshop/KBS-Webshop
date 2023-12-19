@@ -7,52 +7,91 @@ $dotenv->load();
 
 function connectToDatabase()
 {
-    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+    $Connection = null;
 
+    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
     try {
-        $connection = mysqli_connect($_ENV["MYSQL_HOST"], $_ENV["MYSQL_USER"], $_ENV["MYSQL_PASSWORD"], $_ENV["MYSQL_DATABASE"]);
-        mysqli_set_charset($connection, 'latin1');
-        return $connection;
+        $Connection = mysqli_connect($_ENV["MYSQL_HOST"], $_ENV["MYSQL_USER"], $_ENV["MYSQL_PASSWORD"], $_ENV["MYSQL_DATABASE"]);
+        mysqli_set_charset($Connection, 'latin1');
+        $DatabaseAvailable = true;
     } catch (mysqli_sql_exception $e) {
-        die("Connection failed: " . $e->getMessage());
+        $DatabaseAvailable = false;
+    }
+    if (!$DatabaseAvailable) {
+        ?>
+        <h2>Website wordt op dit moment onderhouden.</h2>
+        <?php
+        die();
+    }
+
+    return $Connection;
+}
+
+function addReview($review, $StockItemID, $personID, $rating, $databaseConnection)
+{
+    $query = '
+    INSERT INTO reviews (review, StockItemID, personID, rating)
+    VALUES (?, ?, ?, ?)
+    ';
+
+    $Statement = mysqli_prepare($databaseConnection, $query);
+
+    if (!$Statement) {
+        echo "Error in preparing statement: " . mysqli_error($databaseConnection) . "\n";
+        return;
+    }
+
+    mysqli_stmt_bind_param(
+        $Statement,
+        "siii",
+        $review,
+        $StockItemID,
+        $personID,
+        $rating
+    );
+
+    if (mysqli_stmt_execute($Statement)) {
+        echo "Review added successfully for personID $personID\n";
+    } else {
+        echo "Error in executing statement: " . mysqli_stmt_error($Statement) . "\n";
     }
 }
 
-$conn = connectToDatabase();
+function generateRandomReviews($startPersonID, $endPersonID, $databaseConnection)
+{
+    for ($personID = $startPersonID; $personID <= $endPersonID; $personID++) {
+        $stockItemID = rand(1, 135);
+        $review = generateRandomReview();
+        $rating = rand(1, 5);
 
-for ($i = 2000; $i <= 2400; $i++) {
-    $personID = $i;
-    $stockItemID = rand(1, 135);
-    $review = '';
+        addReview($review, $stockItemID, $personID, $rating, $databaseConnection);
+
+        echo "Review added for personID $personID\n";
+    }
+}
+
+function generateRandomReview()
+{
     $randNum = rand(1, 5);
 
     switch ($randNum) {
         case 1:
-            $review = 'Terrible purchase. Regret buying it.';
-            break;
+            return 'Terrible purchase. Regret buying it.';
         case 2:
-            $review = 'Not satisfied. Poor quality and performance.';
-            break;
+            return 'Not satisfied. Poor quality and performance.';
         case 3:
-            $review = 'Average product. Does the job but nothing special.';
-            break;
+            return 'Average product. Does the job but nothing special.';
         case 4:
-            $review = 'Great purchase! Fantastic features and design.';
-            break;
+            return 'Great purchase! Fantastic features and design.';
         case 5:
-            $review = 'Outstanding product. Exceeded my expectations!';
-            break;
+            return 'Outstanding product. Exceeded my expectations!';
+        default:
+            return 'No review available.';
     }
-
-    $publicationDate = date('Y-m-d', strtotime('-' . rand(1, 365) . ' days'));
-    $rating = rand(1, 5);
-
-    $sql = "INSERT INTO nerdygadgets.Reviews (PersonID, StockItemID, review, publicationDate, rating)
-            VALUES ('$personID', '$stockItemID', '$review', '$publicationDate', '$rating')";
-
-    // Execute the query
-    mysqli_query($conn, $sql);
 }
 
-$conn->close();
+
+$databaseConnection = connectToDatabase();
+generateRandomReviews(2001, 2400, $databaseConnection);
+
 ?>

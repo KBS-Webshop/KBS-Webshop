@@ -17,7 +17,7 @@ function sendEmail($recipient, $subject, $htmlBody, $textBody,$logoPath) {
         $mail->Port = 465; // TCP port to connect to
 
         //Recipients
-        $mail->setFrom($_ENV['SMTP_USER'], 'Nerdygatgats');
+        $mail->setFrom($_ENV['SMTP_USER'], 'Nerdygatgets');
         $mail->addAddress($recipient); // Add a recipient
 
         $mail->AddEmbeddedImage($logoPath, 'logo', 'logo.png', 'base64', 'image/png');

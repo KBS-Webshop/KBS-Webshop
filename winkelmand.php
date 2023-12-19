@@ -149,46 +149,44 @@ if (isset($_GET["message"])){
                     }
                     $totalprice_normal += calculatePriceBTW($StockItem['SellPrice'], $StockItem['TaxRate'], $item['amount'], true);
                 }
-                echo ("<tr class='receivedTotalPrice'> <td></td> <th>Totaalprijs:</th>");
-                echo("<td>$totalprice</td></tr>");
+
                 if ($totalprice_discount < $totalprice_normal) {
                     $priceDifference = $totalprice_normal - $totalprice_discount;
-                    echo '<tr>Je bespaart ' . str_replace('.', ',', sprintf("€%.2f", $priceDifference)) . ' door de korting!</tr>';
+                    echo '<tr">Je bespaart ' . str_replace('.', ',', sprintf("€%.2f", $priceDifference)) . ' door de korting!</tr>';
                 }
-                echo '</table>';
-
 
                 ?>
 
                 <?php if (getDealInCart() != null) { ?>
-                <tr class='receivedTotalPrice'>
-                    <td></td>
-                    <th>Prijs</th>
-                    <td><?php print $totalpriceFormatted ?></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <th>Korting</th>
-                    <td><?php print "-" . formatPrice( calculateDiscount($totalprice, getLoyaltyDeal(getDealInCart(), $databaseConnection)["discount"]) ) ?></td>
-                </tr>
+                    <tr class='receivedTotalPrice'>
+                        <td></td>
+                        <th>Prijs</th>
+                        <td><?php print formatPrice($totalprice_discount) ?></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <th>Korting</th>
+                        <td><?php print "-" . formatPrice( calculateDiscount($totalprice_discount, getLoyaltyDeal(getDealInCart(), $databaseConnection)["discount"]) ) ?></td>
+                    </tr>
                 <?php } ?>
                 <tr class='receivedTotalPrice'>
                     <td></td>
                     <th>Punten</th>
-                    <td><?php print calculateLoyaltyPoints(calculatePriceWithDeals($totalprice, $databaseConnection), $databaseConnection) ?></td>
+                    <td><?php print calculateLoyaltyPoints(calculatePriceWithDeals($totalprice_discount, $databaseConnection), $databaseConnection) ?></td>
                 </tr>
                 <tr>
                     <td></td>
-                    <th>totaalprijs</th>
-                    <td><?php print formatPrice(calculatePriceWithDeals($totalprice, $databaseConnection)); ?></td>
+                    <th>Totaalprijs</th>
+                    <td><?php print formatPrice(calculatePriceWithDeals($totalprice_discount, $databaseConnection)); ?></td>
                 </tr>
-            </table>
 
+                <?php } ?>
+
+                </table>
 
                 <form action="naw.php">
                     <input type="submit" value="Afrekenen">
                 </form>
-            <?php } ?>
         </div>
     </div>
     

@@ -15,13 +15,25 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
                 <th>Prijs</th>
 
                 <?php
-                $totalprice=0;
+                $totalprice = 0;
                 foreach ($basket_contents as $item) {
                     $StockItem = getStockItem($item["id"], $databaseConnection);
-                    $totalprice += round($item['amount'] * $StockItem['SellPrice'], 2);
+                    $currentDiscount = getDiscountByStockItemID($item["id"], $databaseConnection);
+
+                    if ($currentDiscount) {
+                        $totalprice += calculateDiscountedPriceBTW($StockItem["SellPrice"], $currentDiscount["DiscountPercentage"], $StockItem['TaxRate'], $item["amount"], true);
+                    } else {
+                        $totalprice += calculatePriceBTW($StockItem["SellPrice"], $StockItem['TaxRate'], $item["amount"], true);
+                    }
+
                     echo ("<tr> <td>" . $StockItem['StockItemName'] . "</td>");
                     echo ("<td>" . $item['amount'] . "</td>");
-                    echo "<td>".sprintf("€%.2f", $StockItem['SellPrice'] * $item["amount"]);
+
+                    if ($currentDiscount) {
+                        echo "<td>". calculateDiscountedPriceBTW($StockItem["SellPrice"], $currentDiscount["DiscountPercentage"], $StockItem['TaxRate'], $item["amount"]);
+                    } else {
+                        echo "<td>". calculatePriceBTW($StockItem["SellPrice"], $StockItem['TaxRate'], $item["amount"]);
+                    }
                 }
                 ?>
 
@@ -44,7 +56,7 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
                 </tr>
                 <tr>
                     <td></td>
-                    <th>totaalprijs</th>
+                    <th>Totaalprijs</th>
                     <td><?php print formatPrice(calculatePriceWithDeals($totalprice, $databaseConnection)); ?></td>
                 </tr>
             </table>

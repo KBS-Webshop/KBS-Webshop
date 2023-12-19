@@ -103,9 +103,10 @@ function PlaceOrder(
 
         calculateAndRemovePoints($price, 1, $databaseConnection);
         calculateAndAddPoints((float) $price, 1, $databaseConnection);
-        removeDealFromCart();
+        # removeDealFromCart();
+        $_POST['action'] = 'remove_deal_from_cart';
         
-        // basket vanuit cookie zorgt voor headers already sent
+        // basket vanuit cookie zorgt voor headers already sent, ik heb het elders in de session gezet
         // $basket_contents = json_decode($_COOKIE["basket"], true);
         $basket_contents = json_decode($_SESSION["basket"], true);
 

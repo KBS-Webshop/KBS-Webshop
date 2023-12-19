@@ -18,6 +18,10 @@ if (isset($_POST['action'])) {
             break;
         case 'clear_cookie':
             clearCookie();
+            break;
+        case 'remove_deal_from_cart':
+            removeDealFromCart();
+            break;
     }
 
     $requestPath = $_SERVER['REQUEST_URI'];

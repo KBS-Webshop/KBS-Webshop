@@ -50,8 +50,8 @@ if(isset($_GET["id"])) {
     <script>
             tinymce.init({
             selector: '#editor',
-            plugins: 'advlist autolink image lists link image charmap print preview anchor autoresize template powerpaste spellchecker',
-            toolbar: 'undo redo | formatselect | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | template powerpaste spellchecker | bullist numlist outdent indent | link image | removeformat | fullscreen code',
+            plugins: 'advlist autolink image lists link image charmap print preview anchor autoresize template powerpaste',
+            toolbar: 'undo redo | formatselect | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | template powerpaste | bullist numlist outdent indent | link image | removeformat | fullscreen code',
         });
     </script>
 

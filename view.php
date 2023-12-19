@@ -8,6 +8,7 @@ $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
 
 
 ?>
+<meta http-equiv="refresh" content="3">
 <div id="CenteredContent">
     <?php
     if ($StockItem != null) {

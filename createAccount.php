@@ -87,6 +87,27 @@ include __DIR__ . "/helpers/utils.php";
         <div class="login-input-create">
             <input type="submit" class="loginSubmit" name="inloggen" value="Maak account aan.">
         </div>
+        <script>
+                const email = document.getElementById('email').value;
+                const telefoonnummer = document.getElementById('telefoonnummer').value;
+                const postcode = document.getElementById('postcode').value;
+
+                // Email validatie met een eenvoudige regex
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                // Postcode validatie met een regex (0000AA-formaat)
+                const postcodeRegex = /^[1-9][0-9]{3}\s?[a-zA-Z]{2}$/;
+
+                if (!emailRegex.test(email)) {
+                    <?php $correctInput = "Voer een geldig e-mailadres in."; ?>
+                } else if (isNaN(telefoonnummer)) {
+                    <?php $correctInput = "Voer een geldig telefoonnummer in." ?>
+                } else if (!postcodeRegex.test(postcode)) {
+                    <?php $correctInput = "Voer een geldige postcode in (bijvoorbeeld. 1234AB)"; ?>
+                } else {
+                    <?php $correctInput = true; ?>
+                }
+        </script>
         <?php
 if (isset($_POST["straatnaam"]) && isset($_POST["huisnummer"])) {
     $_POST["address"] = $_POST["straatnaam"] . " " . $_POST["huisnummer"];
@@ -99,21 +120,25 @@ if (isset($_POST["password"]) && isset($_POST["passwordConfirm"])) {
     $_SESSION["hashedPassword"] = $hashedPassword;
 }
 }
-if (isset($_POST["email"]) && isset($_SESSION["hashedPassword"]) && isset($_POST["naam"]) && isset($_POST["telefoonnummer"]) && isset($_POST["address"]) && isset($_POST["postcode"]) && isset($_POST["stad"]) && isset($_POST["provincie"])) {
-    if (checkIfAccountExists($databaseConnection, $_POST["email"])) {
-        print("Account met deze email bestaat al.");
-            } else {
-                $PersonID = getNewAccountID($databaseConnection);
-                $accountCreated = createAccount($databaseConnection, $_POST["naam"], $_SESSION["hashedPassword"], $_POST["telefoonnummer"], $_POST["email"]);
-                $customerAdded = definiteAddCustomer($databaseConnection, $_POST["naam"], $_POST["telefoonnummer"], $_POST["address"], $_POST["postcode"], $_POST["stad"], $_POST["provincie"], $PersonID);
-                if ($accountCreated && $customerAdded) {
-                    print ("Account aangemaakt.");
+if ($correctInput == true) {
+    if (isset($_POST["email"]) && isset($_SESSION["hashedPassword"]) && isset($_POST["naam"]) && isset($_POST["telefoonnummer"]) && isset($_POST["address"]) && isset($_POST["postcode"]) && isset($_POST["stad"]) && isset($_POST["provincie"])) {
+        if (checkIfAccountExists($databaseConnection, $_POST["email"])) {
+            print("Account met deze email bestaat al.");
+        } else {
+            $PersonID = getNewAccountID($databaseConnection);
+            $accountCreated = createAccount($databaseConnection, $_POST["naam"], $_SESSION["hashedPassword"], $_POST["telefoonnummer"], $_POST["email"]);
+            $customerAdded = definiteAddCustomer($databaseConnection, $_POST["naam"], $_POST["telefoonnummer"], $_POST["address"], $_POST["postcode"], $_POST["stad"], $_POST["provincie"], $PersonID);
+            if ($accountCreated && $customerAdded) {
+                print ("Account aangemaakt.");
 
-                } else {
-                    print("Account aanmaken mislukt.");
-                }
+            } else {
+                print("Account aanmaken mislukt.");
             }
         }
+    }
+} else {
+    print($correctInput);
+}
 ?>
         <script>
                 document.addEventListener('submit', (e) => {

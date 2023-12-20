@@ -8,13 +8,13 @@ $loyaltyItems = getAllLoyaltyDeals($databaseConnection);
 <div id="CenteredContent">
     <h3>Loyaliteits kortingen</h3>
     <div>
-        <a href="deal.php" class="button primary btn-small">Maak nieuwe aan</a>
+        <a href="deal.php" class="button primary btn-small">Toevoegen</a>
         <a href="loyalty-configuration.php" class="button secondary btn-small">Configuratie</a>
     </div>
     <table class="loyalty-table">
         <tr>
-            <th>Title</th>
-            <th>Price in points</th>
+            <th>Titel</th>
+            <th>Prijs in punten</th>
         </tr>
             <?php 
             foreach($loyaltyItems as $item) { 

@@ -61,7 +61,7 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
             <tr>
                 <td></td>
                 <th>Korting</th>
-                <td><?php print "-" . formatPrice( calculateDiscount($totalprice_discount, getLoyaltyDeal(getDealInCart(), $databaseConnection)["discount"]) ) ?></td>
+                <td><?php print "-" . formatPrice(calculateDiscount($totalprice_discount, getLoyaltyDeal(getDealInCart(), $databaseConnection)["discount"]) ) ?></td>
             </tr>
         <?php } ?>
         <tr class='receivedTotalPrice'>
@@ -77,7 +77,7 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
         </tr>
 
         <?php }
-$_SESSION['price']=$totalprice;
+$_SESSION['price']=$totalprice_discount;
 ?>
 
     </table>

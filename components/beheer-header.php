@@ -56,7 +56,7 @@ if ($_SESSION["user"]["isLoggedIn"] == 0 || $_SESSION["user"]["IsSalesPerson"] =
 <body>
     <div class="Background">
         <div class="row" id="Header">
-            <div class="col-2"><a href="beheer.php" id="LogoA">
+            <div class="col-2"><a href="index.php" id="LogoA">
                     <div id="LogoImage"></div>
                 </a></div>
             <div class="col-8" id="CategoriesBar">
@@ -65,16 +65,16 @@ if ($_SESSION["user"]["isLoggedIn"] == 0 || $_SESSION["user"]["IsSalesPerson"] =
                         <a href="/KBS-webshop" class="HrefDecoration">Webshop</a>
                     </li>
                     <li>
-                        <a href="/KBS-webshop/beheer/loyalty.php" class="HrefDecoration">Loyalty</a>
+                        <a href="../beheer/loyalty.php" class="HrefDecoration">Loyalty</a>
                     </li>
                     <li>
-                        <a href="/KBS-webshop/beheer/mail_aanpas_keuze.php" class="HrefDecoration">mail</a>
+                        <a href="../beheer/mail_aanpas_keuze.php" class="HrefDecoration">mail</a>
                     </li>
                     <li>
-                        <a href="/beheer/discount.php" class="HrefDecoration">Discount</a>
+                        <a href="../beheer/discount.php" class="HrefDecoration">Discount</a>
                     </li>
                     <li>
-                        <a href="/beheer/productOnIndex.php" class="HrefDecoration">Product Spotlight</a>
+                        <a href="../beheer/productOnIndex.php" class="HrefDecoration">Product Spotlight</a>
                     </li>
                 </ul>
             </div>

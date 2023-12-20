@@ -29,6 +29,18 @@ if (isset($_POST['action'])) {
     exit();
 }
 
+if ($_SERVER['REQUEST_URI'] == "/loyalty-list.php") {
+
+    if (isset($_POST["addId"]) && isset($_POST["points"])) {
+        if (getDealInCart() == $_POST["addId"]) {
+            removeDealFromCart();
+        } else {
+            addDealToCart($_POST["addId"], $_POST["points"]);
+        }
+        header("Refresh: 0; url=loyalty-list.php");
+    }
+}
+
 function cookieEmpty() {
     if (isset($_COOKIE["basket"])) {
         $basket = json_decode($_COOKIE["basket"], true);

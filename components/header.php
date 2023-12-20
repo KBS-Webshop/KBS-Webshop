@@ -6,12 +6,12 @@ require 'vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
-include "helpers/cookie.php";
 include "helpers/database/database.php";
 include "helpers/database/loyalty.php";
 include "helpers/database/order.php";
 include "helpers/database/stock.php";
 include "helpers/loyalty.php";
+include "helpers/cookie.php";
 include "helpers/database/mail_database.php";
 include "helpers/mail.php";
 include "helpers/database/customer.php";

@@ -2,16 +2,6 @@
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
 
-
-if (isset($_POST["addId"]) && isset($_POST["points"])) {
-    if (getDealInCart() == $_POST["addId"]) {
-        removeDealFromCart();
-    } else {
-        addDealToCart($_POST["addId"], $_POST["points"]);
-    }
-    header("Refresh: 0; url=loyalty-list.php");
-}
-
 $loyaltyDeals = getAllLoyaltyDeals($databaseConnection);
 $currentPoints = getPoints($_SESSION['user']['PersonID'], $databaseConnection);
 ?>

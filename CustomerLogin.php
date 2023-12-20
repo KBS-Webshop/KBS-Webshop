@@ -48,6 +48,7 @@ include __DIR__ . "/helpers/utils.php";
             <a>Nog geen account? Maak </a><a href="createAccount.php">&nbsp;hier&nbsp;</a><a> een account aan</a>
         </div>
     <?php } elseif ($_SESSION["user"]["isLoggedIn"] == 1) {
+        getUserCustomerInfo($databaseConnection, $_SESSION["userEmail"], $_SESSION["hashedPassword"]);
         print("U bent ingelogd.");
         ?>
     <div class="login-input">

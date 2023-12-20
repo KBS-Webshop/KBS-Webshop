@@ -16,6 +16,7 @@ include "helpers/database/mail_database.php";
 include "helpers/mail.php";
 include "helpers/database/customer.php";
 
+include "helpers/database/temprature.php";
 
 $databaseConnection = connectToDatabase();
 ?>

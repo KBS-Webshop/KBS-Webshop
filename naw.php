@@ -18,75 +18,71 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
 ?>
 <div class="bonnetje-wrapper">
     <?php
-
     $basket_contents = json_decode($_COOKIE["basket"], true);
     ?>
-            <table>
-                <th>Product</th>
-                <th>Aantal</th>
-                <th>Prijs</th>
+    <table>
+        <th>Product</th>
+        <th>Aantal</th>
+        <th>Prijs</th>
 
-                <?php
-                $totalprice = 0;
-                foreach ($basket_contents as $item) {
-                    $StockItem = getStockItem($item["id"], $databaseConnection);
-                    $currentDiscount = getDiscountByStockItemID($item["id"], $databaseConnection);
+        <?php
+        $totalprice_discount = 0;
+        $totalprice_normal = 0;
 
-                    if ($currentDiscount) {
-                        $totalprice += calculateDiscountedPriceBTW($StockItem["SellPrice"], $currentDiscount["DiscountPercentage"], $StockItem['TaxRate'], $item["amount"], true);
-                    } else {
-                        $totalprice += calculatePriceBTW($StockItem["SellPrice"], $StockItem['TaxRate'], $item["amount"], true);
-                     $StockItem = getStockItem($item["id"], $databaseConnection);
-            $totalprice += round($item['amount'] * $StockItem['SellPrice'], 2);
+        foreach ($basket_contents as $item) {
+            $StockItem = getStockItem($item["id"], $databaseConnection);
+            $currentDiscount = getDiscountByStockItemID($item["id"], $databaseConnection);
             echo ("<tr> <td>" . $StockItem['StockItemName'] . "</td>");
             echo ("<td>" . $item['amount'] . "</td>");
-            echo "<td>".str_replace(".",",",sprintf("€%.2f", $StockItem['SellPrice'] * $item["amount"]));
+
+            if ($currentDiscount) {
+                echo "<td>" . calculateDiscountedPriceBTW($StockItem['SellPrice'], $currentDiscount['DiscountPercentage'], $StockItem['TaxRate'], $item['amount']) . "</td></tr>";
+                $totalprice_discount += calculateDiscountedPriceBTW($StockItem['SellPrice'], $currentDiscount['DiscountPercentage'], $StockItem['TaxRate'], $item['amount'], true);
+            } else {
+                echo "<td>" . calculatePriceBTW($StockItem['SellPrice'], $StockItem['TaxRate'], $item['amount']) . "</td></tr>";
+                $totalprice_discount += calculatePriceBTW($StockItem['SellPrice'], $StockItem['TaxRate'], $item['amount'], true);
+            }
+            $totalprice_normal += calculatePriceBTW($StockItem['SellPrice'], $StockItem['TaxRate'], $item['amount'], true);
         }
-        <?php
-        
-           
-        $totalprice = sprintf("€%.2f", $totalprice);
-        echo ("<tr class='receivedTotalPrice'> <td></td> <th>totaalprijs</th>");
-        $totalprice1=str_replace(".",",",$totalprice);
-        echo("<td>$totalprice1</td></tr>");
-        echo '</table>';
 
-                    echo ("<tr> <td>" . $StockItem['StockItemName'] . "</td>");
-                    echo ("<td>" . $item['amount'] . "</td>");
+        if ($totalprice_discount < $totalprice_normal) {
+            $priceDifference = $totalprice_normal - $totalprice_discount;
+            echo '<tr">Je bespaart ' . str_replace('.', ',', sprintf("€%.2f", $priceDifference)) . ' door de korting!</tr>';
+        }
 
-                    if ($currentDiscount) {
-                        echo "<td>". calculateDiscountedPriceBTW($StockItem["SellPrice"], $currentDiscount["DiscountPercentage"], $StockItem['TaxRate'], $item["amount"]);
-                    } else {
-                        echo "<td>". calculatePriceBTW($StockItem["SellPrice"], $StockItem['TaxRate'], $item["amount"]);
-                    }
-                }
-                ?>
+        ?>
 
-                <?php if (getDealInCart() != null) { ?>
-                <tr class='receivedTotalPrice'>
-                    <td></td>
-                    <th>Prijs</th>
-                    <td><?php print formatPrice($totalprice) ?></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <th>Korting</th>
-                    <td><?php print "-" . formatPrice($totalprice / 100 * getLoyaltyDeal(getDealInCart(), $databaseConnection)["discount"]) ?></td>
-                </tr>
-                <?php } ?>
-                <tr class='receivedTotalPrice'>
-                    <td></td>
-                    <th>Punten</th>
-                    <td><?php print calculateLoyaltyPoints(calculatePriceWithDeals($totalprice, $databaseConnection), $databaseConnection) ?></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <th>Totaalprijs</th>
-                    <td><?php print formatPrice(calculatePriceWithDeals($totalprice, $databaseConnection)); ?></td>
-                </tr>
-            </table>
-
+        <?php if (getDealInCart() != null) { ?>
+            <tr class='receivedTotalPrice'>
+                <td></td>
+                <th>Prijs</th>
+                <td><?php print formatPrice($totalprice_discount) ?></td>
+            </tr>
+            <tr>
+                <td></td>
+                <th>Korting</th>
+                <td><?php print "-" . formatPrice( calculateDiscount($totalprice_discount, getLoyaltyDeal(getDealInCart(), $databaseConnection)["discount"]) ) ?></td>
+            </tr>
         <?php } ?>
+        <tr class='receivedTotalPrice'>
+            <td></td>
+            <th>Punten</th>
+            <td><?php print calculateLoyaltyPoints(calculatePriceWithDeals($totalprice_discount, $databaseConnection), $databaseConnection) ?></td>
+        </tr>
+        <tr>
+            <td></td>
+            <th>Totaalprijs</th>
+            <td><?php $totalprice =formatPrice(calculatePriceWithDeals($totalprice_discount, $databaseConnection));
+                print $totalprice?></td>
+        </tr>
+
+        <?php }
+$_SESSION['price']=$totalprice;
+?>
+
+    </table>
+
+
 </div>
 <html>
 

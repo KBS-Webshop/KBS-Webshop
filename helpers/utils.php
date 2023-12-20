@@ -59,8 +59,8 @@ function PlaceOrder(
         $_POST['action'] = 'remove_deal_from_cart';
         
         // basket vanuit cookie zorgt voor headers already sent, ik heb het elders in de session gezet
-        // $basket_contents = json_decode($_COOKIE["basket"], true);
-        $basket_contents = json_decode($_SESSION["basket"], true);
+         $basket_contents = json_decode($_COOKIE["basket"], true);
+        //$basket_contents = json_decode($_SESSION["basket"], true);
 
         foreach ($basket_contents as $item) {
             if (isset($item["amount"])) {

@@ -153,7 +153,7 @@ if (isset($_GET["message"])){
                 if ($totalprice_discount < $totalprice_normal) {
                     $priceDifference = $totalprice_normal - $totalprice_discount;
                     echo '<tr><th colspan="3">Je bespaart ' . formatPrice($priceDifference) . ' door de korting!</th></tr>';
-                }
+
 
 
                 ?>
@@ -193,5 +193,6 @@ if (isset($_GET["message"])){
     
 
 <?php
+        }
 include __DIR__ . "/components/footer.php"
 ?>

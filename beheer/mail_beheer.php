@@ -2,7 +2,7 @@
 include "../components/beheer-header.php";
 include "../helpers/utils.php";
 if(isset($_GET["id"])) {
-    // Haal het sjabloon op met het ID uit de GET-parameter
+
     $templateData = getEmailTemplateID($databaseConnection, $_GET['id']);
 
     // Controleer of het sjabloon bestaat
@@ -12,15 +12,13 @@ if(isset($_GET["id"])) {
         $_SESSION["id"] = $_GET['id'];
     }
  else {
-    // Als het ID niet in de GET-parameters staat, probeer het nieuwe ID in te voegen
+
     $newID = $_SESSION['next'];
 
-    // Controleer of het nieuwe ID al bestaat in de database
     if (!isIDExists($databaseConnection, $newID)) {
-        // Voeg het sjabloon in met het nieuwe ID
+
         insertIDTemplate($databaseConnection, $newID);
 
-        // Haal het zojuist ingevoegde sjabloon op
         $templateData = getEmailTemplate($databaseConnection, $newID);
 
         $template = '';

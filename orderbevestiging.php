@@ -3,7 +3,6 @@
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
 
-clearCookie();
 
 $naam = $_SESSION["user"]["NAW"]["FullName"];
 $telefoonnummer = $_SESSION["user"]["NAW"]["PhoneNumber"];
@@ -25,6 +24,12 @@ $DeliveryPostalCode = $_SESSION["user"]["NAW"]["DeliveryPostalCode"];
 $DeliveryInstructions = $_SESSION["user"]["NAW"]["DeliveryInstructions"];
 $cityName = $_SESSION["user"]["NAW"]["CityName"];
 $DeliveryProvince = $_SESSION["user"]["NAW"]["DeliveryProvince"];
+if (!isset($_SESSION["user"]["isLoggedIn"])) {
+    $_SESSION["user"]["isLoggedIn"] = FALSE;
+}
+if (!isset($_SESSION["order"]["placeOrder"])) {
+    $_SESSION["order"]["placeOrder"] = FALSE;
+}
 
 if (isset($_SESSION["user"]["NAW"]["FullName"]) && isset($_SESSION["user"]["NAW"]["PhoneNumber"]) && isset($_SESSION["user"]["NAW"]["DeliveryAddressLine1"]) && isset($_SESSION["user"]["NAW"]["DeliveryPostalCode"]) && isset($_SESSION["user"]["NAW"]["CityName"]) && $_SESSION["order"]["placeOrder"] == TRUE) {
 $_SESSION["order"]["orderID"] = PlaceOrder(
@@ -116,7 +121,7 @@ $_SESSION["order"]["orderID"] = PlaceOrder(
 <?php
 $totalprice = 0;
 if ((isset($_COOKIE["basket"]) AND !cookieEmpty()) OR TRUE) {
-    $basket_contents = json_decode($_SESSION["basket"], true);
+    $basket_contents = json_decode($_COOKIE["basket"], true);
     foreach ($basket_contents as $item) {
         $StockItem = getStockItem($item["id"], $databaseConnection);
         $currentDiscount = getDiscountByStockItemID($item["id"], $databaseConnection);
@@ -172,13 +177,19 @@ if (isset($StockItemImage[0]["ImagePath"])) { ?>
 <h3 class="StockItemPriceTextbevestiging">Korting: <?php print(formatPrice(calculateDiscount($totalprice, getLoyaltyDeal(getDealInCart(), $databaseConnection)["discount"]))) ?></h3>
 <?php } ?>
 <h3 class="StockItemPriceTextbevestiging">Totaalprijs: <?php print formatPrice(calculatePriceWithDeals($totalprice, $databaseConnection))?></h3><br>
-<h3 class="verzendadres">uw Gegevens: </h3>
+    <form method="post" action="browse.php">
+        <input type="hidden" name="action" value="clear_cookie">
+        <input type="submit" name="verderwinkelen" value="verder winkelen" class="button1 primary ">
+    </form>
+    <h3 class="verzendadres">uw Gegevens: </h3>
 <h4 class="verzendgegevens">
     naam: <?php print $naam?><br>
     adres: <?php print $adress." in ". $stad?><br>
     postcode: <?php print $postcode?><br>
     telefoonnummer: <?php print $telefoonnummer?><br>
 </h4>
+
+
 
 <?php
 include __DIR__ . "/components/footer.php"

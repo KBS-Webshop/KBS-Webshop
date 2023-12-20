@@ -3,7 +3,7 @@ include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
 ?>
 <p class="alert alert-primary m-3">
-    Je hebt <?php print getPoints(1, $databaseConnection) ?> punten gespaart. <a href="loyalty-list.php">Kijk hier wat voor acties je hiermee kan vrijspelen.</a>
+    Je hebt <?php print getPoints($_SESSION['user']['PersonID'], $databaseConnection) ?> punten gespaart. <a href="loyalty-list.php">Kijk hier wat voor acties je hiermee kan vrijspelen.</a>
 </p>
 <h2>Winkelmandje</h2>
 <?php

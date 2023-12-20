@@ -9,27 +9,29 @@ include __DIR__ . "/helpers/utils.php";
         const postcode = document.getElementById("postcode").value;
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
         const postcodeRegex = /^[1-9][0-9]{3}\s?[a-zA-Z]{2}$/;
+        const telefoonnummerRegex = /^(?:(?:\+|00(\s|\s?\-\s?)?)31(?:\s|\s?\-\s?)?(?:\(0\)[\-\s]?)?|0)[1-9](?:(?:\s|\s?\-\s?)?[0-9])(?:(?:\s|\s?-\s?)?[0-9])(?:(?:\s|\s?-\s?)?[0-9])\s?[0-9]\s?[0-9]\s?[0-9]\s?[0-9]\s?[0-9]$/;
 
         if (!emailRegex.test(email)) {
-            <?php $correctInput = "Voer een geldig e-mailadres in."; ?>
+            alert("Email is niet geldig.")
             return false;
-        } else if (isNaN(telefoonnummer)) {
-            <?php $correctInput = "Voer een geldig telefoonnummer in." ?>
+        } else if (isNaN(Number(telefoonnummer)) && !telefoonnummerRegex.test(telefoonnummer)) {
+            alert("Telefoonnummer is niet geldig.")
             return false;
         } else if (!postcodeRegex.test(postcode)) {
-            <?php $correctInput = "Voer een geldige postcode in (bijvoorbeeld. 1234AB)"; ?>
+            alert("Postcode is niet geldig.")
             return false;
         } else {
-            <?php $correctInput = true; ?>
             return true;
         }
     }
+
     if (location.pathname.includes('/createAccount.php')) {
         document.addEventListener('submit', (e) => {
             // als de input niet klopt, stop de submit
-            if (!checkCreateInput() e.preventDefault();
+            if (!checkCreateInput()) {
+                e.preventDefault();
+            }
         });
     }
 </script>
@@ -135,7 +137,6 @@ if (isset($_POST["password"]) && isset($_POST["passwordConfirm"])) {
     $_SESSION["hashedPassword"] = $hashedPassword;
 }
 }
-if ($correctInput == true) {
     if (isset($_POST["email"]) && isset($_SESSION["hashedPassword"]) && isset($_POST["naam"]) && isset($_POST["telefoonnummer"]) && isset($_POST["address"]) && isset($_POST["postcode"]) && isset($_POST["stad"]) && isset($_POST["provincie"])) {
         if (checkIfAccountExists($databaseConnection, $_POST["email"])) {
             print("Account met deze email bestaat al.");
@@ -150,9 +151,6 @@ if ($correctInput == true) {
                 print("Account aanmaken mislukt.");
             }
         }
-    }
-} else {
-    print($correctInput);
 }
 ?>
         <script>
@@ -160,6 +158,7 @@ if ($correctInput == true) {
                 if (!checkPasswordStrength(<?php print ($_POST["password"]); ?>)) e.preventDefault();
                 });
         </script>
+    </form>
 <?php
 include __DIR__ . "/components/footer.php"
 ?>

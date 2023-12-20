@@ -34,12 +34,12 @@ include __DIR__ . "/helpers/utils.php";
     <?php if ($_SESSION["user"]["isLoggedIn"] == 0) { ?>
     <h2>Inloggen</h2>
     <div class="login-input">
-        <label for="email">email</label>
-        <input type="text" class="loginEmail" name="userEmail" required>
+        <label for="email">E-mail</label>
+        <input type="email" class="loginEmail" name="userEmail" id="email" required>
     </div>
     <div class="login-input">
-        <label for="password">wachtwoord</label>
-        <input type="password" class="loginPassword" name="password" required>
+        <label for="password">Wachtwoord</label>
+        <input type="password" class="loginPassword" name="password" id="password" required>
     </div>
     <div class="login-input">
         <input type="submit" class="loginSubmit" name="inloggen" value="inloggen">
@@ -71,7 +71,7 @@ include __DIR__ . "/helpers/utils.php";
         ?>
     </div>
     <div class="informationBox">
-        <label>email: </label>
+        <label>E-mail: </label>
         <?php
         if (isset($_SESSION["user"]["EmailAddress"])) {
             print($_SESSION["user"]["EmailAddress"]);
@@ -96,17 +96,17 @@ include __DIR__ . "/helpers/utils.php";
     </div>
 
         <a class="button primary userButton" href="userInfoAanpassen.php">
-            <h2>aanpassen</h2>
+            <h2>Aanpassen</h2>
             </a>
         <a class="button primary userButton" href="previouslyOrdered.php">
-            <h2>eerder gekochte producten</h2>
+            <h2>Eerder gekochte producten</h2>
         </a>
 
     <?php
         if ($_SESSION["user"]["IsSalesPerson"] == 1) {
             ?>
             <a class="button primary userButton" href="beheer/">
-                <h2>beheerpagina</h2>
+                <h2>Beheerpagina</h2>
             </a>
             <?php
         }

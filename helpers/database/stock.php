@@ -41,7 +41,7 @@ function getStockItem($id, $databaseConnection)
 //            (RecommendedRetailPrice*(1+(TaxRate/100))) AS SellPrice,
 
     $Query = " 
-           SELECT SI.StockItemID, 
+           SELECT SI.StockItemID, SI.IsChillerStock, (RecommendedRetailPrice*(1+(TaxRate/100))) AS SellPrice, 
             RecommendedRetailPrice SellPrice, 
             SI.TaxRate,
             StockItemName,

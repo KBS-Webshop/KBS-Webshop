@@ -20,6 +20,8 @@ if (isset($_POST['action'])) {
             clearCookie();
             break;
         case 'remove_deal_from_cart':
+            $price = calculatePriceWithDeals($_POST["price"], $databaseConnection);
+            calculateAndRemovePoints($price, $_SESSION["user"]["PersonID"], $databaseConnection);
             removeDealFromCart();
             break;
     }
@@ -29,7 +31,7 @@ if (isset($_POST['action'])) {
     exit();
 }
 
-if ($_SERVER['REQUEST_URI'] == "/loyalty-list.php") {
+if (str_contains($_SERVER['REQUEST_URI'], "/loyalty-list.php" ) ) {
 
     if (isset($_POST["addId"]) && isset($_POST["points"])) {
         if (getDealInCart() == $_POST["addId"]) {

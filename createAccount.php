@@ -154,7 +154,7 @@ if (isset($_POST["password"]) && isset($_POST["passwordConfirm"])) {
 ?>
 <!--        <script>-->
 <!--                document.addEventListener('submit', (e) => {-->
-<!--                if (!checkPasswordStrength(--><?php //print ($_POST["password"]); ?>//)) e.preventDefault();
+<!--                if (!checkPasswordStrength(--><?php //print ($_POST["password"]); ?><!--)) e.preventDefault();-->
 <!--                });
 //        </script>
     </form>

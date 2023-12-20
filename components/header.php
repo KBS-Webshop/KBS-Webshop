@@ -1,6 +1,8 @@
 <?php
 session_start();
-
+if (!isset($_SESSION['user']['isLoggedIn'])) {
+    $_SESSION['user']['isLoggedIn'] = 0;
+}
 require 'vendor/autoload.php';
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');

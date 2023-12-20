@@ -7,6 +7,9 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
 include "helpers/database/database.php";
+
+$databaseConnection = connectToDatabase();
+
 include "helpers/database/loyalty.php";
 include "helpers/database/order.php";
 include "helpers/database/stock.php";
@@ -18,7 +21,6 @@ include "helpers/database/customer.php";
 
 include "helpers/database/temprature.php";
 
-$databaseConnection = connectToDatabase();
 ?>
 <!DOCTYPE html>
 <html lang="en">

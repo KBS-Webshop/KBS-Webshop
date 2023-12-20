@@ -34,16 +34,19 @@ function PlaceOrder(
     $orderstatus = "Wordt verwerkt";
 
     if ($betaald == true) {
-        $customerId = getCustomer($databaseConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode);
+        if (!isset($_SESSION["user"]["PersonID"])){
+        $_SESSION["user"]["PersonID"] = null;
+        }
+    $customerId = getCustomer($databaseConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $_SESSION["user"]["PersonID"]);
         $currentDate = date("Y-m-d");
         $estimatedDeliveryDate = date("Y-m-d", strtotime($currentDate . "+ 1 days"));
         $salesContactPersonID = 3262;
 
         if ($customerId == null) {
             definiteAddCustomer($databaseConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $cityName, $DeliveryProvince, $customerId);
-            $customerId = getCustomer($databaseConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode);
+            $customerId = getCustomer($databaseConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $_SESSION["user"]["PersonID"]);
         } else {
-            $customerId = getCustomer($databaseConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode);
+            $customerId = getCustomer($databaseConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $_SESSION["user"]["PersonID"]);
         }
         if ($quantityOnHand < $amountOfProductsInOrder) {
             $isInStock = 0;

@@ -88,14 +88,12 @@ include __DIR__ . "/helpers/utils.php";
             <input type="submit" class="loginSubmit" name="inloggen" value="Maak account aan.">
         </div>
         <script>
-                const email = document.getElementById('email').value;
-                const telefoonnummer = document.getElementById('telefoonnummer').value;
-                const postcode = document.getElementById('postcode').value;
+                const email = document.getElementById("email").value;
+                const telefoonnummer = document.getElementById("telefoonnummer").value;
+                const postcode = document.getElementById("postcode").value;
 
-                // Email validatie met een eenvoudige regex
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-                // Postcode validatie met een regex (0000AA-formaat)
                 const postcodeRegex = /^[1-9][0-9]{3}\s?[a-zA-Z]{2}$/;
 
                 if (!emailRegex.test(email)) {

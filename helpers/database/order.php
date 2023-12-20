@@ -104,14 +104,14 @@ function getNewCustomerID($dbConnection)
     $R = $R + 1;
     return $R;
 }
-function getCustomer($dbConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode) {
+function getCustomer($dbConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $PersonID) {
     $Query = "
     SELECT CustomerID
     FROM customers
-    WHERE CustomerName = ? AND PhoneNumber = ? AND DeliveryAddressLine1 = ? AND DeliveryPostalCode = ?";
+    WHERE CustomerName = ? AND PhoneNumber = ? AND DeliveryAddressLine1 = ? AND DeliveryPostalCode = ? AND PersonID = ?";
 
     $Statement = mysqli_prepare($dbConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "ssss", $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode);
+    mysqli_stmt_bind_param($Statement, "ssssi", $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $PersonID);
     mysqli_stmt_execute($Statement);
     $R = mysqli_stmt_get_result($Statement);
     $R = mysqli_fetch_assoc($R);

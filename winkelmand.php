@@ -1,10 +1,15 @@
 <?php
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
+if(!isset($_SESSION['user']['PersonID'])){
+    $_SESSION['user']['PersonID']=0;
+}
+if($_SESSION['user']['PersonID']){
 ?>
 <p class="alert alert-primary m-3">
     Je hebt <?php print getPoints($_SESSION['user']['PersonID'], $databaseConnection) ?> punten gespaart. <a href="loyalty-list.php">Kijk hier wat voor acties je hiermee kan vrijspelen.</a>
 </p>
+    <?php } ?>
 <h2>Winkelmandje</h2>
 <?php
 if(isset($_POST["mislukt"])){

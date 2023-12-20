@@ -2,6 +2,37 @@
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
 ?>
+<script>
+    function checkCreateInput() {
+        const email = document.getElementById("email").value;
+        const telefoonnummer = document.getElementById("telefoonnummer").value;
+        const postcode = document.getElementById("postcode").value;
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        const postcodeRegex = /^[1-9][0-9]{3}\s?[a-zA-Z]{2}$/;
+
+        if (!emailRegex.test(email)) {
+            <?php $correctInput = "Voer een geldig e-mailadres in."; ?>
+            return false;
+        } else if (isNaN(telefoonnummer)) {
+            <?php $correctInput = "Voer een geldig telefoonnummer in." ?>
+            return false;
+        } else if (!postcodeRegex.test(postcode)) {
+            <?php $correctInput = "Voer een geldige postcode in (bijvoorbeeld. 1234AB)"; ?>
+            return false;
+        } else {
+            <?php $correctInput = true; ?>
+            return true;
+        }
+    }
+    if (location.pathname.includes('/createAccount.php')) {
+        document.addEventListener('submit', (e) => {
+            // als de input niet klopt, stop de submit
+            if (!checkCreateInput() e.preventDefault();
+        });
+    }
+</script>
     <form method="POST" name="bevestig" class="loginBox" action="createAccount.php">
         <h2>Account aanmaken</h2>
         <div class="login-input-create">
@@ -85,28 +116,14 @@ include __DIR__ . "/helpers/utils.php";
         </label>
     </div>
         <div class="login-input-create">
-            <input type="submit" class="loginSubmit" name="inloggen" value="Maak account aan.">
+            <input type="submit" class="loginSubmit" name="inloggen" value="Maak account aan." id="submit">
         </div>
-        <script>
-                const email = document.getElementById("email").value;
-                const telefoonnummer = document.getElementById("telefoonnummer").value;
-                const postcode = document.getElementById("postcode").value;
-
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-                const postcodeRegex = /^[1-9][0-9]{3}\s?[a-zA-Z]{2}$/;
-
-                if (!emailRegex.test(email)) {
-                    <?php $correctInput = "Voer een geldig e-mailadres in."; ?>
-                } else if (isNaN(telefoonnummer)) {
-                    <?php $correctInput = "Voer een geldig telefoonnummer in." ?>
-                } else if (!postcodeRegex.test(postcode)) {
-                    <?php $correctInput = "Voer een geldige postcode in (bijvoorbeeld. 1234AB)"; ?>
-                } else {
-                    <?php $correctInput = true; ?>
-                }
-        </script>
         <?php
+        if (isset($_POST["inloggen"])) {
+            ?><script>
+            checkCreateInput();
+            </script><?php
+        }
 if (isset($_POST["straatnaam"]) && isset($_POST["huisnummer"])) {
     $_POST["address"] = $_POST["straatnaam"] . " " . $_POST["huisnummer"];
 }

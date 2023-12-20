@@ -87,6 +87,11 @@ $currentDiscount = getDiscountByStockItemID($_GET['id'], $databaseConnection);
             if ($amtSoldLast72Hrs >= 5) { ?>
                 <p><b>ERG GEWILD: dit product is afgelopen 72 uur <?php echo $amtSoldLast72Hrs ?> keer verkocht.</b></p>
             <?php } ?>
+                <div class="temperature-box">
+                    <?php if ($StockItem["IsChillerStock"]) {
+                        print "Temperatuur in het magazijn: " . actueleTemperatuur($databaseConnection) . " °C";
+                    } ?>
+                </div>
             <div class="QuantityText"><?php print $StockItem['QuantityOnHand']; ?></div>
             <div id="StockItemHeaderLeft">
                 <div class="CenterPriceLeft">

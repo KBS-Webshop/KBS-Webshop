@@ -20,7 +20,7 @@ if (isset($_POST['action'])) {
             clearCookie();
             break;
         case 'remove_deal_from_cart':
-            removeDealFromCart();
+            setcookie("deals", "", 2147483647);
             break;
     }
 

@@ -44,7 +44,7 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
             }
             $totalprice_normal += calculatePriceBTW($StockItem['SellPrice'], $StockItem['TaxRate'], $item['amount'], true);
         }
-
+        
         if ($totalprice_discount < $totalprice_normal) {
             $priceDifference = $totalprice_normal - $totalprice_discount;
             echo '<tr">Je bespaart ' . str_replace('.', ',', sprintf("€%.2f", $priceDifference)) . ' door de korting!</tr>';

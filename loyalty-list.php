@@ -18,7 +18,7 @@ $currentPoints = getPoints($_SESSION['user']['PersonID'], $databaseConnection);
 ?>
 
     <div class="container">
-    <p class="alert alert-primary">Let op: er kan maar 1 deal tegelijk actief zijn!</p>
+    <p class="alert alert-primary">Let op: er kan maar 1 deal gelijktijdig actief zijn!</p>
     <h3>Punten: <?php print $currentPoints ?></h3>
     <?php foreach($loyaltyDeals as $deal) { ?>
         <div class="row">

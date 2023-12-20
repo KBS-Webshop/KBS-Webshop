@@ -11,18 +11,21 @@
     justify-content: center;
     flex-direction: column;
 }
-.informationBox{
+
+.informationBox {
     display: flex;
     justify-content: center;
     flex-direction: row;
     width: 40%;
 }
+
 .login-input-create {
-display: flex;
+    display: flex;
     width: 25%;
     justify-content: center;
     flex-direction: column;
 }
+
 .previouslyOrdered {
     display: flex;
     flex-direction: column;
@@ -49,6 +52,7 @@ display: flex;
 .details {
     text-align: center;
 }
+
 @media only screen and (min-width: 600px) {
     .previouslyOrderedItem {
         flex-direction: row;
@@ -68,6 +72,9 @@ display: flex;
         width: 65%;
     }
 }
+
 .userButton {
-     max-width: none !important;
+    max-width: none !important;
+    padding: 5px;
+    margin: 5px;
 }

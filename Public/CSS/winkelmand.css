@@ -115,3 +115,9 @@ button.add-to-cart-button {
     padding: 1px;
     border-bottom: 1px solid #5a6268;
 }
+
+@media only screen and (max-width: 1600px) {
+    #ProductFrame2 {
+        height: auto;
+    }
+}

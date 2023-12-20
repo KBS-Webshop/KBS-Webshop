@@ -5,17 +5,13 @@ if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
     $basket_contents = json_decode($_COOKIE["basket"], true);
 
 }
-
-$_SESSION["naam"]=$_POST["naam"];
-$_SESSION["telefoonnummer"]=$_POST["telefoonnummer"];
-$_SESSION["adress"]=$_POST["adress"] . " " . $_POST["huisnummer"];
-$_SESSION["postcode"]=$_POST["postcode"];
-$_SESSION["stad"]=$_POST["stad"];
-$_SESSION["bezorgInstructies"] = $_POST["bezorgInstructies"];
-$_SESSION["provincie"] = $_POST["provincie"];
-$_SESSION["price"] = $_POST["price"];
-$_SESSION["basket"] = $_COOKIE["basket"];
-
+$_SESSION["user"]["NAW"]["FullName"] = $_POST["naam"];
+$_SESSION["user"]["NAW"]["CityName"] = $_POST["stad"];
+$_SESSION["user"]["NAW"]["DeliveryAddressLine1"] = $_POST["adress"] . " " . $_POST["huisnummer"];
+$_SESSION["user"]["NAW"]["DeliveryPostalCode"] = $_POST["postcode"];
+$_SESSION["user"]["NAW"]["PhoneNumber"] = $_POST["telefoonnummer"];
+$_SESSION["user"]["NAW"]["DeliveryInstructions"] = $_POST["bezorgInstructies"];
+$_SESSION["user"]["NAW"]["DeliveryProvince"] = $_POST["provincie"];
 
 foreach ($basket_contents as $item) {
     $StockItem = getStockItem($item["id"], $databaseConnection);
@@ -37,6 +33,9 @@ foreach ($basket_contents as $item) {
 </form>
 </html>
 <?php
-
+$_SESSION["order"]["placeOrder"] = TRUE;
+if (isset($_POST["gelukt"])){
+    print ("Bestelling word geplaatst.");
+}
 include __DIR__ . "/components/footer.php"
 ?>

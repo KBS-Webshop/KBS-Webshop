@@ -14,9 +14,17 @@ include "../helpers/database/stock.php";
 include "../helpers/loyalty.php";
 include "../helpers/database/discount.php";
 include "../helpers/database/productOnIndex.php";
+include "../helpers/database/mail_database.php";
+include "../helpers/mail.php";
+include "../helpers/database/customer.php";
 
 $databaseConnection = connectToDatabase();
+if ($_SESSION["user"]["isLoggedIn"] == 0 || $_SESSION["user"]["IsSalesPerson"] == 0) {
+    header("Location: ../customerLogin.php");
+    die();
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -37,6 +45,7 @@ $databaseConnection = connectToDatabase();
     <link rel="stylesheet" href="../Public/CSS/orderbevestiging.css" type="text/css">
     <link rel="stylesheet" href="../Public/CSS/winkelmand.css" type="text/css">
     <link rel="stylesheet" href="../Public/CSS/naw.css" type="text/css">
+    <link rel="stylesheet" href="../Public/CSS/mail_beheer.css" type="text/css">
     <link rel="stylesheet" href="../Public/CSS/view.css" type="text/css">
     <link rel="stylesheet" href="../Public/CSS/loyalty.css" type="text/css">
     <link rel="stylesheet" href="../Public/CSS/bootstrap.min.css" type="text/css">
@@ -47,16 +56,19 @@ $databaseConnection = connectToDatabase();
 <body>
     <div class="Background">
         <div class="row" id="Header">
-            <div class="col-2"><a href="./" id="LogoA">
+            <div class="col-2"><a href="beheer.php" id="LogoA">
                     <div id="LogoImage"></div>
                 </a></div>
             <div class="col-8" id="CategoriesBar">
                 <ul id="ul-class">
                     <li>
-                        <a href="/" class="HrefDecoration">Webshop</a>
+                        <a href="/KBS-webshop" class="HrefDecoration">Webshop</a>
                     </li>
                     <li>
-                        <a href="/beheer/loyalty.php" class="HrefDecoration">Loyalty</a>
+                        <a href="/KBS-webshop/beheer/loyalty.php" class="HrefDecoration">Loyalty</a>
+                    </li>
+                    <li>
+                        <a href="/KBS-webshop/beheer/mail_aanpas_keuze.php" class="HrefDecoration">mail</a>
                     </li>
                     <li>
                         <a href="/beheer/discount.php" class="HrefDecoration">Discount</a>

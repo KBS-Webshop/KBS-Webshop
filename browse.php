@@ -1,7 +1,8 @@
 <!-- dit bestand bevat alle code voor het productoverzicht -->
 <?php
 include __DIR__ . "/components/header.php";
-include __DIR__ . "/helpers/utils.php";
+require __DIR__ . "/helpers/utils.php";
+include __DIR__ . "/helpers/database/reviewsDB.php";
 
 $ReturnableResult = null;
 $Sort = "SellPrice";
@@ -270,6 +271,15 @@ if (isset($amount)) {
                     <?php if ($amtSoldLast72Hrs >= 5) { ?><p><b>ERG GEWILD: dit product is afgelopen 72 uur <?php echo $amtSoldLast72Hrs ?> keer verkocht.</b></p><?php } ?>
                     <p class="StockItemComments"><?php print $row["MarketingComments"]; ?></p>
                     <h4 class="ItemQuantity"><?php print getVoorraadTekst($row["QuantityOnHand"]); ?></h4>
+                    <p>
+                        <?php
+                        $average = ceil(getAverageRating($row['StockItemID'], $databaseConnection));
+                        for ($i = 1; $i <= $average; $i++){
+                            echo "⭐️";
+                        }
+
+                        ?>
+                    </p>
                 </div>
             </a>
         <?php }

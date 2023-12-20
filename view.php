@@ -2,12 +2,15 @@
 <?php
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
+include __DIR__ . "/helpers/database/reviewsDB.php";
+
 
 $StockItem = getStockItem($_GET['id'], $databaseConnection);
 $StockItemImage = getStockItemImage($_GET['id'], $databaseConnection);
 $AlsoBought = getAlsoBought($_GET['id'], $databaseConnection);
 $currentDiscount = getDiscountByStockItemID($_GET['id'], $databaseConnection);
 ?>
+
 <div id="CenteredContent">
     <?php
     if ($StockItem != null) {
@@ -157,12 +160,145 @@ $currentDiscount = getDiscountByStockItemID($_GET['id'], $databaseConnection);
                     ?>
 
                 </div>
+                <?php
+                if (isset($_SESSION['user']))
+                {
+                    $personID =  $_SESSION['user']['PersonID']; // hier moet een check komen op wie ingelogd is✅//
+                    $existingPersonIDs = array_column(getPersonIDs($StockItem['StockItemID'], $databaseConnection), 'PersonID');
+                    $gekochteItemsPersoon = didUserBuy($personID, $databaseConnection);
+                    if (!in_array($personID, $existingPersonIDs)
+                        && $_SESSION['user']['isLoggedIn'] == 1
+                        && in_array($StockItem['StockItemID'], $gekochteItemsPersoon))
+                    { //&& de persoon het product heeft gekocht✅
+                        ?>
+                        <div id="StockItemSpecifications">
+                            <form method="post">
+                                <input type="text" name="review" placeholder="Typ hier uw review! (max 800 leestekens)" maxlength="800" required>
+                                <div class="review-knoppen">
+                                    <?php
+                                    for($i = 1; $i <= 5; $i++){ ?>
+                                        <label><?php echo $i ?></label>
+                                        <input type="radio" name="rating" value="<?php echo $i ?>" <?php echo ($i === 1) ? 'required' : ''; ?>>
+                                    <?php } ?>
+                                </div>
+                                <input type="submit" value="Review toevoegen" name="ReviewToevoegen">
+                            </form>
+                        </div>
+                        <?php
+                    }
+                    else
+                    {
+                        $existingReview = getReviewByPerson($personID, $StockItem['StockItemID'], $databaseConnection);
+                        if ($existingReview)
+                        {
+                            ?>
+                            <div id="StockItemSpecifications">
+                                <form method="post">
+                                    <input type="text" name="aangepasteReview"
+                                           value="<?php echo $existingReview['review']; ?>"
+                                           placeholder="Type hier uw aangepaste review! (max 800 leestekens)"
+                                           maxlength="800" required>
+                                    <div class="review-knoppen">
+                                        <?php
+                                        for ($i = 1; $i <= 5; $i++) { ?>
+                                            <label><?php echo $i ?></label>
+                                            <input type="radio" name="aangepasteRating"
+                                                   value="<?php echo $i ?>" <?php echo ($i == $existingReview['rating']) ? 'checked' : ''; ?>>
+                                        <?php } ?>
+                                    </div>
+                                    <input type="submit" value="Review aanpassen" name="ReviewAanpassen">
+                                </form>
+                            </div>
+                        <?php }
+                    }
+                }
+
+                $sortOrder = $sortOrder = 'rating DESC';
+                if (getAllReviews($StockItem['StockItemID'], $sortOrder, $databaseConnection)){
+                    ?>
+                    <div class="reviews">
+                        <div class="order-by">
+                            <form method="post">
+                                <label for="sortOrder">Sort by:</label>
+                                <select name="sortOrder" id="sortOrder">
+                                    <option value="rating ASC">Rating (Ascending)</option>
+                                    <option value="rating DESC">Rating (Descending)</option>
+                                    <option value="publicationDate ASC">Review Date (Ascending)</option>
+                                    <option value="publicationDate DESC">Review Date (Descending)</option>
+                                </select>
+                                <input type="submit" value="Sort Reviews">
+                            </form>
+                        </div>
+
+                        <?php
+                        }
+                        if (isset($_POST['sortOrder']))
+                        {
+                            $sortOrder = $_POST['sortOrder'];
+                        }
+                        $reviews = getAllReviews($StockItem['StockItemID'], $sortOrder, $databaseConnection);
+
+                        foreach ($reviews as $review) {
+                                ?>
+                            <div id="StockItemSpecifications">
+                                <div class="review-person">
+                                    <?php
+                                    echo ($review['FullName'] . '<br>');
+                                    for ($i = 0; $i < $review['rating']; $i++) {
+                                        echo '⭐️ ';
+                                    }
+                                    ?>
+                                </div>
+                                <div>
+                                    <?php
+                                    echo ($review['review'] . "<br>");
+                                    ?>
+                                </div>
+                                <div class="review-date">
+                                    <?php
+                                    if ($review['lastedited'])
+                                    {
+                                        echo ('<i> edited </i> &nbsp  ' . $review['lastedited']); //edited tag als er een wijziging is geweest
+                                    }
+                                    else
+                                    {
+                                        echo $review['publicationDate'];
+                                    }
+                                        ?>
+                                </div>
+                            </div>
+                            <?php
+                        }
+                        ?>
+                    </div>
             </div>
 
-            <?php 
+            <?php
+            if (isset($_POST['ReviewToevoegen'])) {
+                $review = $_POST['review'];
+                addReview($review, $StockItem["StockItemID"], $personID, $_POST['rating'],$databaseConnection);
+                ?>
+            <meta http-equiv="refresh" content="0">
+            <?php
+            }
+            ?>
+
+            <?php
+            if (isset($_POST['ReviewAanpassen'])) {
+                $editedRating = $_POST['aangepasteRating'];
+                $editedReview = $_POST['aangepasteReview'];
+                updateReview($editedReview, $editedRating, $personID, $StockItem['StockItemID'],$databaseConnection);
+                ?>
+                <meta http-equiv="refresh" content="0">
+                <?php
+            }
+            ?>
+
+
+            <?php
                 if(count($AlsoBought) != 0) {
             ?>
-            <div class="ProductAlsoBoughtWrapper">
+                    <div class="ProductAlsoBoughtWrapper">
                 <h3>Vaak samen gekocht</h3>
                 <div class="ProductsAlsoBoughtGrid">
                     <?php
@@ -226,6 +362,10 @@ $currentDiscount = getDiscountByStockItemID($_GET['id'], $databaseConnection);
         <?php }
     } else {
         ?><h2 id="ProductNotFound">Het opgevraagde product is niet gevonden.</h2><?php
-    } ?>
+    }
+    ?>
 </div>
-</div>
+
+
+
+

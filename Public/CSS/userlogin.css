@@ -1,0 +1,73 @@
+.loginBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.loginBox .login-input {
+    display: flex;
+    width: 25%;
+    justify-content: center;
+    flex-direction: column;
+}
+.informationBox{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    width: 40%;
+}
+.login-input-create {
+display: flex;
+    width: 25%;
+    justify-content: center;
+    flex-direction: column;
+}
+.previouslyOrdered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.previouslyOrderedItem {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.ImgFrame1 {
+    width: 100%;
+    height: 150px;
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 10px;
+}
+
+.details {
+    text-align: center;
+}
+@media only screen and (min-width: 600px) {
+    .previouslyOrderedItem {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .ImgFrame1 {
+        width: 30%;
+        height: auto;
+        margin-bottom: 0;
+        background-size: contain;
+        background-position: center;
+    }
+
+    .details {
+        width: 65%;
+    }
+}
+.userButton {
+     max-width: none !important;
+}

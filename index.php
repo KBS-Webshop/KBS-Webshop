@@ -73,7 +73,6 @@ $amtSold72Hours = getAmountOrderedLast72Hours($productID, $databaseConnection);
                     <?php } ?>
                 </ul>
         </div>
-        </a>
         <div class="HomePageStockItemPicture"></div>
     </div>
 </div>

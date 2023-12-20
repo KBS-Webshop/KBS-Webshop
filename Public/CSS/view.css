@@ -18,6 +18,7 @@
     display: flex;
     flex-direction: column;
     min-width: 50%;
+    max-width: 50%;
 }
 
 .ProductsAlsoBoughtGrid {
@@ -84,4 +85,36 @@
 .small-timer {
     margin-right: 20px;
     text-align: right;
+}
+.review-date {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.review-person {
+    font-weight: bold;
+    color: #0000a4;
+}
+
+.reviews {
+    display: flex;
+    flex-direction: column;
+    min-width: 50%;
+}
+
+.review-knoppen{
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    justify-content: space-around;
+    min-width: 18%;
+}
+
+.order-by
+{
+    width: 45%;
 }

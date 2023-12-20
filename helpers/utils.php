@@ -34,61 +34,13 @@ function PlaceOrder(
     $orderstatus = "Wordt verwerkt";
 
     if ($betaald == true) {
-        $countryID = 153;
-        $newStateProvinceID = getNewStateProvinceID($databaseConnection);
-        $StateProvinceID = getStateProvince($databaseConnection, $DeliveryProvince);
-        $stateProvinceCode = abbreviate($DeliveryProvince);
-        $newCityID = getNewCityID($databaseConnection);
-        $deliveryCityID = getCity($databaseConnection, $cityName);
-        $newCustomerID = getNewCustomerID($databaseConnection);
         $customerId = getCustomer($databaseConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode);
-        $customerCategoryID = 8;
-        $salesContactPersonID = 3262;
-        $deliveryMethodID = 3;
-        $standardDiscountPercentage = 0.000;
-        $isOnCreditHold = 0;
-        $isStatementSent = 0;
-        $paymentDays = 7;
-        $validTo = "9999-12-31 23:59:59";
-        $websiteURL = "https://KBS.renzeboerman.nl";
         $currentDate = date("Y-m-d");
         $estimatedDeliveryDate = date("Y-m-d", strtotime($currentDate . "+ 1 days"));
-
-        if ($StateProvinceID == null) {
-            addStateProvince($databaseConnection, $newStateProvinceID, $stateProvinceCode, $countryID, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo);
-            $StateProvinceID = getStateProvince($databaseConnection, $DeliveryProvince);
-        } else {
-            $StateProvinceID = getStateProvince($databaseConnection, $DeliveryProvince);
-        }
-
-        if ($deliveryCityID == null) {
-            addCity($databaseConnection, $newCityID, $cityName, $StateProvinceID, $salesContactPersonID, $currentDate, $validTo);
-            $deliveryCityID = getCity($databaseConnection, $cityName);
-        } else {
-            $deliveryCityID = getCity($databaseConnection, $cityName);
-        }
+        $salesContactPersonID = 3262;
 
         if ($customerId == null) {
-            addCustomer(
-                $databaseConnection,
-                $newCustomerID,
-                $Cname,
-                $phoneNumber,
-                $DeliveryAddress,
-                $DeliveryPostalCode,
-                $deliveryCityID,
-                $customerCategoryID,
-                $salesContactPersonID,
-                $deliveryMethodID,
-                $currentDate,
-                $standardDiscountPercentage,
-                $isStatementSent,
-                $isOnCreditHold,
-                $paymentDays,
-                $websiteURL,
-                $validTo
-            );
-
+            definiteAddCustomer($databaseConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $cityName, $DeliveryProvince, $customerId);
             $customerId = getCustomer($databaseConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode);
         } else {
             $customerId = getCustomer($databaseConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode);

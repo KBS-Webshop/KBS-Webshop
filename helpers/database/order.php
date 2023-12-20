@@ -63,21 +63,20 @@ function getNewCityID ($dbConnection) {
     $R = $R + 1;
     return $R;
 }
-function getCity ($dbConnection, $cityName) {
+function getCity ($dbConnection, $cityID) {
     $Query = "
-    SELECT CityID
+    SELECT Cityname
     FROM cities
-    WHERE CityName = ?";
+    WHERE CityID = ?";
 
     $Statement = mysqli_prepare($dbConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "s", $cityName);
+    mysqli_stmt_bind_param($Statement, "s", $cityID);
     mysqli_stmt_execute($Statement);
     $R = mysqli_stmt_get_result($Statement);
     $R = mysqli_fetch_assoc($R);
-    if ($R == null) {
-        return $R;
+    if ($R != null) {
+        return $R["Cityname"];
     } else {
-        $R = intval($R['CityID'], 10);
         return $R;
     }
 }
@@ -124,12 +123,12 @@ function getCustomer($dbConnection, $Cname, $phoneNumber, $DeliveryAddress, $Del
     }
 }
 
-function addCustomer ($dbConnection, $newCustomerID, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $deliveryCityID, $customCategoryID, $salesContactPersonID, $deliveryMethodID, $currentDate, $standardDiscountPercentage, $isStatementSent, $isOnCreditHold, $paymentDays, $websiteURL, $validTo) {
+function addCustomer ($dbConnection, $newCustomerID, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $deliveryCityID, $customCategoryID, $salesContactPersonID, $deliveryMethodID, $currentDate, $standardDiscountPercentage, $isStatementSent, $isOnCreditHold, $paymentDays, $websiteURL, $validTo, $PersonID) {
     $Query = "
-    INSERT INTO customers (CustomerID, CustomerName, BillToCustomerID, CustomerCategoryID, PrimaryContactPersonID, DeliveryMethodID, DeliveryCityID, PostalCityID, AccountOpenedDate, StandardDiscountPercentage, IsStatementSent, IsOnCreditHold, PaymentDays, PhoneNumber, FaxNumber, WebsiteURL, DeliveryAddressLine1, DeliveryPostalCode, PostalAddressLine1, PostalPostalCode, LastEditedBy, ValidFrom, ValidTo)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?)";
+    INSERT INTO customers (CustomerID, CustomerName, BillToCustomerID, CustomerCategoryID, PrimaryContactPersonID, DeliveryMethodID, DeliveryCityID, PostalCityID, AccountOpenedDate, StandardDiscountPercentage, IsStatementSent, IsOnCreditHold, PaymentDays, PhoneNumber, FaxNumber, WebsiteURL, DeliveryAddressLine1, DeliveryPostalCode, PostalAddressLine1, PostalPostalCode, LastEditedBy, ValidFrom, ValidTo, PersonID)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?, ?)";
     $Statement = mysqli_prepare($dbConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "ssiiiiiisiiiisssssssiss", $newCustomerID, $Cname, $newCustomerID, $customCategoryID, $salesContactPersonID, $deliveryMethodID, $deliveryCityID, $deliveryCityID, $currentDate, $standardDiscountPercentage, $isStatementSent, $isOnCreditHold, $paymentDays, $phoneNumber, $phoneNumber, $websiteURL, $DeliveryAddress, $DeliveryPostalCode, $DeliveryAddress, $DeliveryPostalCode, $salesContactPersonID, $currentDate, $validTo);
+    mysqli_stmt_bind_param($Statement, "ssiiiiiisiiiisssssssissi", $newCustomerID, $Cname, $newCustomerID, $customCategoryID, $salesContactPersonID, $deliveryMethodID, $deliveryCityID, $deliveryCityID, $currentDate, $standardDiscountPercentage, $isStatementSent, $isOnCreditHold, $paymentDays, $phoneNumber, $phoneNumber, $websiteURL, $DeliveryAddress, $DeliveryPostalCode, $DeliveryAddress, $DeliveryPostalCode, $salesContactPersonID, $currentDate, $validTo, $PersonID);
     mysqli_stmt_execute($Statement);
 }
 function getOrderID ($dbConnection) {
@@ -171,4 +170,56 @@ function changevoorraad($dbConnection, $amount, $stockItemID){
     mysqli_stmt_execute($Statement);
 
 }
-
+function definiteAddCustomer ($databaseConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $cityName, $DeliveryProvince, $PersonID) {
+    $countryID = 153;
+    $newStateProvinceID = getNewStateProvinceID($databaseConnection);
+    $StateProvinceID = getStateProvince($databaseConnection, $DeliveryProvince);
+    $stateProvinceCode = abbreviate($DeliveryProvince);
+    $newCityID = getNewCityID($databaseConnection);
+    $deliveryCityID = getcityID($databaseConnection, $cityName);
+    $newCustomerID = getNewCustomerID($databaseConnection);
+    $customerCategoryID = 8;
+    $salesContactPersonID = 3262;
+    $deliveryMethodID = 3;
+    $standardDiscountPercentage = 0.000;
+    $isOnCreditHold = 0;
+    $isStatementSent = 0;
+    $paymentDays = 7;
+    $validTo = "9999-12-31 23:59:59";
+    $websiteURL = "https://KBS.renzeboerman.nl";
+    $currentDate = date("Y-m-d");
+    if ($StateProvinceID == null) {
+        addStateProvince($databaseConnection, $newStateProvinceID, $stateProvinceCode, $countryID, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo);
+        $StateProvinceID = getStateProvince($databaseConnection, $DeliveryProvince);
+    } else {
+        $StateProvinceID = getStateProvince($databaseConnection, $DeliveryProvince);
+    }
+    if ($deliveryCityID == null) {
+        addCity($databaseConnection, $newCityID, $cityName, $StateProvinceID, $salesContactPersonID, $currentDate, $validTo);
+        $deliveryCityID = getCityID($databaseConnection, $cityName);
+        $_SESSION["user"]["customer"]["PostalCityID"] = $cityName;
+    } else {
+        $deliveryCityID = getCityID($databaseConnection, $cityName);
+    }
+    addCustomer(
+        $databaseConnection,
+        $newCustomerID,
+        $Cname,
+        $phoneNumber,
+        $DeliveryAddress,
+        $DeliveryPostalCode,
+        $deliveryCityID,
+        $customerCategoryID,
+        $salesContactPersonID,
+        $deliveryMethodID,
+        $currentDate,
+        $standardDiscountPercentage,
+        $isStatementSent,
+        $isOnCreditHold,
+        $paymentDays,
+        $websiteURL,
+        $validTo,
+        $PersonID
+    );
+    return TRUE;
+}

@@ -3,11 +3,13 @@
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
 
-$naam=$_SESSION["naam"];
-$telefoonnummer=$_SESSION["telefoonnummer"];
-$adress=$_SESSION["adress"];
-$postcode=$_SESSION["postcode"];
-$stad=$_SESSION["stad"];
+clearCookie();
+
+$naam = $_SESSION["user"]["NAW"]["FullName"];
+$telefoonnummer = $_SESSION["user"]["NAW"]["PhoneNumber"];
+$adress = $_SESSION["user"]["NAW"]["DeliveryAddressLine1"];
+$postcode = $_SESSION["user"]["NAW"]["DeliveryPostalCode"];
+$stad = $_SESSION["user"]["NAW"]["CityName"];
 $betaald = TRUE;
 $Cname = " ";
 $phoneNumber = " ";
@@ -16,16 +18,16 @@ $DeliveryPostalCode = " ";
 $DeliveryInstructions = "";
 $amountOfProductsInOrder = 0;
 $quantityOnHand = 0;
-$Cname = $_SESSION["naam"];
-$phoneNumber = $_SESSION["telefoonnummer"];
-$DeliveryAddress = $_SESSION["adress"];
-$DeliveryPostalCode = $_SESSION["postcode"];
-$DeliveryInstructions = $_SESSION["bezorgInstructies"];
-$cityName = $_SESSION["stad"];
-$DeliveryProvince = $_SESSION["provincie"];
+$Cname = $_SESSION["user"]["NAW"]["FullName"];
+$phoneNumber = $_SESSION["user"]["NAW"]["PhoneNumber"];
+$DeliveryAddress = $_SESSION["user"]["NAW"]["DeliveryAddressLine1"];
+$DeliveryPostalCode = $_SESSION["user"]["NAW"]["DeliveryPostalCode"];
+$DeliveryInstructions = $_SESSION["user"]["NAW"]["DeliveryInstructions"];
+$cityName = $_SESSION["user"]["NAW"]["CityName"];
+$DeliveryProvince = $_SESSION["user"]["NAW"]["DeliveryProvince"];
 
-if (isset($_SESSION["naam"]) && isset($_SESSION["telefoonnummer"]) && isset($_SESSION["adress"]) && isset($_SESSION["postcode"]) && isset($_SESSION["provincie"]) && isset($_SESSION["stad"])) {
-    $orderID = PlaceOrder(
+if (isset($_SESSION["user"]["NAW"]["FullName"]) && isset($_SESSION["user"]["NAW"]["PhoneNumber"]) && isset($_SESSION["user"]["NAW"]["DeliveryAddressLine1"]) && isset($_SESSION["user"]["NAW"]["DeliveryPostalCode"]) && isset($_SESSION["user"]["NAW"]["CityName"]) && $_SESSION["order"]["placeOrder"] == TRUE) {
+$_SESSION["order"]["orderID"] = PlaceOrder(
         $databaseConnection,
         $Cname,
         $phoneNumber,
@@ -39,11 +41,74 @@ if (isset($_SESSION["naam"]) && isset($_SESSION["telefoonnummer"]) && isset($_SE
         $cityName,
         $_SESSION["price"]
     );
+    $placeOrder = 0;
+    $_SESSION["order"]["placeOrder"] = FALSE;
+    if ($_SESSION["user"]["isLoggedIn"]) {
+        $personID = $_SESSION['user']['PersonID'];
+        $recipient = $_SESSION["userEmail"];
+        $subject = 'Orderbevestiging';
+        $subject1 = 'reclame';
+        $Naam = $_SESSION["user"]["NAW"]["FullName"];
+        $customerID1 = getCustomerIDbypersonID($databaseConnection, $personID);
+        $customerID = $customerID1[0]['CustomerID'];
+        $gegevens = getUserInfo($databaseConnection, $personID);
+        $customerDetails = $gegevens[0];
+        $ordergegevens = getOrder($databaseConnection, $_SESSION["order"]["orderID"]);
+        $bezorgAdres = $customerDetails['DeliveryAddressLine1'];
+        $linkUserInfo = '<a href="http://localhost/KBS-webshop/userInfoAanpassen.php" style="max-width: 10rem; border-radius: 10px; border: none; text-decoration: none; display: inline-block; text-align: center; padding: 0.5rem; background-color: #0000a4; color: white; font-size: 14px;">pas gebruikersinfo aan</a>';
+        $logo = "<div style='background-color: #f5f5f5; padding: 20px;'>
+        
+        <a href='http://localhost/KBS-webshop/'><img src='cid:logo' alt='Logo' width='300' height='300'></a>
+    </div>
+";
+
+
+        $editorContent1 = getEmailTemplate($databaseConnection, 'orderbevesteging');
+        $editorContent2 = getEmailTemplate($databaseConnection, 'reclame');
+        $editorContent = $editorContent1[0]['content'];
+        $editorContent = str_replace('$(naam)', $naam, $editorContent);
+        $editorContent = str_replace('$(customerID)', $customerID, $editorContent);
+        $editorContent = str_replace('$(telefoonnummer)', $telefoonnummer, $editorContent);
+        $editorContent = str_replace('$(bezorg-adres)', $bezorgAdres, $editorContent);
+        $editorContent = str_replace('$(postcode)', $postcode, $editorContent);
+        $editorContent = str_replace('$(linkUserInfo)', $linkUserInfo, $editorContent);
+        $editorContent = str_replace('$(logo)', $logo, $editorContent);
+        $editorContent3 = $editorContent2[0]['content'];
+
+        $editorContent3 = str_replace('$(naam)', $naam, $editorContent3);
+        $editorContent3 = str_replace('$(customerID)', $customerID, $editorContent3);
+        $editorContent3 = str_replace('$(telefoonnummer)', $telefoonnummer, $editorContent3);
+        $editorContent3 = str_replace('$(bezorg-adres)', $bezorgAdres, $editorContent3);
+        $editorContent3 = str_replace('$(postcode)', $postcode, $editorContent3);
+        $editorContent3 = str_replace('$(linkUserInfo)', $linkUserInfo, $editorContent3);
+        $editorContent3 = str_replace('$(logo)', $logo, $editorContent3);
+        $productenText = '';
+        foreach ($ordergegevens as $ordergegeven) {
+            $productenText .= 'Item Name: ' . $ordergegeven["StockItemName"] . ' aantal: ' . $ordergegeven['Quantity'] . '<br>';
+        }
+        $alsobought1 = getAlsoBought($ordergegevens[0]['StockItemID'], $databaseConnection);
+        $productText = '';
+
+        foreach ($alsobought1 as $item) {
+            $productText .= 'Item Name: ' . $item['StockItemName'] . '<br>';
+        }
+
+        $editorContent = str_replace('$(producten)', $productenText, $editorContent);
+        $editorContent = str_replace('$(alsobought)', $productText, $editorContent);
+        $editorContent3 = str_replace('$(producten)', $productenText, $editorContent3);
+        $editorContent3 = str_replace('$(alsobought)', $productText, $editorContent3);
+
+        $textBody = 'orderbevestiging';
+        $textBody1 = 'reclame';
+
+        sendEmail($recipient, $subject, $editorContent, $textBody, __DIR__ . '\Public\ProductIMGHighRes\NerdyGadgetsLogo.png');
+        sendEmail($recipient, $subject1, $editorContent3, $textBody1, __DIR__ . '\Public\ProductIMGHighRes\NerdyGadgetsLogo.png');
+    }
 }
 ?>
 
 <h1> orderbevestiging</h1><br>
-<h4><?php print $naam?>, bedankt voor uw bestelling bij NerdyGadgets! Uw bestel nummer is: <?php print $orderID?></h4><br>
+<h4><?php print $naam?>, bedankt voor uw bestelling bij NerdyGadgets! Uw bestel nummer is: <?php print $_SESSION["order"]["orderID"] ?></h4><br>
 <h1>Bestel overzicht</h1>
     <div class="winkelmand-wrapper">
     <ul class="winkelmand">

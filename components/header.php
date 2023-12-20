@@ -78,7 +78,7 @@ $databaseConnection = connectToDatabase();
 
             <ul id="ul-class-navigation">
                 <li>
-                    <a href="CustomerLogin.php" class="HrefDecoration"><img src="/Public/Img/user-solid.svg" alt="Account"> Account&nbsp;&nbsp;</a>
+                    <a href="CustomerLogin.php" class="HrefDecoration"><i class="fa fa-user"></i> Account&nbsp;&nbsp;</a>
                 </li>
                 <li>
                     <a href="browse.php" class="HrefDecoration"><i class="fas fa-search search"></i> Zoeken</a>

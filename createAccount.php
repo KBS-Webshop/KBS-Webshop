@@ -2,39 +2,38 @@
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
 ?>
-<script>
-    function checkCreateInput() {
-        const email = document.getElementById("email").value;
-        const telefoonnummer = document.getElementById("telefoonnummer").value;
-        const postcode = document.getElementById("postcode").value;
-
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const postcodeRegex = /^[1-9][0-9]{3}\s?[a-zA-Z]{2}$/;
-        const telefoonnummerRegex = /^(?:(?:\+|00(\s|\s?\-\s?)?)31(?:\s|\s?\-\s?)?(?:\(0\)[\-\s]?)?|0)[1-9](?:(?:\s|\s?\-\s?)?[0-9])(?:(?:\s|\s?-\s?)?[0-9])(?:(?:\s|\s?-\s?)?[0-9])\s?[0-9]\s?[0-9]\s?[0-9]\s?[0-9]\s?[0-9]$/;
-
-        if (!emailRegex.test(email)) {
-            alert("Email is niet geldig.")
-            return false;
-        } else if (isNaN(Number(telefoonnummer)) && !telefoonnummerRegex.test(telefoonnummer)) {
-            alert("Telefoonnummer is niet geldig.")
-            return false;
-        } else if (!postcodeRegex.test(postcode)) {
-            alert("Postcode is niet geldig.")
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    if (location.pathname.includes('/createAccount.php')) {
-        document.addEventListener('submit', (e) => {
-            // als de input niet klopt, stop de submit
-            if (!checkCreateInput()) {
-                e.preventDefault();
-            }
-        });
-    }
-</script>
+<!--<script>-->
+<!--    function checkCreateInput() {-->
+<!--        const email = document.getElementById("email").value;-->
+<!--        const telefoonnummer = document.getElementById("telefoonnummer").value;-->
+<!--        const postcode = document.getElementById("postcode").value;-->
+<!---->
+<!--        const emailRegex = /^[a-zA-Z0-9!#$%&'*+-/=?^_`{|}~.]+@[a-zA-Z0-9!#$%&'*+-/=?^_`{|}~.]+\.[a-zA-Z0-9!#$%&'*+-/=?^_`{|}~.]+$/;-->
+<!--        const postcodeRegex = /^[0-9]{4}\s*[a-zA-Z]{2}$/;-->
+<!--        const telefoonnummerRegex = /^(?:(?:\+|00(\s|\s?\-\s?)?)31(?:\s|\s?\-\s?)?(?:\(0\)[\-\s]?)?|0)[1-9](?:(?:\s|\s?\-\s?)?[0-9])(?:(?:\s|\s?-\s?)?[0-9])(?:(?:\s|\s?-\s?)?[0-9])\s?[0-9]\s?[0-9]\s?[0-9]\s?[0-9]\s?[0-9]$/;-->
+<!--        if (!emailRegex.test(email)) {-->
+<!--            alert("Email is niet geldig.") -->
+<!--            return false;-->
+<!--        }-->
+<!--        if (!telefoonnummerRegex.test(telefoonnummer)) {-->
+<!--            alert("Telefoonnummer is niet geldig.")-->
+<!--            return false;-->
+<!--        }-->
+<!--        if (!postcodeRegex.test(postcode)) {-->
+<!--            alert("Postcode is niet geldig.")-->
+<!--            return false;-->
+<!--        }-->
+<!--        return true;-->
+<!--    }-->
+<!---->
+<!--    if (location.pathname.includes('/createAccount.php')) {-->
+<!--        document.addEventListener('submit', (e) => {-->
+<!--            if (!checkCreateInput()) {-->
+<!--                e.preventDefault();-->
+<!--            }-->
+<!--        });-->
+<!--    }-->
+<!--</script>-->
     <form method="POST" name="bevestig" class="loginBox" action="createAccount.php">
         <h2>Account aanmaken</h2>
         <div class="login-input-create">
@@ -121,11 +120,11 @@ include __DIR__ . "/helpers/utils.php";
             <input type="submit" class="loginSubmit" name="inloggen" value="Maak account aan." id="submit">
         </div>
         <?php
-        if (isset($_POST["inloggen"])) {
-            ?><script>
-            checkCreateInput();
-            </script><?php
-        }
+//        if (isset($_POST["inloggen"])) {
+//            ?><!--<script>-->
+<!--            checkCreateInput();-->
+<!--            </script>--><?php
+//        }
 if (isset($_POST["straatnaam"]) && isset($_POST["huisnummer"])) {
     $_POST["address"] = $_POST["straatnaam"] . " " . $_POST["huisnummer"];
 }
@@ -153,11 +152,11 @@ if (isset($_POST["password"]) && isset($_POST["passwordConfirm"])) {
         }
 }
 ?>
-        <script>
-                document.addEventListener('submit', (e) => {
-                if (!checkPasswordStrength(<?php print ($_POST["password"]); ?>)) e.preventDefault();
-                });
-        </script>
+<!--        <script>-->
+<!--                document.addEventListener('submit', (e) => {-->
+<!--                if (!checkPasswordStrength(--><?php //print ($_POST["password"]); ?>//)) e.preventDefault();
+<!--                });
+//        </script>
     </form>
 <?php
 include __DIR__ . "/components/footer.php"

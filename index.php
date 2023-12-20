@@ -60,6 +60,7 @@ $amtSold72Hours = getAmountOrderedLast72Hours($productID, $databaseConnection);
                 </div>
                 <ul id="ul-class-price">
                     <?php if ($currentDiscount) { ?>
+                        <h1 class="HomePageClock" id="clock"></h1>
                         <h1 class="HomePageDiscount">-<?php echo intval($currentDiscount['DiscountPercentage'], 10) ?>%</h1>
                         <li class="HomePagePrice">
                             <s class="strikedtext-2"><?php echo calculatePriceBTW($StockItem['SellPrice'], $StockItem['TaxRate']) ?></s>
@@ -71,9 +72,24 @@ $amtSold72Hours = getAmountOrderedLast72Hours($productID, $databaseConnection);
                     <?php if ($amtSold72Hours > 5) { ?>
                         <p class="HomePageSold">OP = OP: Dit product is afgelopen 72 uur <?php echo $amtSold72Hours ?> keer verkocht.</p>
                     <?php } ?>
+                    <button class="add-to-cart-button" type="submit" name="addToCart" value="addItemToCart">
+                        <i class="fa fa-cart-plus fa-lg" style="color:red;"></i>
+                    </button>
                 </ul>
         </div>
         <div class="HomePageStockItemPicture"></div>
+
+        <?php
+
+        if ($currentDiscount) {
+            ?>
+            <script>
+                clockCountdown("clock", "<?php echo $currentDiscount['EndDate'] ?>", true);
+            </script>
+            <?php
+        }
+
+        ?>
     </div>
 </div>
 <?php

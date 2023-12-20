@@ -16,6 +16,7 @@ include "helpers/database/mail_database.php";
 include "helpers/mail.php";
 include "helpers/database/customer.php";
 
+include "helpers/database/temprature.php";
 
 $databaseConnection = connectToDatabase();
 ?>
@@ -80,7 +81,16 @@ $databaseConnection = connectToDatabase();
 
             <ul id="ul-class-navigation">
                 <li>
-                    <a href="CustomerLogin.php" class="HrefDecoration"><i class="fa fa-user"></i> Account&nbsp;&nbsp;</a>
+                    <a href="CustomerLogin.php" class="HrefDecoration"><i class="fa fa-user"></i>&nbsp;
+                    <?php
+
+                    if (isset($_SESSION['user']['isLoggedIn']) AND $_SESSION['user']['isLoggedIn'] == 1) {
+                        print $_SESSION['user']['FullName'];
+                    } else {
+                        print "Inloggen";
+                    }
+
+                    ?>&nbsp;&nbsp;</a>
                 </li>
                 <li>
                     <a href="browse.php" class="HrefDecoration"><i class="fas fa-search search"></i> Zoeken</a>

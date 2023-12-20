@@ -57,6 +57,7 @@ if ($updated && $updatedCustomer) {
         print("Account aangepast.");
         getCurrentUser($databaseConnection, $_POST["EmailAddress"], $_SESSION["hashedPassword"]);
         $_SESSION["userEmail"] = $_POST["EmailAddress"];
+        getUserCustomerInfo($databaseConnection, $_SESSION["userEmail"], $_SESSION["hashedPassword"]);
     } else {
         print("Account aanpassen mislukt.");
     }

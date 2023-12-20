@@ -63,7 +63,7 @@ include __DIR__ . "/helpers/utils.php";
         <h2>Uw informatie</h2>
     </div>
     <div class="informationBox">
-        <label>Naam: </label>
+        <label>Naam:&nbsp;</label>
         <?php
         if (isset($_SESSION["user"]["FullName"])) {
             print($_SESSION["user"]["FullName"]);
@@ -71,7 +71,7 @@ include __DIR__ . "/helpers/utils.php";
         ?>
     </div>
     <div class="informationBox">
-        <label>E-mail: </label>
+        <label>E-mail:&nbsp;</label>
         <?php
         if (isset($_SESSION["user"]["EmailAddress"])) {
             print($_SESSION["user"]["EmailAddress"]);
@@ -79,7 +79,7 @@ include __DIR__ . "/helpers/utils.php";
         ?>
     </div>
     <div class="informationBox">
-        <label>Telefoonnummer: </label>
+        <label>Telefoonnummer:&nbsp;</label>
         <?php
         if (isset($_SESSION["user"]["PhoneNumber"])) {
             print($_SESSION["user"]["PhoneNumber"]);
@@ -87,10 +87,34 @@ include __DIR__ . "/helpers/utils.php";
         ?>
     </div>
     <div class="informationBox">
-        <label>Loyaliteitspunten: </label>
+        <label>Loyaliteitspunten:&nbsp;</label>
         <?php
         if (isset($_SESSION["user"]["loyalty_points"])) {
             print($_SESSION["user"]["loyalty_points"]);
+        }
+        ?>
+    </div>
+    <div class="informationBox">
+        <label>Adres:&nbsp;</label>
+        <?php
+        if (isset($_SESSION["user"]["customer"]["DeliveryAddressLine1"])) {
+            print($_SESSION["user"]["customer"]["DeliveryAddressLine1"]);
+        }
+        ?>
+    </div>
+    <div class="informationBox">
+        <label>Postcode:&nbsp;</label>
+        <?php
+        if (isset($_SESSION["user"]["customer"]["DeliveryPostalCode"])) {
+            print($_SESSION["user"]["customer"]["DeliveryPostalCode"]);
+        }
+        ?>
+    </div>
+    <div class="informationBox">
+        <label>Stad:&nbsp;</label>
+        <?php
+        if (isset($_SESSION["user"]["customer"]["cityName"])) {
+            print($_SESSION["user"]["customer"]["cityName"]);
         }
         ?>
     </div>

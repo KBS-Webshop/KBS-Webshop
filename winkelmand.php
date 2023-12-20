@@ -3,7 +3,7 @@ include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
 ?>
 <p class="alert alert-primary m-3">
-    Je hebt <?php print getPoints(1, $databaseConnection) ?> punten gespaart. <a href="loyalty-list.php">Kijk hier wat voor acties je hiermee kan vrijspelen.</a>
+    Je hebt <?php print getPoints($_SESSION['user']['PersonID'], $databaseConnection) ?> punten gespaart. <a href="loyalty-list.php">Kijk hier wat voor acties je hiermee kan vrijspelen.</a>
 </p>
 <h2>Winkelmandje</h2>
 <?php
@@ -152,7 +152,8 @@ if (isset($_GET["message"])){
 
                 if ($totalprice_discount < $totalprice_normal) {
                     $priceDifference = $totalprice_normal - $totalprice_discount;
-                    echo '<tr">Je bespaart ' . str_replace('.', ',', sprintf("€%.2f", $priceDifference)) . ' door de korting!</tr>';
+                    echo '<tr><th colspan="3">Je bespaart ' . formatPrice($priceDifference) . ' door de korting!</th></tr>';
+                }
 
 
                 ?>
@@ -192,6 +193,5 @@ if (isset($_GET["message"])){
     
 
 <?php
-        }
 include __DIR__ . "/components/footer.php"
 ?>

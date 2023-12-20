@@ -14,7 +14,7 @@ if (isset($_POST["addId"]) && isset($_POST["points"])) {
 }
 
 $loyaltyDeals = getAllLoyaltyDeals($databaseConnection);
-$currentPoints = getPoints(1, $databaseConnection);
+$currentPoints = getPoints($_SESSION['user']['PersonID'], $databaseConnection);
 ?>
 
     <div class="container">

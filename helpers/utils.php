@@ -57,8 +57,6 @@ function PlaceOrder(
             calculateAndRemovePoints($price, $_SESSION["user"]["PersonID"], $databaseConnection);
             calculateAndAddPoints((float) $price, $_SESSION["user"]["PersonID"], $databaseConnection);    
         }
-        removeDealFromCart();
-        $_POST['action'] = 'remove_deal_from_cart';
 
         $basket_contents = json_decode($_COOKIE["basket"], true);
 

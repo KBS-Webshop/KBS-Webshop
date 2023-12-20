@@ -34,8 +34,7 @@ function getDealInCart() {
 }
 
 function removeDealFromCart() {
-    $_POST['action'] = 'remove_deal_from_cart';
-    # setcookie("deals", "", 2147483647);
+    setcookie("deals", "", 2147483647);
 }
 
 function calculatePriceWithDeals($price, $databaseConnection) {

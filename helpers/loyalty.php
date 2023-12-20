@@ -21,7 +21,6 @@ function calculateAndRemovePoints($price, $personId, $databaseConnection) {
     setPoints($personId, ($currentPoints - $points), $databaseConnection);
 }
 
-
 function addDealToCart($id) {
     setcookie("deals", $id, 2147483647);
 }

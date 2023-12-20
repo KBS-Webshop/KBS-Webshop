@@ -136,6 +136,7 @@ function createLoyaltyDeal($values, $databaseConnection) {
 }
 
 function setPoints($personId, $points, $databaseConnection) {
+    print($points);
     $Query = "
         UPDATE people
         SET loyalty_points = ?

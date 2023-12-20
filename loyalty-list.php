@@ -10,7 +10,6 @@ if (isset($_POST["addId"]) && isset($_POST["points"])) {
         addDealToCart($_POST["addId"], $_POST["points"]);
     }
     header("Refresh: 0; url=loyalty-list.php");
-
 }
 
 $loyaltyDeals = getAllLoyaltyDeals($databaseConnection);

@@ -53,9 +53,11 @@ function PlaceOrder(
         addOrder($databaseConnection, $customerId, $DeliveryInstructions, $currentDate, $estimatedDeliveryDate, $salesContactPersonID, $isInStock);
         $OrderID = getOrderID($databaseConnection);
 
-        calculateAndRemovePoints($price, 1, $databaseConnection);
-        calculateAndAddPoints((float) $price, 1, $databaseConnection);
-        # removeDealFromCart();
+        if($_SESSION["user"]["PersonID"]) {
+            calculateAndRemovePoints($price, $_SESSION["user"]["PersonID"], $databaseConnection);
+            calculateAndAddPoints((float) $price, $_SESSION["user"]["PersonID"], $databaseConnection);    
+        }
+        removeDealFromCart();
         $_POST['action'] = 'remove_deal_from_cart';
 
         $basket_contents = json_decode($_COOKIE["basket"], true);

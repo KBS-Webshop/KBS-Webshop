@@ -54,7 +54,6 @@ function PlaceOrder(
         $OrderID = getOrderID($databaseConnection);
 
         if($_SESSION["user"]["PersonID"]) {
-            calculateAndRemovePoints($price, $_SESSION["user"]["PersonID"], $databaseConnection);
             calculateAndAddPoints((float) $price, $_SESSION["user"]["PersonID"], $databaseConnection);    
         }
 

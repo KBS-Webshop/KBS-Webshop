@@ -49,9 +49,9 @@ if(isset($_POST["title"])) {
             <input type="submit" value="Verstuur" class="button primary">
         </div>
     </form>
-    <form method="POST">
+    <form method="POST" class="mt-3">
         <input type="hidden" name="delete" value="delete">
-        <input type="submit" value="Delete" class="button danger">
+        <input type="submit" value="Verwijderen" class="button danger">
     </form>
     <a href="loyalty.php"><i class="fa fa-arrow-left"></i> Ga terug</a>
 </div>

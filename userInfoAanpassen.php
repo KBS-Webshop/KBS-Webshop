@@ -3,8 +3,9 @@ include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
 $_SESSION["user"]["customer"]["cityName"] = getCity($databaseConnection, $_SESSION["user"]["customer"]["DeliveryCityID"]);
 $adress = explode(" ", $_SESSION["user"]["customer"]["DeliveryAddressLine1"]);
-$_SESSION["user"]["customer"]["streetName"] = $adress[0];
-$_SESSION["user"]["customer"]["houseNumber"] = $adress[1];
+$adressSlice = array_slice($adress, 0, -1);
+$_SESSION["user"]["customer"]["streetName"] = implode(" ", $adressSlice);
+$_SESSION["user"]["customer"]["houseNumber"] = end($adress);
 ?>
 <form method="POST" name="bevestig" class="loginBox" action="userInfoAanpassen.php">
     <div class="informationBox">

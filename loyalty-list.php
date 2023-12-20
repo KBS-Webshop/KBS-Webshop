@@ -24,7 +24,7 @@ $currentPoints = getPoints($_SESSION['user']['PersonID'], $databaseConnection);
             <div class="card col my-3" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title"><?php print $deal["title"] ?></h5>
-                    <h6 class="card-subtitle mb-2 text-muted"><?php print $deal["points"] ?></h6>
+                    <h6 class="card-subtitle mb-2 text-muted"><?php print'Benodigde punten: '.$deal["points"] ?></h6>
                     <p class="card-text"><?php print $deal["description"] ?></p>
                     <form method="POST">
                         <input type="hidden" name="addId" id="addId" value="<?php print $deal["id"] ?>">

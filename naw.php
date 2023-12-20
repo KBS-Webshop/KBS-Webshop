@@ -101,8 +101,9 @@ $_SESSION['price']=$totalprice;
     if (isset($_SESSION["user"]["customer"]["DeliveryAddressLine1"])) {
         if ($_SESSION["user"]["customer"]["DeliveryAddressLine1"] != null) {
             $adress = explode(" ", $_SESSION["user"]["customer"]["DeliveryAddressLine1"]);
-            $_SESSION["user"]["customer"]["straatnaam"] = $adress[0];
-            $_SESSION["user"]["customer"]["huisnummer"] = $adress[1];
+            $adressSlice = array_slice($adress, 0, -1);
+            $_SESSION["user"]["customer"]["streetName"] = implode(" ", $adressSlice);
+            $_SESSION["user"]["customer"]["houseNumber"] = end($adress);
         }
     }
     ?>
@@ -112,13 +113,13 @@ $_SESSION['price']=$totalprice;
             <label for="straatnaam" class="inline-label">
                 Straatnaam <span class="required"></span>
             </label>
-            <input type="text" name="adress" id="adress" value="<?php if(isset($_SESSION["user"]["customer"]["straatnaam"])) { print($_SESSION["user"]["customer"]["straatnaam"]); } else { print ""; } ?>" required>
+            <input type="text" name="adress" id="adress" value="<?php if(isset($_SESSION["user"]["customer"]["streetName"])) { print($_SESSION["user"]["customer"]["streetName"]); } else { print ""; } ?>" required>
         </div>
         <div class="naw-input-inner">
             <label for="huisnummer" class="inline-label">
                 Huisnummer <span class="required"></span>
             </label>
-            <input type="text" name="huisnummer" id="huisnummer" value="<?php if(isset($_SESSION["user"]["customer"]["huisnummer"])) { print($_SESSION["user"]["customer"]["huisnummer"]); } else { print ""; } ?>" required>
+            <input type="text" name="huisnummer" id="huisnummer" value="<?php if(isset($_SESSION["user"]["customer"]["houseNumber"])) { print($_SESSION["user"]["customer"]["houseNumber"]); } else { print ""; } ?>" required>
         </div>
     </div>
 

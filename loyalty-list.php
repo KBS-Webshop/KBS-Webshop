@@ -2,7 +2,6 @@
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
 
-
 if (isset($_POST["addId"]) && isset($_POST["points"])) {
     if (getDealInCart() == $_POST["addId"]) {
         removeDealFromCart();
@@ -15,8 +14,7 @@ if (isset($_POST["addId"]) && isset($_POST["points"])) {
 $loyaltyDeals = getAllLoyaltyDeals($databaseConnection);
 $currentPoints = getPoints($_SESSION['user']['PersonID'], $databaseConnection);
 ?>
-
-    <div class="container">
+<div class="container">
     <p class="alert alert-primary">Let op: er kan maar 1 deal gelijktijdig actief zijn!</p>
     <h3>Punten: <?php print $currentPoints ?></h3>
     <?php foreach($loyaltyDeals as $deal) { ?>
@@ -24,7 +22,7 @@ $currentPoints = getPoints($_SESSION['user']['PersonID'], $databaseConnection);
             <div class="card col my-3" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title"><?php print $deal["title"] ?></h5>
-                    <h6 class="card-subtitle mb-2 text-muted"><?php print'Benodigde punten: '.$deal["points"] ?></h6>
+                    <h6 class="card-subtitle mb-2 text-muted"><?php print'Benodigde punten: ' . $deal["points"] ?></h6>
                     <p class="card-text"><?php print $deal["description"] ?></p>
                     <form method="POST">
                         <input type="hidden" name="addId" id="addId" value="<?php print $deal["id"] ?>">

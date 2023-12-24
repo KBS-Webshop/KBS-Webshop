@@ -92,25 +92,6 @@ include __DIR__ . "/helpers/utils.php";
         <input type="text" name="stad" id="stad" required>
     </div>
     <div class="login-input-create">
-        <label for="name" class ="inline-label">
-            Provincie <span class="required"></span>
-        </label>
-        <select name="provincie" id="provincie" required>
-            <option value="Overijssel">Overijssel</option>
-            <option value="Groningen">Groningen</option>
-            <option value="Noord-Holland">Noord-Holland</option>
-            <option value="Zuid-Holland">Zuid-Holland</option>
-            <option value="Drenthe">Drenthe</option>
-            <option value="Gelderland">Gelderland</option>
-            <option value="Zeeland">Zeeland</option>
-            <option value="Utrecht">Utrecht</option>
-            <option value="Friesland">Friesland</option>
-            <option value="Limburg">Limburg</option>
-            <option value="Limburg">Brabant</option>
-            <option value="Flevoland">Flevoland</option>
-        </select>
-    </div>
-    <div class="login-input-create">
         <label for="name">
             akkoord met de terms of service <span class="required"></span>
             <input type="radio" name="options" value="option1" required>
@@ -136,13 +117,15 @@ if (isset($_POST["password"]) && isset($_POST["passwordConfirm"])) {
     $_SESSION["hashedPassword"] = $hashedPassword;
 }
 }
-    if (isset($_POST["email"]) && isset($_SESSION["hashedPassword"]) && isset($_POST["naam"]) && isset($_POST["telefoonnummer"]) && isset($_POST["address"]) && isset($_POST["postcode"]) && isset($_POST["stad"]) && isset($_POST["provincie"])) {
+    if (isset($_POST["email"]) && isset($_SESSION["hashedPassword"]) && isset($_POST["naam"]) && isset($_POST["telefoonnummer"]) && isset($_POST["address"]) && isset($_POST["postcode"]) && isset($_POST["stad"])) {
         if (checkIfAccountExists($databaseConnection, $_POST["email"])) {
             print("Account met deze email bestaat al.");
+        } else if (!cityExists($_POST["stad"], $databaseConnection)) {
+            print("Vul een bstaande stad in");
         } else {
             $PersonID = getNewAccountID($databaseConnection);
             $accountCreated = createAccount($databaseConnection, $_POST["naam"], $_SESSION["hashedPassword"], $_POST["telefoonnummer"], $_POST["email"]);
-            $customerAdded = definiteAddCustomer($databaseConnection, $_POST["naam"], $_POST["telefoonnummer"], $_POST["address"], $_POST["postcode"], $_POST["stad"], $_POST["provincie"], $PersonID);
+            $customerAdded = definiteAddCustomer($databaseConnection, $_POST["naam"], $_POST["telefoonnummer"], $_POST["address"], $_POST["postcode"], $_POST["stad"], $PersonID);
             if ($accountCreated && $customerAdded) {
                 print ("Account aangemaakt.");
 

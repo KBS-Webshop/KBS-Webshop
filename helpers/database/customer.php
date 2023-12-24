@@ -44,7 +44,7 @@ function hashPassword($password) {
 function createAccount ($databaseConnection, $name, $hashedPassword, $phoneNumber, $email){
     $currentDate = date("Y-m-d");
     $query = "INSERT INTO people (FullName, PreferredName, SearchName, IsPermittedToLogon, IsExternalLogonProvider, HashedPassword, IsSystemUser, IsEmployee, IsSalesPerson, PhoneNumber, EmailAddress, LastEditedBy, ValidFrom, ValidTo, loyalty_points)
-VALUES (?,?,?,1,0,?,1,0,0,?,?,3262,?,'9999-12-31 23:59:59.9999', 0)";
+VALUES (?,?,?,1,0,?,1,0,0,?,?,3262,?,'2024-12-31 23:59:59.9999', 0)";
     $statement = mysqli_prepare($databaseConnection, $query);
     mysqli_stmt_bind_param($statement, "sssssss", $name, $name, $name, $hashedPassword, $phoneNumber, $email, $currentDate);
     mysqli_stmt_execute($statement);
@@ -114,21 +114,12 @@ function getNewAccountID($databaseConnection)
 
 function updateCustomer ($databaseConnection, $customerID, $customerName, $cityName, $phoneNumber, $deliveryAddressLine1, $deliveryPostalCode, $postalAddressLine1, $postalPostalCode)
 {
-    if (getCityID($databaseConnection, $cityName) == FALSE) {
-        $newCityID = getNewCityID($databaseConnection);
-        $stateProvinceID = 1;
-        $salesContactPersonID = 3262;
-        $currentDate = date("Y-m-d");
-        $validTo = "9999-12-31 23:59:59.9999999";
-        addCity($databaseConnection, $newCityID, $cityName, $stateProvinceID, $salesContactPersonID, $currentDate, $validTo);
-    }
-    $deliveryCityID = getCityID($databaseConnection, $cityName);
-    $postalCityID = getCityID($databaseConnection, $cityName);
+    $cityID = getCityID($databaseConnection, $cityName);
     $query = "UPDATE customers 
               SET CustomerName = ?, DeliveryCityID = ?, PostalCityID = ?, PhoneNumber = ?, DeliveryAddressLine1 = ?, DeliveryPostalCode = ?, PostalAddressLine1 = ?, PostalPostalCode = ?
               WHERE CustomerID = ?";
     $statement = mysqli_prepare($databaseConnection, $query);
-    mysqli_stmt_bind_param($statement, "siisssssi", $customerName, $deliveryCityID, $postalCityID, $phoneNumber, $deliveryAddressLine1, $deliveryPostalCode, $postalAddressLine1, $postalPostalCode, $customerID);
+    mysqli_stmt_bind_param($statement, "siisssssi", $customerName, $cityID, $cityID, $phoneNumber, $deliveryAddressLine1, $deliveryPostalCode, $postalAddressLine1, $postalPostalCode, $customerID);
     mysqli_stmt_execute($statement);
     return TRUE;
 }

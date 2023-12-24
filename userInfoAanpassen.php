@@ -6,6 +6,14 @@ $adress = explode(" ", $_SESSION["user"]["customer"]["DeliveryAddressLine1"]);
 $adressSlice = array_slice($adress, 0, -1);
 $_SESSION["user"]["customer"]["streetName"] = implode(" ", $adressSlice);
 $_SESSION["user"]["customer"]["houseNumber"] = end($adress);
+$formIsFilled = isset($_POST["aanpassingenOpslaan"]) && 
+                isset($_POST["FullName"]) && 
+                isset($_POST["PhoneNumber"]) && 
+                isset($_POST["EmailAddress"]) && 
+                isset($_POST["cityName"]) && 
+                isset($_POST["houseNumber"]) && 
+                isset($_POST["streetName"]) &&
+                isset($_POST["DeliveryPostalCode"])
 ?>
 <form method="POST" name="bevestig" class="loginBox" action="userInfoAanpassen.php">
     <div class="informationBox">
@@ -44,24 +52,26 @@ $_SESSION["user"]["customer"]["houseNumber"] = end($adress);
         </div>
 </form>
 <div class="loginBox">
-    <?php
-    if (isset($_POST["streetName"]) && isset($_POST["houseNumber"])) {
+<?php
+    if ($formIsFilled) {
         $_POST["DeliveryAddressLine1"] = $_POST["streetName"] . " " . $_POST["houseNumber"];
         $_SESSION["user"]["customer"]["DeliveryAddressLine1"] = $_POST["DeliveryAddressLine1"];
+        if(!cityExists($_POST["cityName"], $databaseConnection)) {
+            print("Voer een bestaande stad in.");
+        } else {
+            getCurrentUserID($databaseConnection, $_SESSION["userEmail"], $_SESSION["hashedPassword"]);
+            $updated = updateAccount($databaseConnection, $_POST["FullName"], $_POST["PhoneNumber"], $_POST["EmailAddress"], $_SESSION["user"]["PersonID"]);
+            $updatedCustomer = updateCustomer($databaseConnection, $_SESSION["user"]["customer"]["CustomerID"], $_POST["FullName"], $_POST["cityName"], $_POST["PhoneNumber"], $_POST["DeliveryAddressLine1"], $_POST["DeliveryPostalCode"], $_POST["DeliveryAddressLine1"], $_POST["DeliveryPostalCode"]);
+            if ($updated && $updatedCustomer) {
+                print("Account aangepast.");
+                getCurrentUser($databaseConnection, $_POST["EmailAddress"], $_SESSION["hashedPassword"]);
+                $_SESSION["userEmail"] = $_POST["EmailAddress"];
+                getUserCustomerInfo($databaseConnection, $_SESSION["userEmail"], $_SESSION["hashedPassword"]);
+            } else {
+                print("Account aanpassen mislukt.");
+            }
+        }
     }
-if (isset($_POST["aanpassingenOpslaan"]) && isset($_POST["FullName"]) && isset($_POST["PhoneNumber"]) && isset($_POST["EmailAddress"]) && isset($_POST["cityName"]) && isset($_POST["DeliveryAddressLine1"]) && isset($_POST["DeliveryPostalCode"])) {
-    getCurrentUserID($databaseConnection, $_SESSION["userEmail"], $_SESSION["hashedPassword"]);
-    $updated = updateAccount($databaseConnection, $_POST["FullName"], $_POST["PhoneNumber"], $_POST["EmailAddress"], $_SESSION["user"]["PersonID"]);
-    $updatedCustomer = updateCustomer($databaseConnection, $_SESSION["user"]["customer"]["CustomerID"], $_POST["FullName"], $_POST["cityName"], $_POST["PhoneNumber"], $_POST["DeliveryAddressLine1"], $_POST["DeliveryPostalCode"], $_POST["DeliveryAddressLine1"], $_POST["DeliveryPostalCode"]);
-if ($updated && $updatedCustomer) {
-        print("Account aangepast.");
-        getCurrentUser($databaseConnection, $_POST["EmailAddress"], $_SESSION["hashedPassword"]);
-        $_SESSION["userEmail"] = $_POST["EmailAddress"];
-        getUserCustomerInfo($databaseConnection, $_SESSION["userEmail"], $_SESSION["hashedPassword"]);
-    } else {
-        print("Account aanpassen mislukt.");
-    }
-}
 ?>
 </div>
 <?php

@@ -1,18 +1,5 @@
 <?php
 
-function getNewCityID ($dbConnection) {
-    $Query = "
-    SELECT max(CityID)
-    FROM cities";
-
-    $Statement = mysqli_prepare($dbConnection, $Query);
-    mysqli_stmt_execute($Statement);
-    $R = mysqli_stmt_get_result($Statement);
-    $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
-    $R = intval($R[0]['max(CityID)'], 10);
-    $R = $R + 1;
-    return $R;
-}
 function getCity ($dbConnection, $cityID) {
     $Query = "
     SELECT Cityname
@@ -29,15 +16,6 @@ function getCity ($dbConnection, $cityID) {
     } else {
         return $R;
     }
-}
-
-function addCity ($dbConnection, $newCityID, $cityName, $StateProvinceID, $salesContactPersonID, $currentDate, $validTo){
-    $Query = "
-    INSERT INTO cities (CityID, CityName, StateProvinceID, LastEditedBy, ValidFrom, ValidTo)
-    VALUES (?, ?, ?, ?, ?, ?)";
-    $Statement = mysqli_prepare($dbConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "isiiss", $newCityID, $cityName, $StateProvinceID, $salesContactPersonID, $currentDate, $validTo);
-    mysqli_stmt_execute($Statement);
 }
 
 function getNewCustomerID($dbConnection)

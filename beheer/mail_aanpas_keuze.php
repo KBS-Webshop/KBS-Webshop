@@ -9,7 +9,7 @@ $_SESSION['next']=$next;
 
 <div id="CenteredContent">
     <h3>Email Templates</h3>
-    <a href="/KBS-webshop/beheer/mail_beheer.php?id=<?php echo $next; ?>" class="button primary btn-small">Maak nieuwe aan</a>
+    <a href="./mail_beheer.php?id=<?php echo $next; ?>" class="button primary btn-small">Maak nieuwe aan</a>
     <table class="loyalty-table">
 
         <?php
@@ -18,7 +18,7 @@ $_SESSION['next']=$next;
         if (isset($_POST['verwijder'])) {
             $idToDelete = $_POST['verwijder'];
             deleteTemplateByID($databaseConnection, $idToDelete);
-            header("Location: /KBS-webshop/beheer/mail_aanpas_keuze.php"); // Redirect naar de juiste pagina na verwijderen
+            header("Location: ./mail_aanpas_keuze.php"); // Redirect naar de juiste pagina na verwijderen
             exit();
         }
         ?>
@@ -30,7 +30,7 @@ $_SESSION['next']=$next;
             </tr>
             <?php foreach ($templates as $item): ?>
                 <tr>
-                    <td style="cursor: pointer" onClick="window.location.href='/KBS-webshop/beheer/mail_beheer.php?id=<?php echo $item["ID"]; ?>'"> <?php print $item['titel'] ?></td>
+                    <td style="cursor: pointer" onClick="window.location.href='./mail_beheer.php?id=<?php echo $item["ID"]; ?>'"> <?php print $item['titel'] ?></td>
                     <td>
                         <form method="post">
                             <button type="submit" name="verwijder" value="<?php echo $item['ID']; ?>">

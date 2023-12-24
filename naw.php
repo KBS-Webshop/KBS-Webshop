@@ -89,6 +89,11 @@ $_SESSION['price']=$totalprice_discount;
 <h2>Bestelgegevens</h2>
 
 <p id="errorMsg" class="error-text"></p>
+<?php 
+if (isset($_GET["message"]) && $_GET["message"] == "wrong_city") {
+    print "<p class='error-text'>Vul een bestaande stad in.</p>";
+}
+?>
 
 <form method="POST" name="bevestig" class="naw-form" action="afrekenen.php">
     <div class="naw-input">
@@ -135,26 +140,6 @@ $_SESSION['price']=$totalprice_discount;
                 Stad <span class="required"></span>
             </label>
             <input type="text" name="stad" id="stad" value="<?php if(isset($_SESSION["user"]["customer"]["cityName"])) { print($_SESSION["user"]["customer"]["cityName"]); } else { print ""; } ?>" required>
-        </div>
-        <div class="naw-input-inner">
-            <label for="name" class ="inline-label">
-                Provincie <span class="required"></span>
-            </label>
-            <select name="provincie" id="provincie" required>
-                <option value="Overijssel">Overijssel</option>
-                <option value="Groningen">Groningen</option>
-                <option value="Noord-Holland">Noord-Holland</option>
-                <option value="Zuid-Holland">Zuid-Holland</option>
-                <option value="Drenthe">Drenthe</option>
-                <option value="Gelderland">Gelderland</option>
-                <option value="Zeeland">Zeeland</option>
-                <option value="Utrecht">Utrecht</option>
-                <option value="Friesland">Friesland</option>
-                <option value="Limburg">Limburg</option>
-                <option value="Limburg">Brabant</option>
-                <option value="Flevoland">Flevoland</option>
-            </select>
-            <!-- <input type="text" name="provincie" id="provincie" required> -->
         </div>
     </div>
 

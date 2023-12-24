@@ -1,55 +1,5 @@
 <?php
 
-function abbreviate($string){ # maakt een afkorting van de ingevoerde waarde
-    $abbreviation = "";
-    $string = ucwords($string);
-    $words = explode(" ", "$string");
-    foreach($words as $word){
-        $abbreviation .= $word[0];
-    }
-    return $abbreviation;
-}
-function getNewStateProvinceID($dbConnection)
-{
-    $Query = "
-    SELECT max(StateProvinceID)
-    FROM stateprovinces";
-
-    $Statement = mysqli_prepare($dbConnection, $Query);
-    mysqli_stmt_execute($Statement);
-    $R = mysqli_stmt_get_result($Statement);
-    $R = mysqli_fetch_assoc($R);
-    $R = intval($R['max(StateProvinceID)'], 10);
-    $R = $R + 1;
-    return $R;
-}
-function getStateProvince ($dbConnection, $provinceName) {
-    $Query = "
-    SELECT StateProvinceID
-    FROM stateprovinces
-    WHERE StateProvinceName = ?";
-
-    $Statement = mysqli_prepare($dbConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "s", $provinceName);
-    mysqli_stmt_execute($Statement);
-    $R = mysqli_stmt_get_result($Statement);
-    $R = mysqli_fetch_assoc($R);
-    if ($R == null) {
-        return $R;
-    } else {
-        $R = intval($R['StateProvinceID'], 10);
-        return $R;
-    }
-}
-function addStateProvince ($dbConnection, $newStateProvinceID, $stateProvinceCode, $countryID, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo) {
-    $Query = "
-    INSERT INTO stateprovinces (StateProvinceID, StateProvinceCode, StateProvinceName, CountryID, SalesTerritory, LastEditedBy, ValidFrom, ValidTo)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    $Statement = mysqli_prepare($dbConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "issisiss", $newStateProvinceID, $stateProvinceCode, $DeliveryProvince, $countryID, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo);
-    mysqli_stmt_execute($Statement);
-}
-
 function getNewCityID ($dbConnection) {
     $Query = "
     SELECT max(CityID)
@@ -170,13 +120,8 @@ function changevoorraad($dbConnection, $amount, $stockItemID){
     mysqli_stmt_execute($Statement);
 
 }
-function definiteAddCustomer ($databaseConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $cityName, $DeliveryProvince, $PersonID) {
+function definiteAddCustomer ($databaseConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $cityName, $PersonID) {
     $countryID = 153;
-    $newStateProvinceID = getNewStateProvinceID($databaseConnection);
-    $StateProvinceID = getStateProvince($databaseConnection, $DeliveryProvince);
-    $stateProvinceCode = abbreviate($DeliveryProvince);
-    $newCityID = getNewCityID($databaseConnection);
-    $deliveryCityID = getcityID($databaseConnection, $cityName);
     $newCustomerID = getNewCustomerID($databaseConnection);
     $customerCategoryID = 8;
     $salesContactPersonID = 3262;
@@ -188,19 +133,7 @@ function definiteAddCustomer ($databaseConnection, $Cname, $phoneNumber, $Delive
     $validTo = "9999-12-31 23:59:59";
     $websiteURL = "https://KBS.renzeboerman.nl";
     $currentDate = date("Y-m-d");
-    if ($StateProvinceID == null) {
-        addStateProvince($databaseConnection, $newStateProvinceID, $stateProvinceCode, $countryID, $DeliveryProvince, $salesContactPersonID, $currentDate, $validTo);
-        $StateProvinceID = getStateProvince($databaseConnection, $DeliveryProvince);
-    } else {
-        $StateProvinceID = getStateProvince($databaseConnection, $DeliveryProvince);
-    }
-    if ($deliveryCityID == null) {
-        addCity($databaseConnection, $newCityID, $cityName, $StateProvinceID, $salesContactPersonID, $currentDate, $validTo);
-        $deliveryCityID = getCityID($databaseConnection, $cityName);
-        $_SESSION["user"]["customer"]["PostalCityID"] = $cityName;
-    } else {
-        $deliveryCityID = getCityID($databaseConnection, $cityName);
-    }
+    $deliveryCityID = getCityID($databaseConnection, $cityName);
     addCustomer(
         $databaseConnection,
         $newCustomerID,
@@ -222,4 +155,21 @@ function definiteAddCustomer ($databaseConnection, $Cname, $phoneNumber, $Delive
         $PersonID
     );
     return TRUE;
+}
+
+function cityExists($cityName, $dbConnection) {
+    $Query = "
+        SELECT CityName
+        FROM cities
+        WHERE CityName = ?";
+
+    $Statement = mysqli_prepare($dbConnection, $Query);
+    mysqli_stmt_bind_param($Statement, "s", $cityName);
+    mysqli_stmt_execute($Statement);
+    $R = mysqli_stmt_get_result($Statement);
+    $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
+    if (count($R) == 0) {
+        return false;
+    }
+    return true;
 }

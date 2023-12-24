@@ -27,20 +27,17 @@ function PlaceOrder(
     $betaald,
     $amountOfProductsInOrder,
     $quantityOnHand,
-    $DeliveryProvince,
     $cityName,
     $price
 ) {
     $orderstatus = "Wordt verwerkt";
-
     if ($betaald == true) {
     $customerId = getCustomer($databaseConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode);
         $currentDate = date("Y-m-d");
         $estimatedDeliveryDate = date("Y-m-d", strtotime($currentDate . "+ 1 days"));
         $salesContactPersonID = 3262;
-
         if ($customerId == null) {
-            definiteAddCustomer($databaseConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $cityName, $DeliveryProvince, $customerId);
+            definiteAddCustomer($databaseConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode, $cityName, $customerId);
             $customerId = getCustomer($databaseConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode);
         } else {
             $customerId = getCustomer($databaseConnection, $Cname, $phoneNumber, $DeliveryAddress, $DeliveryPostalCode);

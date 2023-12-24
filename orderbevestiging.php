@@ -8,7 +8,6 @@ $naam = $_SESSION["user"]["NAW"]["FullName"];
 $telefoonnummer = $_SESSION["user"]["NAW"]["PhoneNumber"];
 $adress = $_SESSION["user"]["NAW"]["DeliveryAddressLine1"];
 $postcode = $_SESSION["user"]["NAW"]["DeliveryPostalCode"];
-$stad = $_SESSION["user"]["NAW"]["CityName"];
 $betaald = TRUE;
 $Cname = " ";
 $phoneNumber = " ";
@@ -23,6 +22,7 @@ $DeliveryAddress = $_SESSION["user"]["NAW"]["DeliveryAddressLine1"];
 $DeliveryPostalCode = $_SESSION["user"]["NAW"]["DeliveryPostalCode"];
 $DeliveryInstructions = $_SESSION["user"]["NAW"]["DeliveryInstructions"];
 $cityName = $_SESSION["user"]["NAW"]["CityName"];
+
 $DeliveryProvince = $_SESSION["user"]["NAW"]["DeliveryProvince"];
 if (!isset($_SESSION["user"]["isLoggedIn"])) {
     $_SESSION["user"]["isLoggedIn"] = FALSE;
@@ -30,7 +30,6 @@ if (!isset($_SESSION["user"]["isLoggedIn"])) {
 if (!isset($_SESSION["order"]["placeOrder"])) {
     $_SESSION["order"]["placeOrder"] = FALSE;
 }
-
 if (isset($_SESSION["user"]["NAW"]["FullName"]) && isset($_SESSION["user"]["NAW"]["PhoneNumber"]) && isset($_SESSION["user"]["NAW"]["DeliveryAddressLine1"]) && isset($_SESSION["user"]["NAW"]["DeliveryPostalCode"]) && isset($_SESSION["user"]["NAW"]["CityName"]) && $_SESSION["order"]["placeOrder"] == TRUE) {
 $_SESSION["order"]["orderID"] = PlaceOrder(
         $databaseConnection,
@@ -42,7 +41,6 @@ $_SESSION["order"]["orderID"] = PlaceOrder(
         $betaald,
         $amountOfProductsInOrder,
         $quantityOnHand,
-        $DeliveryProvince,
         $cityName,
         $_SESSION["price"]
     );
@@ -184,7 +182,7 @@ if (isset($StockItemImage[0]["ImagePath"])) { ?>
     <h3 class="verzendadres">uw Gegevens: </h3>
 <h4 class="verzendgegevens">
     naam: <?php print $naam?><br>
-    adres: <?php print $adress." in ". $stad?><br>
+    adres: <?php print $adress." in ". $cityName?><br>
     postcode: <?php print $postcode?><br>
     telefoonnummer: <?php print $telefoonnummer?><br>
 </h4>

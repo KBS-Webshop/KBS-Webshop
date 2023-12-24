@@ -200,7 +200,7 @@ if (isset($amount)) {
             <select name="sort" id="sort" onchange="this.form.submit()">>
                 <option value="price_low_high" <?php if ($_SESSION['sort'] == "price_low_high") {
                     print "selected";
-                } ?>>Prijs oplopend
+                } ?>>Oplopende prijs
                 </option>
                 <option value="price_high_low" <?php if ($_SESSION['sort'] == "price_high_low") {
                     print "selected";

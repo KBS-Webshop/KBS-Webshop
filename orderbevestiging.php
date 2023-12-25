@@ -4,6 +4,7 @@ include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
 
 
+
 $naam = $_SESSION["user"]["NAW"]["FullName"];
 $telefoonnummer = $_SESSION["user"]["NAW"]["PhoneNumber"];
 $adress = $_SESSION["user"]["NAW"]["DeliveryAddressLine1"];
@@ -46,7 +47,8 @@ $_SESSION["order"]["orderID"] = PlaceOrder(
     );
     $placeOrder = 0;
     $_SESSION["order"]["placeOrder"] = FALSE;
-    if ($_SESSION["user"]["isLoggedIn"]) {
+    }
+    if (($_SESSION["user"]["isLoggedIn"]) && (isset($_POST['sendemail']))) {
         $personID = $_SESSION['user']['PersonID'];
         $recipient = $_SESSION["userEmail"];
         $subject = 'Orderbevestiging';
@@ -106,7 +108,7 @@ $_SESSION["order"]["orderID"] = PlaceOrder(
 
         sendEmail($recipient, $subject, $editorContent, $textBody, __DIR__ . '\Public\ProductIMGHighRes\NerdyGadgetsLogo.png');
         sendEmail($recipient, $subject1, $editorContent3, $textBody1, __DIR__ . '\Public\ProductIMGHighRes\NerdyGadgetsLogo.png');
-    }
+
 }
 ?>
 
@@ -178,7 +180,11 @@ if (isset($StockItemImage[0]["ImagePath"])) { ?>
     <form method="post" action="browse.php">
         <input type="hidden" name="action" value="clear_cookie">
         <input type="submit" name="verderwinkelen" value="verder winkelen" class="button1 primary ">
+
     </form>
+<form method="post">
+    <input type="submit" name="sendemail" value="verstuur email" class="button1 primary ">
+</form>
     <h3 class="verzendadres">uw Gegevens: </h3>
 <h4 class="verzendgegevens">
     naam: <?php print $naam?><br>

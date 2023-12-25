@@ -8,13 +8,13 @@ function sendEmail($recipient, $subject, $htmlBody, $textBody,$logoPath) {
 
     try {
         //Server settings
-        $mail->isSMTP(); // Set mailer to use SMTP
-        $mail->Host = 'smtp.transip.email'; // Specify main and backup SMTP servers
-        $mail->SMTPAuth = true; // Enable SMTP authentication
-        $mail->Username = $_ENV['SMTP_USER']; // SMTP username
-        $mail->Password = $_ENV['SMTP_PASSWORD']; // SMTP password
-        $mail->SMTPSecure = 'ssl'; // Enable TLS encryption, `ssl` also accepted
-        $mail->Port = 465; // TCP port to connect to
+        $mail->isSMTP();
+        $mail->Host = 'smtp.transip.email';
+        $mail->SMTPAuth = true;
+        $mail->Username = $_ENV['SMTP_USER'];
+        $mail->Password = $_ENV['SMTP_PASSWORD'];
+        $mail->SMTPSecure = 'ssl';
+        $mail->Port = 465;
 
         //Recipients
         $mail->setFrom($_ENV['SMTP_USER'], 'Nerdygatgets');

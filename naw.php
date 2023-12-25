@@ -164,7 +164,7 @@ if (isset($_GET["message"]) && $_GET["message"] == "wrong_city") {
         <div class="naw-input-inner">
             <label for="name">
                 akkoord met de terms of service <span class="required"></span>
-                <input type="radio" name="options" value="option1" required>
+                <input type="checkbox" name="options" value="option1" required>
             </label>
         </div>
     </div>

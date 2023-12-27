@@ -4,7 +4,6 @@ require 'vendor/autoload.php';
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '');
 $dotenv->load();
-
 include "helpers/database/database.php";
 include "helpers/database/order.php";
 include "helpers/database/stock.php";
@@ -17,14 +16,14 @@ include __DIR__ . "/helpers/cookie.php";
 if (isset($_COOKIE["basket"]) AND !cookieEmpty()) {
     $basket_contents = json_decode($_COOKIE["basket"], true);
 }
-$_SESSION["user"]["NAW"]["FullName"] = $_POST["naam"];
-$_SESSION["user"]["NAW"]["CityName"] = $_POST["stad"];
-$_SESSION["user"]["NAW"]["DeliveryAddressLine1"] = $_POST["adress"] . " " . $_POST["huisnummer"];
-$_SESSION["user"]["NAW"]["DeliveryPostalCode"] = $_POST["postcode"];
-$_SESSION["user"]["NAW"]["PhoneNumber"] = $_POST["telefoonnummer"];
-$_SESSION["user"]["NAW"]["DeliveryInstructions"] = $_POST["bezorgInstructies"];
+$_SESSION["NAW"]["FullName"] = $_POST["naam"];
+$_SESSION["NAW"]["CityName"] = $_POST["stad"];
+$_SESSION["NAW"]["DeliveryAddressLine1"] = $_POST["adress"] . " " . $_POST["huisnummer"];
+$_SESSION["NAW"]["DeliveryPostalCode"] = $_POST["postcode"];
+$_SESSION["NAW"]["PhoneNumber"] = $_POST["telefoonnummer"];
+$_SESSION["NAW"]["DeliveryInstructions"] = $_POST["bezorgInstructies"];
 
-if (!cityExists($_SESSION["user"]["NAW"]["CityName"], $databaseConnection)) {
+if (!cityExists($_SESSION["NAW"]["CityName"], $databaseConnection)) {
     header("Location: naw.php?message=wrong_city");
 }
 

@@ -3,11 +3,10 @@
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
 
-
-$naam = $_SESSION["user"]["NAW"]["FullName"];
-$telefoonnummer = $_SESSION["user"]["NAW"]["PhoneNumber"];
-$adress = $_SESSION["user"]["NAW"]["DeliveryAddressLine1"];
-$postcode = $_SESSION["user"]["NAW"]["DeliveryPostalCode"];
+$naam = $_SESSION["NAW"]["FullName"];
+$telefoonnummer = $_SESSION["NAW"]["PhoneNumber"];
+$adress = $_SESSION["NAW"]["DeliveryAddressLine1"];
+$postcode = $_SESSION["NAW"]["DeliveryPostalCode"];
 $betaald = TRUE;
 $Cname = " ";
 $phoneNumber = " ";
@@ -16,12 +15,12 @@ $DeliveryPostalCode = " ";
 $DeliveryInstructions = "";
 $amountOfProductsInOrder = 0;
 $quantityOnHand = 0;
-$Cname = $_SESSION["user"]["NAW"]["FullName"];
-$phoneNumber = $_SESSION["user"]["NAW"]["PhoneNumber"];
-$DeliveryAddress = $_SESSION["user"]["NAW"]["DeliveryAddressLine1"];
-$DeliveryPostalCode = $_SESSION["user"]["NAW"]["DeliveryPostalCode"];
-$DeliveryInstructions = $_SESSION["user"]["NAW"]["DeliveryInstructions"];
-$cityName = $_SESSION["user"]["NAW"]["CityName"];
+$Cname = $_SESSION["NAW"]["FullName"];
+$phoneNumber = $_SESSION["NAW"]["PhoneNumber"];
+$DeliveryAddress = $_SESSION["NAW"]["DeliveryAddressLine1"];
+$DeliveryPostalCode = $_SESSION["NAW"]["DeliveryPostalCode"];
+$DeliveryInstructions = $_SESSION["NAW"]["DeliveryInstructions"];
+$cityName = $_SESSION["NAW"]["CityName"];
 
 $DeliveryProvince = $_SESSION["user"]["NAW"]["DeliveryProvince"];
 if (!isset($_SESSION["user"]["isLoggedIn"])) {
@@ -30,7 +29,7 @@ if (!isset($_SESSION["user"]["isLoggedIn"])) {
 if (!isset($_SESSION["order"]["placeOrder"])) {
     $_SESSION["order"]["placeOrder"] = FALSE;
 }
-if (isset($_SESSION["user"]["NAW"]["FullName"]) && isset($_SESSION["user"]["NAW"]["PhoneNumber"]) && isset($_SESSION["user"]["NAW"]["DeliveryAddressLine1"]) && isset($_SESSION["user"]["NAW"]["DeliveryPostalCode"]) && isset($_SESSION["user"]["NAW"]["CityName"]) && $_SESSION["order"]["placeOrder"] == TRUE) {
+if (isset($_SESSION["NAW"]["FullName"]) && isset($_SESSION["NAW"]["PhoneNumber"]) && isset($_SESSION["NAW"]["DeliveryAddressLine1"]) && isset($_SESSION["NAW"]["DeliveryPostalCode"]) && isset($_SESSION["NAW"]["CityName"]) && $_SESSION["order"]["placeOrder"] == TRUE) {
 $_SESSION["order"]["orderID"] = PlaceOrder(
         $databaseConnection,
         $Cname,
@@ -51,7 +50,7 @@ $_SESSION["order"]["orderID"] = PlaceOrder(
         $recipient = $_SESSION["userEmail"];
         $subject = 'Orderbevestiging';
         $subject1 = 'reclame';
-        $Naam = $_SESSION["user"]["NAW"]["FullName"];
+        $Naam = $_SESSION["NAW"]["FullName"];
         $customerID1 = getCustomerIDbypersonID($databaseConnection, $personID);
         $customerID = $customerID1[0]['CustomerID'];
         $gegevens = getUserInfo($databaseConnection, $personID);

@@ -22,7 +22,6 @@ $DeliveryPostalCode = $_SESSION["NAW"]["DeliveryPostalCode"];
 $DeliveryInstructions = $_SESSION["NAW"]["DeliveryInstructions"];
 $cityName = $_SESSION["NAW"]["CityName"];
 
-$DeliveryProvince = $_SESSION["user"]["NAW"]["DeliveryProvince"];
 if (!isset($_SESSION["user"]["isLoggedIn"])) {
     $_SESSION["user"]["isLoggedIn"] = FALSE;
 }

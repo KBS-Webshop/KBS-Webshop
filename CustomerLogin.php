@@ -129,7 +129,7 @@ include __DIR__ . "/helpers/utils.php";
     <?php
         if ($_SESSION["user"]["IsSalesPerson"] == 1) {
             ?>
-            <a class="button primary userButton" href="beheer/">
+            <a class="button primary userButton" href="../beheer">
                 <h2>Beheerpagina</h2>
             </a>
             <?php

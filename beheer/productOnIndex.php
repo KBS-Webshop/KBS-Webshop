@@ -20,7 +20,7 @@ function set_error($message, $identity) {
 
 if (isset($_POST['delete'])) {
     removeSpotlight($_POST['delete'], $databaseConnection);
-    header("Location: /beheer/productOnIndex.php");
+    header("Location: ./productOnIndex.php");
     die();
 }
 
@@ -31,7 +31,7 @@ if (isset($_POST["stockItemID"])) {
 
         setSpotlight($_POST['stockItemID'], $databaseConnection);
 
-        header("Location: /beheer/productOnIndex.php");
+        header("Location: ./productOnIndex.php");
         die();
     }
 }

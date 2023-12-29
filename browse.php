@@ -248,12 +248,12 @@ if (isset($amount)) {
                                 <h4 id="clock<?php echo $row['StockItemID'] ?>" style="font-weight: bold;"></h4>
                                 <h2 class="StockItemPriceText">
                                     <s class="strikedtext">
-                                        <?php echo calculatePriceBTW($row['SellPrice'], $row['TaxRate']); ?>
+                                        <?php echo calculatePriceBTW($row['RecommendedRetailPrice'], $row['TaxRate']); ?>
                                     </s>
-                                    <?php echo calculateDiscountedPriceBTW($row['SellPrice'], $currentDiscount['DiscountPercentage'], $row['TaxRate']); ?>
+                                    <?php echo calculateDiscountedPriceBTW($row['RecommendedRetailPrice'], $currentDiscount['DiscountPercentage'], $row['TaxRate']); ?>
                                 </h2>
                             <?php } else { ?>
-                                <h2 class="StockItemPriceText"><?php echo calculatePriceBTW($row['SellPrice'], $row['TaxRate']); ?></h2>
+                                <h2 class="StockItemPriceText"><?php echo calculatePriceBTW($row['RecommendedRetailPrice'], $row['TaxRate']); ?></h2>
                             <?php } ?>
                             <h6>Inclusief BTW </h6>
                             <form method="post">

@@ -71,10 +71,9 @@ function getOrderID ($dbConnection) {
     $R = intval($R[0]['max(OrderID)'], 10);
     return $R;
 }
+
 function addOrder ($dbConnection, $CustomerId, $DeliveryInstructions, $currentDate, $estimatedDeliveryDate , $salesContactPersonID, $isInStock) {
-    $Query = "
-    INSERT INTO orders (CustomerID, OrderDate, ExpectedDeliveryDate, DeliveryInstructions, salespersonPersonID, ContactPersonID, IsUndersupplyBackordered, lastEditedBy, lastEditedWhen)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $Query = "CALL addOrder(?, ?, ?, ?, ?, ?, ?, ?, ?);";
     $Statement = mysqli_prepare($dbConnection, $Query);
     mysqli_stmt_bind_param($Statement, "isssiiiis", $CustomerId, $currentDate, $estimatedDeliveryDate , $DeliveryInstructions, $salesContactPersonID, $salesContactPersonID, $isInStock, $salesContactPersonID , $currentDate);
     mysqli_stmt_execute($Statement);
@@ -82,9 +81,7 @@ function addOrder ($dbConnection, $CustomerId, $DeliveryInstructions, $currentDa
 
 function addOrderline($dbConnection, $OrderID, $stockItemID, $StockItem, $amountOfProductsInOrder, $salesContactPersonID, $currentDate, $discount) {
     $price = sprintf("%.2f", $StockItem["UnitPrice"] / 100 * (100 - $discount));
-    $Query = "
-    INSERT INTO orderlines (OrderID, StockItemID, Description, PackageTypeID, Quantity, UnitPrice, TaxRate, PickedQuantity, LastEditedBy, LastEditedWhen)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $Query = "CALL addOrderline(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     $Statement = mysqli_prepare($dbConnection, $Query);
     mysqli_stmt_bind_param($Statement, "iisiidddis", $OrderID, $stockItemID, $StockItem["MarketingComments"], $StockItem["UnitPackageID"], $amountOfProductsInOrder, $price, $StockItem["TaxRate"], $amountOfProductsInOrder, $salesContactPersonID, $currentDate);
     mysqli_stmt_execute($Statement);

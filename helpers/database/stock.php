@@ -113,17 +113,9 @@ function getAlsoBought($id, $databaseConnection) {
     return $R;
 }
 
-function removeExpiredDiscounts($databaseConnection)
-{
-    $query = "DELETE FROM specialdeals WHERE EndDate < NOW()";
-    $statement = mysqli_prepare($databaseConnection, $query);
-    mysqli_stmt_execute($statement);
-}
-
 
 function getDiscountByStockItemID($id, $databaseConnection)
 {
-    removeExpiredDiscounts($databaseConnection);
     $query = "SELECT * FROM specialdeals WHERE StockItemID = ?";
     $statement = mysqli_prepare($databaseConnection, $query);
     mysqli_stmt_bind_param($statement, "i", $id);

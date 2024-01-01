@@ -3,7 +3,6 @@
 //ALTER TABLE specialdeals DROP CONSTRAINT FK_Sales_SpecialDeals_Application_People;
 
 function getNewID($databaseConnection) {
-    removeExpiredDiscounts($databaseConnection);
     $query = "SELECT MAX(SpecialDealID) FROM specialdeals";
     $result = mysqli_query($databaseConnection, $query);
     $result = mysqli_fetch_assoc($result);
@@ -12,7 +11,6 @@ function getNewID($databaseConnection) {
 
 function getCurrentDiscounts($databaseConnection)
 {
-    removeExpiredDiscounts($databaseConnection);
     $query = "SELECT SpecialDealID, StockItemID, StockItemName, DiscountPercentage, StartDate, EndDate FROM specialdeals JOIN stockitems USING (StockItemID)";
     $result = mysqli_query($databaseConnection, $query);
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -20,7 +18,6 @@ function getCurrentDiscounts($databaseConnection)
 
 function productHasDiscount($id, $databaseConnection)
 {
-    removeExpiredDiscounts($databaseConnection);
     $query = "SELECT * FROM specialdeals WHERE StockItemID = ?";
     $statement = mysqli_prepare($databaseConnection, $query);
     mysqli_stmt_bind_param($statement, "i", $id);
@@ -31,7 +28,6 @@ function productHasDiscount($id, $databaseConnection)
 
 function updateDiscount($id, $databaseConnection, $discount=null, $startDate=null, $endDate=null)
 {
-    removeExpiredDiscounts($databaseConnection);
     if ($startDate) {
         $query = "UPDATE specialdeals SET StartDate = ? WHERE StockItemID = ?";
         $statement = mysqli_prepare($databaseConnection, $query);
@@ -56,7 +52,6 @@ function updateDiscount($id, $databaseConnection, $discount=null, $startDate=nul
 
 function deleteDiscount($id, $databaseConnection)
 {
-    removeExpiredDiscounts($databaseConnection);
     $query = "DELETE FROM specialdeals WHERE SpecialDealID = ?";
     $statement = mysqli_prepare($databaseConnection, $query);
     mysqli_stmt_bind_param($statement, "i", $id);
@@ -65,7 +60,6 @@ function deleteDiscount($id, $databaseConnection)
 
 function createDiscount($stockItemID, $discount, $startDate, $endDate, $databaseConnection)
 {
-    removeExpiredDiscounts($databaseConnection);
     $id = getNewID($databaseConnection);
 
     $query = "INSERT INTO specialdeals (SpecialDealID, StockItemID, CustomerID, BuyingGroupID, CustomerCategoryID, StockGroupID, DealDescription, StartDate, EndDate, DiscountAmount, DiscountPercentage, UnitPrice, LastEditedBy, LastEditedWhen) 

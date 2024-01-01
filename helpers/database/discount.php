@@ -11,7 +11,12 @@ function getNewID($databaseConnection) {
 
 function getCurrentDiscounts($databaseConnection)
 {
-    $query = "SELECT SpecialDealID, StockItemID, StockItemName, DiscountPercentage, StartDate, EndDate FROM specialdeals JOIN stockitems USING (StockItemID)";
+    $query = "
+        SELECT SpecialDealID, StockItemID, StockItemName, DiscountPercentage, StartDate, EndDate 
+        FROM specialdeals 
+        JOIN stockitems USING (StockItemID)
+        WHERE EndDate >= NOW();
+    ";
     $result = mysqli_query($databaseConnection, $query);
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }

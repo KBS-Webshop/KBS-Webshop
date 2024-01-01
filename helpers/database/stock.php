@@ -116,7 +116,7 @@ function getAlsoBought($id, $databaseConnection) {
 
 function getDiscountByStockItemID($id, $databaseConnection)
 {
-    $query = "SELECT * FROM specialdeals WHERE StockItemID = ?";
+    $query = "SELECT * FROM specialdeals WHERE StockItemID = ? AND EndDate >= NOW()";
     $statement = mysqli_prepare($databaseConnection, $query);
     mysqli_stmt_bind_param($statement, "i", $id);
     mysqli_stmt_execute($statement);

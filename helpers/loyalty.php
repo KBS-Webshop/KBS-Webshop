@@ -47,5 +47,8 @@ function calculatePriceWithDeals($price, $databaseConnection) {
 }
 
 function calculateDiscount($price, $discount) {
+    if ($price == null) {
+        return 0;
+    }
     return ($price / 100) * $discount;
 }

@@ -1,6 +1,8 @@
 <?php
 include __DIR__ . "/components/header.php";
 include __DIR__ . "/helpers/utils.php";
+if (isset($_SESSION["user"]["isLoggedIn"])){
+    if ($_SESSION["user"]["isLoggedIn"] == 1) {
 $_SESSION["user"]["customer"]["cityName"] = getCity($databaseConnection, $_SESSION["user"]["customer"]["DeliveryCityID"]);
 $adress = explode(" ", $_SESSION["user"]["customer"]["DeliveryAddressLine1"]);
 $adressSlice = array_slice($adress, 0, -1);
@@ -72,6 +74,12 @@ $formIsFilled = isset($_POST["aanpassingenOpslaan"]) &&
             }
         }
     }
+} else {
+    print("U bent niet ingelogd.");
+}
+} else {
+    print("U bent niet ingelogd.");
+}
 ?>
 </div>
 <?php

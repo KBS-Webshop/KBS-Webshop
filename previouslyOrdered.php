@@ -4,6 +4,7 @@ include __DIR__ . "/helpers/utils.php";
 ?>
     <h1>Eerder gekochte producten</h1>
 <?php
+if (isset($_SESSION["user"]["customer"]["CustomerID"])){
 $previousOrders = getPreviouslyOrderedID($databaseConnection, $_SESSION["user"]["customer"]["CustomerID"]);
 if ($previousOrders != null) {
     foreach ($previousOrders as $orderID) {
@@ -36,6 +37,9 @@ if ($previousOrders != null) {
     }
 } else {
     print("U heeft nog geen bestellingen geplaatst.");
+}
+} else {
+    print("U bent niet ingelogd.");
 }
 ?>
 <?php

@@ -54,7 +54,7 @@ function getStockItem($id, $databaseConnection)
             UnitPrice, 
             TaxRate,
             BackupImagePath   
-            FROM stock_select_view
+            FROM stock_view
             WHERE stockitemid = ?
             GROUP BY StockItemID";
 

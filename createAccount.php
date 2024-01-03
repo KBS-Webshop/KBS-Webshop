@@ -112,19 +112,16 @@ if (isset($_POST["straatnaam"]) && isset($_POST["huisnummer"])) {
 if (isset($_POST["password"]) && isset($_POST["passwordConfirm"])) {
     if ($_POST["password"] != $_POST["passwordConfirm"]) {
         print("Wachtwoorden komen niet overeen.");
-    } elseif (isset($_POST["password"])) {
-    $hashedPassword = hashPassword($_POST["password"]);
-    $_SESSION["hashedPassword"] = $hashedPassword;
+    }
 }
-}
-    if (isset($_POST["email"]) && isset($_SESSION["hashedPassword"]) && isset($_POST["naam"]) && isset($_POST["telefoonnummer"]) && isset($_POST["address"]) && isset($_POST["postcode"]) && isset($_POST["stad"])) {
+    if (isset($_POST["email"]) && isset($_POST['password']) && isset($_POST["naam"]) && isset($_POST["telefoonnummer"]) && isset($_POST["address"]) && isset($_POST["postcode"]) && isset($_POST["stad"])) {
         if (checkIfAccountExists($databaseConnection, $_POST["email"])) {
             print("Account met deze email bestaat al.");
         } else if (!cityExists($_POST["stad"], $databaseConnection)) {
             print("Vul een bstaande stad in");
         } else {
             $PersonID = getNewAccountID($databaseConnection);
-            $accountCreated = createAccount($databaseConnection, $_POST["naam"], $_SESSION["hashedPassword"], $_POST["telefoonnummer"], $_POST["email"]);
+            $accountCreated = createAccount($databaseConnection, $_POST["naam"], $_POST["password"], $_POST["telefoonnummer"], $_POST["email"]);
             $customerAdded = definiteAddCustomer($databaseConnection, $_POST["naam"], $_POST["telefoonnummer"], $_POST["address"], $_POST["postcode"], $_POST["stad"], $PersonID);
             if ($accountCreated && $customerAdded) {
                 print ("Account aangemaakt.");

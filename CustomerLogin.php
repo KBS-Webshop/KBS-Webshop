@@ -18,14 +18,16 @@ include __DIR__ . "/helpers/utils.php";
     }
     if (isset($_POST["password"])) {
         $_SESSION["password"] = $_POST["password"];
-        $hashedPassword = hashPassword($_POST["password"]);
+        $hashedPassword = hashPassword($databaseConnection, $_POST["password"])[0]['hashedpassword'];
         $_SESSION["hashedPassword"] = $hashedPassword;
         $_SESSION["password"] = "";
         $_POST["password"] = "";
     }
+
     if (isset($_POST["userEmail"]) && isset($_POST["password"]) && $_SESSION["user"]["isLoggedIn"] == 0) {
         getCurrentUser($databaseConnection, $_POST["userEmail"], $_SESSION["hashedPassword"]); #$_POST["password"] moet nog veranderd worden naar werkende $hashedPassword
         getUserCustomerInfo($databaseConnection, $_POST["userEmail"], $_SESSION["hashedPassword"]);
+
     }
     ?>
 </div>
@@ -129,7 +131,7 @@ include __DIR__ . "/helpers/utils.php";
     <?php
         if ($_SESSION["user"]["IsSalesPerson"] == 1) {
             ?>
-            <a class="button primary userButton" href="beheer/">
+            <a class="button primary userButton" href="../beheer">
                 <h2>Beheerpagina</h2>
             </a>
             <?php

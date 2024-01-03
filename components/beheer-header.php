@@ -56,13 +56,13 @@ if ($_SESSION["user"]["isLoggedIn"] == 0 || $_SESSION["user"]["IsSalesPerson"] =
 <body>
     <div class="Background">
         <div class="row" id="Header">
-            <div class="col-2"><a href="index.php" id="LogoA">
+            <div class="col-2"><a href="../beheer/" id="LogoA">
                     <div id="LogoImage"></div>
                 </a></div>
             <div class="col-8" id="CategoriesBar">
                 <ul id="ul-class">
                     <li>
-                        <a href="/KBS-webshop" class="HrefDecoration">Webshop</a>
+                        <a href="../" class="HrefDecoration">Webshop</a>
                     </li>
                     <li>
                         <a href="../beheer/loyalty.php" class="HrefDecoration">Loyalty</a>

@@ -166,9 +166,7 @@ if (isset($_GET["message"])){
                 if ($totalprice_discount < $totalprice_normal) {
                     $priceDifference = $totalprice_normal - $totalprice_discount;
                     echo '<tr><th colspan="3">Je bespaart ' . formatPrice($priceDifference) . ' door de korting!</th></tr>';
-
-
-
+                }
                 ?>
 
                 <?php if (getDealInCart() != null) { ?>
@@ -193,8 +191,6 @@ if (isset($_GET["message"])){
                     <th>Totaalprijs</th>
                     <td><?php print formatPrice(calculatePriceWithDeals($totalprice_discount, $databaseConnection)); ?></td>
                 </tr>
-
-                <?php } ?>
 
                 </table>
 

@@ -1,5 +1,6 @@
 <?php
 function getCurrentUser($databaseConnection, $email, $hashedPassword) {
+
     $query = "SELECT FullName, PhoneNumber, EmailAddress, loyalty_points, IsSalesPerson FROM people WHERE EmailAddress = ? AND HashedPassword = ?";
     $statement = mysqli_prepare($databaseConnection, $query);
     mysqli_stmt_bind_param($statement, "ss", $email, $hashedPassword);
@@ -35,13 +36,25 @@ function logoutUser() {
     $_SESSION["user"]["isLoggedIn"] = 0;
 }
 
-function hashPassword($password) {
-    $fixedSalt = $_ENV['PASSWORD_SECRET'];
-    $hashedPassword1 = hash('sha256', $password . $fixedSalt);
-    return $hashedPassword1;
-}
+function hashpassword($databaseConnection, $password)
+{
 
-function createAccount ($databaseConnection, $name, $hashedPassword, $phoneNumber, $email){
+    $Query = "
+            call HashAndStorePassword(?)
+    ";
+
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+
+    mysqli_stmt_bind_param($Statement, "s", $password);
+
+    mysqli_stmt_execute($Statement);
+    $R = mysqli_stmt_get_result($Statement);
+    $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
+
+    return $R;
+}
+function createAccount ($databaseConnection, $name, $password, $phoneNumber, $email){
+    $hashedPassword = hashPassword($databaseConnection, $password)[0]['hashedpassword'];
     $currentDate = date("Y-m-d");
     $query = "INSERT INTO people (FullName, PreferredName, SearchName, IsPermittedToLogon, IsExternalLogonProvider, HashedPassword, IsSystemUser, IsEmployee, IsSalesPerson, PhoneNumber, EmailAddress, LastEditedBy, ValidFrom, ValidTo, loyalty_points)
 VALUES (?,?,?,1,0,?,1,0,0,?,?,3262,?,'2024-12-31 23:59:59.9999', 0)";

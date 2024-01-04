@@ -4,7 +4,7 @@ include "../helpers/utils.php";
 
 $next=getNextNonExistingID($databaseConnection);
 $_SESSION['next']=$next;
-//insertIDTemplate($next);
+
 ?>
 
 <div id="CenteredContent">
@@ -18,7 +18,7 @@ $_SESSION['next']=$next;
         if (isset($_POST['verwijder'])) {
             $idToDelete = $_POST['verwijder'];
             deleteTemplateByID($databaseConnection, $idToDelete);
-            header("Location: ./mail_aanpas_keuze.php"); // Redirect naar de juiste pagina na verwijderen
+            header("Location: ./mail_aanpas_keuze.php");
             exit();
         }
         ?>
@@ -47,37 +47,7 @@ $_SESSION['next']=$next;
 </div>
 
 <?php
-if(isset($_POST['submit'])){
     if ((isset($_POST['submit']))) {
-        // Get editor content
-        $editorContent = $_POST['editor'];
-        //$editorContent = str_replace('$(naam)', $naam, $editorContent);
-        //$editorContent = str_replace('$(customerID)', $customerID, $editorContent);
-        //$editorContent = str_replace('$(telefoonnummer)', $telefoonnummer, $editorContent);
-        //$editorContent = str_replace('$(bezorg-adres)', $bezorgAdres, $editorContent);
-//    $editorContent = str_replace('$(postcode)', $postcode, $editorContent);
-
-        // Voer de foreach-lus uit en sla de resultaten op in $productenText
-        //$productenText = '';
-        //foreach ($ordergegevens as $ordergegeven) {
-        //    $productenText .= 'Item Name: ' . $ordergegeven["StockItemName"].' aantal: '. $ordergegeven['Quantity'] . '<br>';
-    }
-
-    // Vervang de $(producten) placeholder met $productenText in $editorContent
-
-    //$editorContent = str_replace('$(producten)', $productenText, $editorContent);
-    //$producttext='';
-    //foreach ($AlsoBought as $product){
-    //    $producttext .= 'item name: ' .$product['StockItemName'].'<br>';
-
-    //}
-    //  $editorContent = str_replace('$(alsobought)', $producttext, $editorContent);
-//}
-
-
-
-
-    // Check whether the editor content is empty
     if (!empty($editorContent)) {
         insertContent($databaseConnection, $editorContent);
         if(isset($_SESSION['id'])){

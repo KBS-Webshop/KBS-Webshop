@@ -1,18 +1,31 @@
 <?php
 session_start();
-
+if (!isset($_SESSION['user']['isLoggedIn'])) {
+    $_SESSION['user']['isLoggedIn'] = 0;
+}
+if (!isset($_SESSION['user']['PersonID'])) {
+    $_SESSION['user']['PersonID'] = null;
+}
 require 'vendor/autoload.php';
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
-include "helpers/cookie.php";
 include "helpers/database/database.php";
+
+$databaseConnection = connectToDatabase();
+
 include "helpers/database/loyalty.php";
 include "helpers/database/order.php";
 include "helpers/database/stock.php";
+include "helpers/loyalty.php";
+include "helpers/cookie.php";
+include "helpers/database/mail_database.php";
+include "helpers/mail.php";
+include "helpers/database/customer.php";
 
-$databaseConnection = connectToDatabase();
+include "helpers/database/temprature.php";
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,6 +40,7 @@ $databaseConnection = connectToDatabase();
     <script src="Public/JS/popper.min.js"></script>
     <script src="Public/JS/resizer.js"></script>
     <script src="Public/JS/validate_input.js"></script>
+    <script src="Public/JS/clocks.js"></script>
 
     <!-- Style sheets-->
     <link rel="stylesheet" href="Public/CSS/style.css" type="text/css">
@@ -38,14 +52,17 @@ $databaseConnection = connectToDatabase();
     <link rel="stylesheet" href="Public/CSS/loyalty.css" type="text/css">
     <link rel="stylesheet" href="Public/CSS/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="Public/CSS/typekit.css">
+    <link rel="stylesheet" href="Public/CSS/userlogin.css" type="text/css">
 </head>
 
 <body>
     <div class="Background">
         <div class="row" id="Header">
-            <div class="col-2"><a href="./" id="LogoA">
+            <div class="col-2">
+                <a href="./" id="LogoA">
                     <div id="LogoImage"></div>
-                </a></div>
+                </a>
+            </div>
             <div class="col-8" id="CategoriesBar">
                 <ul id="ul-class">
                     <?php
@@ -71,6 +88,18 @@ $databaseConnection = connectToDatabase();
 
             <ul id="ul-class-navigation">
                 <li>
+                    <a href="CustomerLogin.php" class="HrefDecoration"><i class="fa fa-user"></i>&nbsp;
+                    <?php
+
+                    if (isset($_SESSION['user']['isLoggedIn']) AND $_SESSION['user']['isLoggedIn'] == 1) {
+                        print $_SESSION['user']['FullName'];
+                    } else {
+                        print "Inloggen";
+                    }
+
+                    ?>&nbsp;&nbsp;</a>
+                </li>
+                <li>
                     <a href="browse.php" class="HrefDecoration"><i class="fas fa-search search"></i> Zoeken</a>
                 </li>
                 <li>&nbsp;&nbsp;</li>
@@ -86,3 +115,8 @@ $databaseConnection = connectToDatabase();
     <div class="row" id="Content">
         <div class="col-12">
             <div id="SubContent">
+<!--                --><?php
+//if (isset($_SESSION["user"]["hashedPassword"]) && isset($_SESSION["user"]["EmailAddress"])) {
+//    getUserCustomerInfo($databaseConnection, $_SESSION["user"]["EmailAddress"], $_SESSION["user"]["hashedPassword"]);
+//}
+//?>

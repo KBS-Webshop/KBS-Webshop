@@ -16,11 +16,31 @@ if (isset($_POST['action'])) {
         case 'change_amt':
             changeAmount($_POST['StockItemID'], $_POST['amount']);
             break;
+        case 'clear_cookie':
+            clearCookie();
+            break;
+        case 'remove_deal_from_cart':
+            $price = calculatePriceWithDeals($_POST["price"], $databaseConnection);
+            calculateAndRemovePoints($price, $_SESSION["user"]["PersonID"], $databaseConnection);
+            removeDealFromCart();
+            break;
     }
 
     $requestPath = $_SERVER['REQUEST_URI'];
     header("location: $requestPath");
     exit();
+}
+
+if (str_contains($_SERVER['REQUEST_URI'], "/loyalty-list.php" ) ) {
+
+    if (isset($_POST["addId"]) && isset($_POST["points"])) {
+        if (getDealInCart() == $_POST["addId"]) {
+            removeDealFromCart();
+        } else {
+            addDealToCart($_POST["addId"], $_POST["points"]);
+        }
+        header("Refresh: 0; url=loyalty-list.php");
+    }
 }
 
 function cookieEmpty() {

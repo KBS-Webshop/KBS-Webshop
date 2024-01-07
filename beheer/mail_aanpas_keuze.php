@@ -48,6 +48,7 @@ $_SESSION['next']=$next;
 
 <?php
     if ((isset($_POST['submit']))) {
+    $editorContent = $_POST['editor'];
     if (!empty($editorContent)) {
         insertContent($databaseConnection, $editorContent);
         if(isset($_SESSION['id'])){

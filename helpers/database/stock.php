@@ -41,19 +41,21 @@ function getStockItem($id, $databaseConnection)
 //            (RecommendedRetailPrice*(1+(TaxRate/100))) AS SellPrice,
 
     $Query = " 
-           SELECT SI.StockItemID, SI.IsChillerStock, (RecommendedRetailPrice*(1+(TaxRate/100))) AS SellPrice, 
+           SELECT StockItemID, IsChillerStock, (RecommendedRetailPrice*(1+(TaxRate/100))) AS SellPrice, 
             RecommendedRetailPrice SellPrice, 
-            SI.TaxRate,
+            TaxRate,
             StockItemName,
-            CONCAT('Voorraad: ',QuantityOnHand)AS QuantityOnHand,
+            QuantityOnHand,
             SearchDetails, 
-            (CASE WHEN (RecommendedRetailPrice*(1+(TaxRate/100))) > 50 THEN 0 ELSE 6.95 END) AS SendCosts, MarketingComments, CustomFields, SI.Video, UnitPackageID, UnitPrice, TaxRate,
-            (SELECT ImagePath FROM stockgroups JOIN stockitemstockgroups USING(StockGroupID) WHERE StockItemID = SI.StockItemID LIMIT 1) as BackupImagePath   
-            FROM stockitems SI 
-            JOIN stockitemholdings SIH USING(stockitemid)
-            JOIN stockitemstockgroups ON SI.StockItemID = stockitemstockgroups.StockItemID
-            JOIN stockgroups USING(StockGroupID)
-            WHERE SI.stockitemid = ?
+            SendCosts, 
+            MarketingComments, 
+            CustomFields, Video, 
+            UnitPackageID, 
+            UnitPrice, 
+            TaxRate,
+            BackupImagePath   
+            FROM stock_view
+            WHERE stockitemid = ?
             GROUP BY StockItemID";
 
     $Statement = mysqli_prepare($databaseConnection, $Query);

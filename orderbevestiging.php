@@ -22,6 +22,8 @@ $DeliveryPostalCode = $_SESSION["NAW"]["DeliveryPostalCode"];
 $DeliveryInstructions = $_SESSION["NAW"]["DeliveryInstructions"];
 $cityName = $_SESSION["NAW"]["CityName"];
 
+$deal = getLoyaltyDeal(getDealInCart(), $databaseConnection);
+
 if (!isset($_SESSION["user"]["isLoggedIn"])) {
     $_SESSION["user"]["isLoggedIn"] = FALSE;
 }
@@ -116,21 +118,19 @@ $_SESSION["order"]["orderID"] = PlaceOrder(
     <div id="ResultsArea" class="Winkelmand">
 <?php
 $totalprice = 0;
-if ((isset($_COOKIE["basket"]) AND !cookieEmpty()) OR TRUE) {
-    $basket_contents = json_decode($_COOKIE["basket"], true);
-    foreach ($basket_contents as $item) {
-        $StockItem = getStockItem($item["id"], $databaseConnection);
-        $currentDiscount = getDiscountByStockItemID($item["id"], $databaseConnection);
-        $StockItemImage = getStockItemImage($item['id'], $databaseConnection);
+$basket_contents = json_decode($_COOKIE["basket"], true);
+foreach ($basket_contents as $item) {
+    $StockItem = getStockItem($item["id"], $databaseConnection);
+    $currentDiscount = getDiscountByStockItemID($item["id"], $databaseConnection);
+    $StockItemImage = getStockItemImage($item['id'], $databaseConnection);
 
-        if ($currentDiscount) {
-            $totalprice += calculateDiscountedPriceBTW($StockItem["SellPrice"], $currentDiscount["DiscountPercentage"], $StockItem['TaxRate'], $item["amount"], true);
-        } else {
-            $totalprice += calculatePriceBTW($StockItem["SellPrice"], $StockItem['TaxRate'], $item["amount"], true);
-        }
-
-        ?>
-    <div id="ProductFrame1">
+    if ($currentDiscount) {
+        $totalprice += calculateDiscountedPriceBTW($StockItem["SellPrice"], $currentDiscount["DiscountPercentage"], $StockItem['TaxRate'], $item["amount"], true);
+    } else {
+        $totalprice += calculatePriceBTW($StockItem["SellPrice"], $StockItem['TaxRate'], $item["amount"], true);
+    }
+?>
+<div id="ProductFrame1">
 <?php
 if (isset($StockItemImage[0]["ImagePath"])) { ?>
     <a class="ListItem" href='view.php?id=<?php print $item["id"]; ?>'>
@@ -160,17 +160,15 @@ if (isset($StockItemImage[0]["ImagePath"])) { ?>
 
     <h1 class="StockItemID"> <?php print ("artikelnummer: " . $item["id"]."<br>")?></h1>
     <h1 class="StockItemID1"> <?php print($StockItem["StockItemName"]."<br><br>aantal: ". $item['amount']) ?>
-    <div class="buttonAlignmentWinkelmand">
-                                </div>
-                            </h1>
-                        </div>
+        <div class="buttonAlignmentWinkelmand"></div>
+    </h1>
+</div>
 <?php
     }
-}
 ?>
 <br>
 <?php if(getDealInCart() != null) { ?>
-<h3 class="StockItemPriceTextbevestiging">Korting: <?php print(formatPrice(calculateDiscount($totalprice, getLoyaltyDeal(getDealInCart(), $databaseConnection)["discount"]))) ?></h3>
+<h3 class="StockItemPriceTextbevestiging">Korting: <?php print(formatPrice(calculateDiscount($totalprice, $deal["discount"]))) ?></h3>
 <?php } ?>
 <h3 class="StockItemPriceTextbevestiging">Totaalprijs: <?php print formatPrice(calculatePriceWithDeals($totalprice, $databaseConnection))?></h3><br>
     <form method="post" action="browse.php">

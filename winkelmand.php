@@ -115,11 +115,19 @@ if (isset($_GET["message"])){
                     echo "Winkelmandje is leeg.";
                 }
                 if($totalprice > 0){
-                    $totalpriceFormatted = formatPrice($totalprice);
-                    ?>
-                <div>
-                    <h1 class="StockItemPriceTextcart">Totaal prijs: <?php echo $totalpriceFormatted ?> </h1>
-                </div>
+                    $deal = getLoyaltyDeal(getDealInCart(), $databaseConnection);
+                    if ($deal != null) {
+                        $loyaltyDealDiscount = calculateDiscount($totalprice, $deal["discount"]);
+                    } else {
+                    $loyaltyDealDiscount = 0;
+                    }
+                ?>
+                    <div>
+                        <?php if ($loyaltyDealDiscount > 0) { ?>
+                            <h1 class="StockItemPriceTextcart">Gespaarde korting: <?php echo formatPrice($loyaltyDealDiscount) ?> </h1>
+                        <?php } ?>
+                        <h1 class="StockItemPriceTextcart">Totaal prijs: <?php echo formatPrice($totalprice - $loyaltyDealDiscount) ?> </h1>
+                    </div>
                 <?php } ?>
             </div>
         </ul>
@@ -170,7 +178,7 @@ if (isset($_GET["message"])){
                     <tr>
                         <td></td>
                         <th>Korting</th>
-                        <td><?php print "-" . formatPrice( calculateDiscount($totalprice_discount, getLoyaltyDeal(getDealInCart(), $databaseConnection)["discount"]) ) ?></td>
+                        <td><?php print "-" . formatPrice(calculateDiscount($totalprice_discount, getLoyaltyDeal(getDealInCart(), $databaseConnection)["discount"]) ) ?></td>
                     </tr>
                 <?php } ?>
                 <tr class='receivedTotalPrice'>

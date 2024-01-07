@@ -84,7 +84,6 @@ $_SESSION['price']=$totalprice_discount;
 
 
 </div>
-<html>
 
 <h2>Bestelgegevens</h2>
 
@@ -182,9 +181,6 @@ if (isset($_GET["message"]) && $_GET["message"] == "wrong_city") {
         <input type="submit" name="bevestig" value="Afrekenen" class="button primary">
     </div>
 </form>
-</html>
-
-
 
 <?php
 

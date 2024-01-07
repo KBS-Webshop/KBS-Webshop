@@ -1,6 +1,8 @@
 <?php
 include "../components/beheer-header.php";
 include "../helpers/utils.php";
+$template = '';
+$titel = '';
 if(isset($_GET["id"])) {
 
     $templateData = getEmailTemplateID($databaseConnection, $_GET['id']);
@@ -21,8 +23,6 @@ if(isset($_GET["id"])) {
 
         $templateData = getEmailTemplate($databaseConnection, $newID);
 
-        $template = '';
-        $titel = '';
         $_SESSION["id"] = $newID;
 
     } else {
@@ -37,12 +37,6 @@ if(isset($_GET["id"])) {
         document.getElementById("radioForm").submit();
     }
 </script>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>TinyMCE Example</title>
-    <!-- Include TinyMCE script -->
     <script src="https://cdn.tiny.cloud/1/33vhqyke3rifq88t349u5xvus5yq5sco72ip3h1xwkiay8sr/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     <script src="https://cdn.tiny.cloud/1/33vhqyke3rifq88t349u5xvus5yq5sco72ip3h1xwkiay8sr/tinymce/5/plugins/powerpaste/plugin.min.js" referrerpolicy="origin"></script>
     <script>
@@ -52,10 +46,6 @@ if(isset($_GET["id"])) {
             toolbar: 'undo redo | formatselect | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | template powerpaste | bullist numlist outdent indent | link image | removeformat | fullscreen code',
         });
     </script>
-
-    </script>
-</head>
-<body>
 <form method="post" action="mail_aanpas_keuze.php"  >
 
     <input type="text" name="titel" value="<?php print $titel?>" required>
@@ -68,8 +58,6 @@ if(isset($_GET["id"])) {
 </form>
 mogelijke veriabele om de gebruiken in de tekst (moet exact kloppen):<br>
 $(naam), $(customerID), $(telefoonnummer), $(bezorg-adres), $(postcode), $(producten), $(alsobought), $(linkUserInfo), $(logo)
-</body>
-</html>
 <?php
 include "../components/footer.php"
 ?>

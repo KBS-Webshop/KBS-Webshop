@@ -206,10 +206,10 @@ function insertTemplate($databaseConnection, $titel, $content)
     }
 }
 function getNextNonExistingID($databaseConnection) {
-    $query = "SELECT MIN(t1.ID + 1) AS nextID
-              FROM emailtemplate AS t1
-              LEFT JOIN emailtemplate AS t2 ON t1.ID + 1 = t2.ID
-              WHERE t2.ID IS NULL";
+    $query = "SELECT MIN(ID) + 1 AS nextID
+FROM emailtemplate
+WHERE ID + 1 NOT IN (SELECT ID FROM emailtemplate)
+";
 
     $result = mysqli_query($databaseConnection, $query);
 

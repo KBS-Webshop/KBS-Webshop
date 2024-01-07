@@ -30,6 +30,23 @@ if (!isset($_SESSION["user"]["isLoggedIn"])) {
 if (!isset($_SESSION["order"]["placeOrder"])) {
     $_SESSION["order"]["placeOrder"] = FALSE;
 }
+
+function getEditorContent($content, $naam, $customerID, $telefoonnummer, $bezorgAdres, $postcode, string $linkUserInfo, string $logo){
+    $editorReplacing = [
+        "$(naam)" => $naam,
+        "$(customerID)" => $customerID,
+        "$(telefoonnummer)" => $telefoonnummer,
+        "$(bezorg-adres)" => $bezorgAdres,
+        "$(postcode)" => $postcode,
+        "$(linkUserInfo)" => $linkUserInfo,
+        "$(logo)" => $logo
+    ];
+
+    return str_replace(array_keys($editorReplacing), array_values($editorReplacing), $content);
+}
+
+
+
 if (isset($_SESSION["NAW"]["FullName"]) && isset($_SESSION["NAW"]["PhoneNumber"]) && isset($_SESSION["NAW"]["DeliveryAddressLine1"]) && isset($_SESSION["NAW"]["DeliveryPostalCode"]) && isset($_SESSION["NAW"]["CityName"]) && $_SESSION["order"]["placeOrder"] == TRUE) {
 $_SESSION["order"]["orderID"] = PlaceOrder(
         $databaseConnection,
@@ -68,23 +85,8 @@ $_SESSION["order"]["orderID"] = PlaceOrder(
 
         $editorContent1 = getEmailTemplate($databaseConnection, 'orderbevesteging');
         $editorContent2 = getEmailTemplate($databaseConnection, 'reclame');
-        $editorContent = $editorContent1[0]['content'];
-        $editorContent = str_replace('$(naam)', $naam, $editorContent);
-        $editorContent = str_replace('$(customerID)', $customerID, $editorContent);
-        $editorContent = str_replace('$(telefoonnummer)', $telefoonnummer, $editorContent);
-        $editorContent = str_replace('$(bezorg-adres)', $bezorgAdres, $editorContent);
-        $editorContent = str_replace('$(postcode)', $postcode, $editorContent);
-        $editorContent = str_replace('$(linkUserInfo)', $linkUserInfo, $editorContent);
-        $editorContent = str_replace('$(logo)', $logo, $editorContent);
-        $editorContent3 = $editorContent2[0]['content'];
-
-        $editorContent3 = str_replace('$(naam)', $naam, $editorContent3);
-        $editorContent3 = str_replace('$(customerID)', $customerID, $editorContent3);
-        $editorContent3 = str_replace('$(telefoonnummer)', $telefoonnummer, $editorContent3);
-        $editorContent3 = str_replace('$(bezorg-adres)', $bezorgAdres, $editorContent3);
-        $editorContent3 = str_replace('$(postcode)', $postcode, $editorContent3);
-        $editorContent3 = str_replace('$(linkUserInfo)', $linkUserInfo, $editorContent3);
-        $editorContent3 = str_replace('$(logo)', $logo, $editorContent3);
+        $editorContent = getEditorContent($editorContent1[0]['content'], $naam, $customerID, $telefoonnummer, $bezorgAdres, $postcode, $linkUserInfo, $logo);
+        $editorContent3 = getEditorContent($editorContent2[0]['content'], $naam, $customerID, $telefoonnummer, $bezorgAdres, $postcode, $linkUserInfo, $logo);
         $productenText = '';
         foreach ($ordergegevens as $ordergegeven) {
             $productenText .= 'Item Name: ' . $ordergegeven["StockItemName"] . ' aantal: ' . $ordergegeven['Quantity'] . '<br>';
